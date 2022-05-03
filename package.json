@@ -9,6 +9,9 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "echarts": "^5.3.2",
+    "element-ui": "^2.15.8",
+    "three": "^0.140.0",
     "vue": "^3.0.0"
   },
   "devDependencies": {
