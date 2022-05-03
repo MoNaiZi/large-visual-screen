@@ -1,5 +1,8 @@
 # large-visual-screen
-
+## 使用技术：
+```
+Vue3+echarts+three+element-ui
+```
 ## Project setup
 ```
 yarn install
