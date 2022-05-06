@@ -1,0 +1,58 @@
+<template>
+  <div style="width: 100%;height: 100%" :style="{textAlign:option.attribute.textAlign,color:option.attribute.textColor,fontSize: option.attribute.textSize+'px',
+    fontStyle:option.attribute.fontStyle, fontWeight:option.attribute.fontWeight,lineHeight:option.attribute.textLineHeight+'px',
+    backgroundColor:option.attribute.bgColor,
+    fontFamily:option.attribute.textFamily, textDecoration:option.attribute.textDecoration}" @click="redirect">
+    {{cptData}}
+  </div>
+</template>
+
+<script>
+// import {getDataStr, pollingRefresh} from "@/utils/refreshCptData";
+
+export default {
+  name: "custom-text",
+  title: '文字框',
+  icon: 'ChatLineSquare',
+  initWidth: 150,
+  initHeight: 40,
+  group:'basic',
+  props: {
+    option: Object
+  },
+  data() {
+    return {
+      cptData: '',
+      id: this.$createId()
+    }
+  },
+  created() {
+	console.log('组件id',this.id)
+    this.refreshCptData();
+  },
+  methods: {
+    refreshCptData(){
+      // pollingRefresh(this.uuid, this.option.cptDataForm, this.loadData)
+    },
+    loadData(){
+      // getDataStr(this.option.cptDataForm).then(res => {
+      //   this.cptData = res;
+      // });
+    },
+    redirect(){
+      if (this.option.attribute.url){
+        if (this.option.attribute.url.startsWith("view")){
+          this.$router.push(this.option.attribute.url)
+          this.$emit("reload")
+        }else{
+          window.open(this.option.attribute.url)
+        }
+      }
+    }
+  },
+}
+</script>
+
+<style scoped>
+
+</style>

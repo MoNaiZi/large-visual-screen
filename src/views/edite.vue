@@ -11,12 +11,14 @@
 						<div>导出</div>
 						<div>
 							<el-icon>
-								<delete />
+								<component :is="'Delete'">
+								</component>
 							</el-icon>
 						</div>
 						<div>
 							<el-icon>
-								<tools></tools>
+								<component :is="'Tools'">
+								</component>
 							</el-icon>
 						</div>
 						<div>
@@ -30,53 +32,7 @@
 			</el-header>
 			<el-container>
 				<el-aside width="220px">
-					<el-row class="top_tab">
-						<el-col :span="12" :class="currentTab === 1 ? 'no_active':''">
-							<div @click="currentTab = 0">组件</div>
-						</el-col>
-						<el-col :span="12" :class="currentTab === 0 ? 'no_active':''">
-							<div @click="currentTab = 1">图层</div>
-						</el-col>
-					</el-row>
-					<template v-if="currentTab === 0">
-						<el-row class="tab_item">
-							<el-col :span="8">基础</el-col>
-							<el-col :span="2" :offset="13">
-								<el-icon>
-									<arrow-down-bold />
-								</el-icon>
-							</el-col>
-						</el-row>
-						<el-row :gutter="2">
-							<el-col :span="12">
-								<div class="item">
-									<el-icon :size="30" style="margin-bottom: 10px;">
-										<chat-line-square />
-									</el-icon>
-									文字框
-								</div>
-							</el-col>
-							<el-col :span="12">
-								<div class="item">
-									<el-icon :size="30" style="margin-bottom: 10px;">
-										<chat-line-square />
-									</el-icon>
-									文字框
-								</div>
-							</el-col>
-						</el-row>
-					</template>
-					<template v-else>
-						图层
-						<div>
-							<div>
-								
-							</div>
-							<div>
-								
-							</div>
-						</div>
-					</template>
+					<sidebar></sidebar>
 				</el-aside>
 				<el-main :style="{background: 'url('+defaultBg+') repeat'}">Main</el-main>
 			</el-container>
@@ -85,18 +41,10 @@
 </template>
 
 <script>
-	import {
-		Delete,
-		Tools,
-		ArrowDownBold,
-		ChatLineSquare
-	} from '@element-plus/icons-vue'
+	import sidebar from '@/components/sidebar'
 	export default {
 		components: {
-			Delete,
-			Tools,
-			ArrowDownBold,
-			ChatLineSquare
+			sidebar
 		},
 		data() {
 			return {
@@ -108,35 +56,7 @@
 </script>
 
 <style>
-	.item {
-		background-color: rgb(63, 75, 95);
-		height: 80px;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		font-size: 16px;
-	}
 
-	.tab_item {
-		height: 50px;
-		line-height: 50px;
-		display: flex;
-		align-items: center;
-		margin-top: 9px;
-	}
-
-	.top_tab {
-		width: 100%;
-		height: 40px;
-		text-align: center;
-		line-height: 40px;
-		cursor: pointer;
-		position: fixed;
-		z-index: 7;
-		background: #353f50;
-		box-shadow: 0 1px 3px #2b3340;
-	}
 
 	.no_active {
 		background: #3F4B5F;
