@@ -29,7 +29,7 @@ export default {
 					radius: 6,
 				}
 			},
-			'cpt-text-option': {
+			'custom-text-option': {
 				cptDataForm: {
 					dataText: '普通文本',
 					dataSource: 1,

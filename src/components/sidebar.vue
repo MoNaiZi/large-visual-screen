@@ -20,7 +20,7 @@
 			</el-row>
 			<el-row :gutter="2" v-for="(item,index) in group.list" :key="index">
 				<el-col :span="12">
-					<div class="item">
+					<div class="item" draggable="true" :config="JSON.stringify(item)" @dragstart="dragStart">
 						<el-icon :size="30" style="margin-bottom: 10px;">
 							<component :is="item.icon">
 							</component>
@@ -55,9 +55,6 @@
 			}
 		},
 		created() {
-			console.log('initElement', initElement)
-			console.log('options', options)
-			// const that = this
 			for (let key in initElement) {
 				this.groupList.push({
 					key: key,
@@ -67,9 +64,13 @@
 					list: initElement[key]
 				})
 			}
-			console.log('groupList', this.groupList)
 		},
 		methods: {
+			dragStart(e) {
+				let dom = e.currentTarget.cloneNode(true);
+				console.log('dom',dom)
+				this.$emit('dragStart', dom);
+			}
 
 		}
 	}
