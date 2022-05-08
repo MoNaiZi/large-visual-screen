@@ -34,39 +34,40 @@
 				<el-aside width="220px">
 					<sidebar @dragStart="dragStart"></sidebar>
 				</el-aside>
-				<el-main @dragover="allowDrop" @drop="drop"
-					:style="{background: 'url('+defaultBg+') repeat',height:1920 / designData.scaleX * designData.scaleY+'px',transform: 'scale('+containerScale+')'}">
-					<div v-for="(item,index) in list" :key="index" class="cptDiv" :style="{width:Math.round(item.w)+'px',
-                  height:Math.round(item.h)+'px',
-                  top:Math.round(item.y)+'px',left:Math.round(item.x)+'px',
-                  zIndex: currentCptIndex === index ? 1800 : item.x}">
-						<div v-resize="'move'" class="activeMask"
+				<el-main @dragover="allowDrop" @drop="drop" :style="{
+					background: 'url(' + defaultBg + ') repeat',
+					height: 1920 / designData.scaleX * designData.scaleY + 'px',
+					transform: 'scale(' + containerScale + ')'
+				}" @click.self="selectItem(-1)">
+					<div v-for="(item,index) in list" :key="index" class="cptDiv" @mousedown.stop="selectItem(index)"
+						:style="[cptDiv_fn(item,index)]">
+						<div v-resize="{key:'move',index:index}" class="activeMask"
 							:style="currentCptIndex === index ? {border:'1px solid #B6BFCE'}:{}" />
-						<div style="width: 100%;height: 100%" @click="selectItem(index)">
+						<div style="width: 100%;height: 100%">
 							<component :is="item.name" :ref="item.name+index" :width="Math.round(item.w)"
 								:height="Math.round(item.h)" :option="item.options">
 							</component>
 						</div>
 						<div class="delTag">
-							<i class="el-icon-copy-document" @click.stop="copyCpt(item)" />
-							<i style="margin-left: 4px" class="el-icon-delete" @click.stop="delCpt(item,index)" />
+							<!-- <i class="el-icon-copy-document" @click.stop="copyCpt(item)" />
+							<i style="margin-left: 4px" class="el-icon-delete" @click.stop="delCpt(item,index)" /> -->
 						</div>
 						<div v-show="currentCptIndex === index" style="top: -3px;left: -3px;cursor: se-resize"
-							class="resizeTag" v-resize="'lt'" />
+							class="resizeTag" v-resize="{key:'lt',index:index}" />
 						<div v-show="currentCptIndex === index" style="top: -3px;left: 48%;cursor: s-resize"
-							class="resizeTag" v-resize="'t'" />
+							class="resizeTag" v-resize="{key:'t',index:index}" />
 						<div v-show="currentCptIndex === index" style="top: -3px;right: -4px;cursor: ne-resize"
-							class="resizeTag" v-resize="'rt'" />
+							class="resizeTag" v-resize="{key:'rt',index:index}" />
 						<div v-show="currentCptIndex === index" style="top: 48%;right: -4px;cursor: w-resize"
-							class="resizeTag" v-resize="'r'" />
+							class="resizeTag" v-resize="{key:'r',index:index}" />
 						<div v-show="currentCptIndex === index" style="bottom: -4px;right: -4px;cursor: se-resize"
-							class="resizeTag" v-resize="'rb'" />
+							class="resizeTag" v-resize="{key:'rb',index:index}" />
 						<div v-show="currentCptIndex === index" style="bottom: -4px;left: 48%;cursor: s-resize"
-							class="resizeTag" v-resize="'b'" />
+							class="resizeTag" v-resize="{key:'b',index:index}" />
 						<div v-show="currentCptIndex === index" style="bottom: -4px;left: -3px;cursor: ne-resize"
-							class="resizeTag" v-resize="'lb'" />
+							class="resizeTag" v-resize="{key:'lb',index:index}" />
 						<div v-show="currentCptIndex === index" style="top: 48%;left: -3px;cursor: w-resize"
-							class="resizeTag" v-resize="'l'" />
+							class="resizeTag" v-resize="{key:'l',index:index}" />
 					</div>
 
 				</el-main>
@@ -85,6 +86,21 @@
 	export default {
 		components: {
 			sidebar
+		},
+		computed: {
+			elMainFn() {
+				let {
+					defaultBg,
+					designData,
+					containerScale
+				} = this
+				let result = {
+					background: 'url(' + defaultBg + ') repeat',
+					height: 1920 / designData.scaleX * designData.scaleY + 'px',
+					transform: 'scale(' + containerScale + ')'
+				}
+				return result
+			}
 		},
 		created() {},
 		data() {
@@ -113,8 +129,18 @@
 			}
 		},
 		methods: {
+			cptDiv_fn(item, index) {
+				let currentCptIndex = this.currentCptIndex
+				let result = {
+					width: Math.round(item.w) + 'px',
+					height: Math.round(item.h) + 'px',
+					top: Math.round(item.y) + 'px',
+					left: Math.round(item.x) + 'px',
+					zIndex: currentCptIndex === index ? 1800 : item.x
+				}
+				return result
+			},
 			selectItem(index) {
-				console.log('index', index)
 				this.currentCptIndex = index
 			},
 			allowDrop(e) {
@@ -146,14 +172,6 @@
 				const group = options[config.group];
 				if (group && group.options[config.name + '-option']) {
 					const configOptions = group.options[config.name + '-option']
-					if (configOptions.cptDataForm) { //将静态数据、api、sql用三个字段存储，配置项未填写apiUrl字段和sql字段在此处赋默认值
-						if (!configOptions.cptDataForm.apiUrl) {
-							configOptions.cptDataForm.apiUrl = '/design/test'
-						}
-						if (!configOptions.cptDataForm.sql) {
-							configOptions.cptDataForm.sql = 'select username from sys_user limit 1'
-						}
-					}
 					data.options = JSON.parse(JSON.stringify(configOptions))
 				} else {
 					this.$message.error("未再options.js中查找到" + config.group + "." + config.name + "-option的自定义属性")
@@ -161,12 +179,22 @@
 				}
 				console.log('data', data)
 				this.list.push(data);
+				this.currentCptIndex = this.list.length - 1
 			}
 		},
 		directives: {
 			resize(el, binding) {
-				let containerScale = 1
+
+				let {
+					key,
+					index
+				} = binding.value
+		
+				const that = binding.instance
+				let containerScale = that.containerScale
+				// let  elExample = createApp({})
 				el.onmousedown = function(e) {
+					console.log('按下元素', e)
 					const scaleClientX = e.clientX / containerScale;
 					const scaleClientY = e.clientY / containerScale;
 					const rbX = scaleClientX - el.parentNode.offsetWidth;
@@ -177,15 +205,16 @@
 					const disY = scaleClientY - el.parentNode.offsetTop;
 					let w, h, x, y;
 					document.onmousemove = function(me) {
+						console.log('移动元素', me)
 						const meScaleClientX = me.clientX / containerScale
 						const meScaleClientY = me.clientY / containerScale
-						if (binding.value === 'move') {
+						if (key === 'move') {
 							x = meScaleClientX - disX;
 							y = meScaleClientY - disY;
 							el.parentNode.style.left = x + 'px';
 							el.parentNode.style.top = y + 'px';
 						} else {
-							switch (binding.value) {
+							switch (key) {
 								case 'lt':
 									w = ltX - meScaleClientX;
 									h = ltY - meScaleClientY;
@@ -235,6 +264,10 @@
 					}
 					document.onmouseup = function() {
 						document.onmousemove = document.onmouseup = null;
+						if (w) that.list[index].w = Math.round(w);
+						if (h) that.list[index].h = Math.round(h);
+						if (x) that.list[index].x = Math.round(x);
+						if (y) that.list[index].y = Math.round(y);
 					}
 					return false;
 				}
