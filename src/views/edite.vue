@@ -36,7 +36,6 @@
 				</el-aside>
 				<el-main @dragover="allowDrop" @drop="drop" :style="{
 					background: 'url(' + defaultBg + ') repeat',
-					height: 1920 / designData.scaleX * designData.scaleY + 'px',
 					transform: 'scale(' + containerScale + ')'
 				}" @click.self="selectItem(-1)">
 					<div v-for="(item,index) in list" :key="index" class="cptDiv" @mousedown.stop="selectItem(index)"
@@ -73,19 +72,22 @@
 				</el-main>
 			</el-container>
 		</el-container>
+		<item-settings :currentItem="currentItem"></item-settings>
 	</div>
 </template>
 
 <script>
 	import sidebar from '@/components/sidebar'
 	import options from '@/components/options'
+	import itemSettings from '@/components/item-settings'
 	import {
 		createApp
 	} from 'vue'
 	const app = createApp({})
 	export default {
 		components: {
-			sidebar
+			sidebar,
+			itemSettings
 		},
 		computed: {
 			elMainFn() {
@@ -126,6 +128,9 @@
 				currentTab: 0,
 				defaultBg: require('@/assets/main_bg.png'),
 				containerScale: 1,
+				currentItem: {
+					options: {}
+				}
 			}
 		},
 		methods: {
@@ -189,7 +194,7 @@
 					key,
 					index
 				} = binding.value
-		
+
 				const that = binding.instance
 				let containerScale = that.containerScale
 				// let  elExample = createApp({})
