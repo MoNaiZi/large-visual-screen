@@ -58,7 +58,7 @@
 
 <script>
 export default {
-  name: "cpt-text-option",
+  name: "custom-text-option",
   props: {
     attribute: Object
   },

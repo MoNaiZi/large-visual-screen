@@ -9,26 +9,30 @@
 	</el-row>
 	<template v-if="currentTab === 0">
 		<template v-for="(group,groupIndex) in groupList" :key="groupIndex">
-			<el-row class="tab_item">
+			<el-row class="tab_item" @click="openGroup(groupIndex)">
 				<el-col :span="8">{{group.name}}</el-col>
 				<el-col :span="2" :offset="13">
 					<el-icon>
-						<component :is="'ArrowDownBold'">
+						<component :is="group.opened?'ArrowDownBold':'ArrowRightBold'">
 						</component>
 					</el-icon>
 				</el-col>
 			</el-row>
-			<el-row :gutter="2" v-for="(item,index) in group.list" :key="index">
-				<el-col :span="12">
-					<div class="item" draggable="true" :config="JSON.stringify(item)" @dragstart="dragStart">
-						<el-icon :size="30" style="margin-bottom: 10px;">
-							<component :is="item.icon">
-							</component>
-						</el-icon>
-						{{item.title}}
-					</div>
-				</el-col>
-			</el-row>
+			
+			<template v-if="group.opened">
+				<el-row :gutter="2" v-for="(item,index) in group.list" :key="index">
+					<el-col :span="12">
+						<div class="item" draggable="true" :config="JSON.stringify(item)" @dragstart="dragStart">
+							<el-icon :size="30" style="margin-bottom: 10px;">
+								<component :is="item.icon">
+								</component>
+							</el-icon>
+							{{item.title}}
+						</div>
+					</el-col>
+				</el-row>
+			</template>
+			
 		</template>
 	</template>
 	<template v-else>
@@ -45,30 +49,52 @@
 </template>
 
 <script>
-	import initElement from './initElement'
+	import initElementList from './initElement'
 	import options from './options'
 	export default {
 		data() {
 			return {
 				currentTab: 0,
-				groupList: []
+				groupList: [{
+						name: '基础',
+						groupName: 'basic',
+						opened: true,
+						list: []
+					},
+					{
+						name: '图表',
+						opened: true,
+						list: []
+					},
+					{
+						name: '地图',
+						opened: true,
+						list: []
+					}
+				],
 			}
 		},
 		created() {
-			for (let key in initElement) {
-				this.groupList.push({
-					key: key,
-					name: options[key].name,
-					icon: options[key].icon,
-					opened: options[key].opened || false,
-					list: initElement[key]
-				})
+			console.log('options', options)
+			let list = [...initElementList]
+			for (let item of list) {
+				console.log('item', item)
+				this.$app.component(item.name, item)
+				let groupIndex = this.groupList.findIndex(j => j.groupName === item.group)
+				if (groupIndex != -1) {
+					this.groupList[groupIndex].list.push(item)
+				}
+
 			}
+		
 		},
 		methods: {
+			openGroup(index) {
+				this.groupList[index].opened = !this.groupList[index].opened
+			},
 			dragStart(e) {
 				let dom = e.currentTarget.cloneNode(true);
-				console.log('dom',dom)
+				console.log('dom', dom)
 				this.$emit('dragStart', dom);
 			}
 

@@ -72,7 +72,7 @@
 				</el-main>
 			</el-container>
 		</el-container>
-		<item-settings :currentItem="currentItem"></item-settings>
+		<item-settings :currentItem="currentItem" ref="itemSettings"></item-settings>
 	</div>
 </template>
 
@@ -80,10 +80,8 @@
 	import sidebar from '@/components/sidebar'
 	import options from '@/components/options'
 	import itemSettings from '@/components/item-settings'
-	import {
-		createApp
-	} from 'vue'
-	const app = createApp({})
+	import initOptionsComponents from '@/components/initOptionsComponents'
+
 	export default {
 		components: {
 			sidebar,
@@ -104,7 +102,6 @@
 				return result
 			}
 		},
-		created() {},
 		data() {
 			return {
 				designData: {
@@ -133,6 +130,12 @@
 				}
 			}
 		},
+		created() {
+
+		},
+		mounted() {
+			// console.log('模板',this.$app.component('custom-text'))
+		},
 		methods: {
 			cptDiv_fn(item, index) {
 				let currentCptIndex = this.currentCptIndex
@@ -156,9 +159,6 @@
 				dom.draggable = false;
 			},
 			drop(e) {
-				console.log('释放', e)
-				const MyComponent = app.component('Tools')
-				console.log('MyComponent', this, MyComponent)
 				let config = JSON.parse(this.dom.getAttribute('config'));
 				const that = this
 				console.log('config.name', config.name)
@@ -175,16 +175,24 @@
 					id: that.$createId()
 				}
 				const group = options[config.group];
-				if (group && group.options[config.name + '-option']) {
-					const configOptions = group.options[config.name + '-option']
+				let name = config.name + '-option'
+
+				if (group && group.options[name]) {
+					const configOptions = group.options[name]
 					data.options = JSON.parse(JSON.stringify(configOptions))
 				} else {
 					this.$message.error("未再options.js中查找到" + config.group + "." + config.name + "-option的自定义属性")
 					return;
 				}
 				console.log('data', data)
+				this.currentItem = {
+					name,
+					options: data.options
+				}
+				initOptionsComponents(this.$app, name)
 				this.list.push(data);
 				this.currentCptIndex = this.list.length - 1
+
 			}
 		},
 		directives: {

@@ -58,9 +58,9 @@
 								</div>
 							</el-tab-pane>
 							<el-tab-pane label="属性" name="custom">
-								<div class="customForm" v-if="currentitem && currentitem.option">
-									<component :is="currentitem.name+'-option'"
-										:attribute="currentitem.option.attribute">
+								<div class="customForm" v-if="currentitem && currentitem.options">
+									<component :is="currentitem.name"
+										:attribute="currentitem.options.attribute">
 									</component>
 								</div>
 							</el-tab-pane>
@@ -69,7 +69,7 @@
 								<div class="customForm">
 									<el-form size="mini" label-position="top">
 										<el-form-item label="数据类型">
-											<el-radio-group v-model="currentitem.option.cptDataForm.dataSource"
+											<el-radio-group v-model="currentitem.options.cptDataForm.dataSource"
 												@change="changeDataSource">
 												<el-radio :label="1">静态数据</el-radio>
 												<el-radio :label="2">接口</el-radio>
@@ -77,23 +77,23 @@
 											</el-radio-group>
 										</el-form-item>
 										<el-form-item label="轮询"
-											v-show="currentitem.option.cptDataForm.dataSource !== 1">
+											v-show="currentitem.options.cptDataForm.dataSource !== 1">
 											<el-switch v-model="dataPollEnable" active-text="开启" inactive-text="关闭" />
 										</el-form-item>
 										<el-form-item label="轮询时间(s)" v-show="dataPollEnable">
-											<el-input-number v-model="currentitem.option.cptDataForm.pollTime" :min="0"
+											<el-input-number v-model="currentitem.options.cptDataForm.pollTime" :min="0"
 												:max="100" label="描述文字" />
 										</el-form-item>
-										<el-form-item :label="dataLabels[currentitem.option.cptDataForm.dataSource-1]">
-											<el-input v-show="currentitem.option.cptDataForm.dataSource === 1"
+										<el-form-item :label="dataLabels[currentitem.options.cptDataForm.dataSource-1]">
+											<el-input v-show="currentitem.options.cptDataForm.dataSource === 1"
 												type="textarea" :rows="5"
-												v-model="currentitem.option.cptDataForm.dataText" />
-											<el-input v-show="currentitem.option.cptDataForm.dataSource === 2"
+												v-model="currentitem.options.cptDataForm.dataText" />
+											<el-input v-show="currentitem.options.cptDataForm.dataSource === 2"
 												type="textarea" :rows="5"
-												v-model="currentitem.option.cptDataForm.apiUrl" />
-											<el-input v-show="currentitem.option.cptDataForm.dataSource === 3"
+												v-model="currentitem.options.cptDataForm.apiUrl" />
+											<el-input v-show="currentitem.options.cptDataForm.dataSource === 3"
 												type="textarea" :rows="5"
-												v-model="currentitem.option.cptDataForm.sql" />
+												v-model="currentitem.options.cptDataForm.sql" />
 										</el-form-item>
 										<el-form-item>
 											<el-button type="primary" style="width: 100%" @click="refreshCptData">刷新数据
@@ -121,32 +121,35 @@
 			}
 		},
 		watch: {
-			currentItem(newVal) {
-				this.currentitem = this.currentItem
-				this.cptDataFormShow = false
-				if (!newVal) { //清空时
-					this.configBarShow = false
-				} else {
-					if (this.currentitem.option.cptDataForm) {
-						this.cptDataFormShow = true
+			'currentItem': {
+				deep: true,
+				handler: function(newVal) {
+					this.currentitem = this.currentItem
+					console.log('currentitem', this.currentitem.options)
+					if (!newVal) { //清空时
+						this.configBarShow = false
 					} else {
-						this.configTab = 'custom' //解決上一組件沒有数据表单导致tab栏未选中bug
+						if (this.currentitem.options.cptDataForm) {
+							this.configBarShow = true
+						} else {
+							this.configTab = 'custom' //解決上一組件沒有数据表单导致tab栏未选中bug
+						}
 					}
-				}
-			},
+				},
+			}
 		},
 		computed: {
 			dataPollEnable: {
 				get() {
-					return !!(this.currentitem.option.cptDataForm &&
-						this.currentitem.option.cptDataForm.pollTime &&
-						this.currentitem.option.cptDataForm.pollTime !== 0);
+					return !!(this.currentitem.options.cptDataForm &&
+						this.currentitem.options.cptDataForm.pollTime &&
+						this.currentitem.options.cptDataForm.pollTime !== 0);
 				},
 				set(newValue) {
 					if (newValue) {
-						this.currentitem.option.cptDataForm.pollTime = 8;
+						this.currentitem.options.cptDataForm.pollTime = 8;
 					} else {
-						this.currentitem.option.cptDataForm.pollTime = 0;
+						this.currentitem.options.cptDataForm.pollTime = 0;
 						this.refreshCptData(); //清除定时器
 					}
 					return newValue;
@@ -257,7 +260,7 @@
 	.customForm {
 		width: 100%;
 		padding: 0 6px 0 4px;
-		height: 398px;
+		height: 333px;
 		overflow: auto
 	}
 

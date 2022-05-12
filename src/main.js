@@ -6,7 +6,7 @@ import router from './router/index'
 import ElementPlus from 'element-plus';
 import 'element-plus/dist/index.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
-import initComponents from '@/components/index'
+// import initComponents from '@/components/index'
 
 function createRandomString(length, possibleString) {
 	let text = ''
@@ -25,8 +25,12 @@ function createId(length = 12) {
 
 
 const app = createApp(App)
-initComponents(app)
+
+// initComponents(app)
+
 app.config.globalProperties.$createId = createId
+app.config.globalProperties.$app = app
+
 for (let [key, component] of Object.entries(ElementPlusIconsVue)) {
 	// console.log('key',key)
 	app.component(key, component)
