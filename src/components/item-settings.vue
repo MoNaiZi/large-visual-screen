@@ -32,35 +32,35 @@
 								<div style="width: 98%;margin:0 auto">
 									<el-row>
 										宽度：
-										<el-input-number :min="20" :max="2000" v-model="currentPosition.w" size="small"
+										<el-input-number :min="20" :max="2000" v-model="currentitem.w" size="small"
 											@change="changeConfig" />
 									</el-row>
 									<el-row>
 										高度：
-										<el-input-number :min="20" :max="1500" v-model="currentPosition.h" size="small"
+										<el-input-number :min="20" :max="1500" v-model="currentitem.h" size="small"
 											@change="changeConfig" />
 									</el-row>
 									<el-row>
 										X 轴：
-										<el-input-number :min="-500" :max="2500" v-model="currentPosition.x"
-											size="small" @change="changeConfig" />
+										<el-input-number :min="-500" :max="2500" v-model="currentitem.x" size="small"
+											@change="changeConfig" />
 									</el-row>
 									<el-row>
 										Y 轴：
-										<el-input-number :min="-500" v-model="currentPosition.y" size="small"
+										<el-input-number :min="-500" v-model="currentitem.y" size="small"
 											@change="changeConfig" />
 									</el-row>
 									<el-row>
 										Z 轴：
-										<el-input-number :min="1" :max="1800" v-model="currentPosition.z" size="small"
+										<el-input-number :min="1" :max="1800" v-model="currentitem.z" size="small"
 											@change="changeConfig" />
 									</el-row>
 								</div>
 							</el-tab-pane>
 							<el-tab-pane label="属性" name="custom">
 								<div class="customForm" v-if="currentitem && currentitem.options">
-									<component :is="currentitem.name"
-										:attribute="currentitem.options.attribute">
+									<component :is="currentitem.name+'-option'"
+										:attribute="currentitem.options.attribute" @change="changeComponent">
 									</component>
 								</div>
 							</el-tab-pane>
@@ -125,14 +125,15 @@
 				deep: true,
 				handler: function(newVal) {
 					this.currentitem = this.currentItem
-					console.log('currentitem', this.currentitem.options)
+					// console.log('currentitem', this.currentitem)
+					// this.$emit('change', JSON.parse(JSON.stringify(this.currentitem)))
 					if (!newVal) { //清空时
 						this.configBarShow = false
 					} else {
 						if (this.currentitem.options.cptDataForm) {
 							this.configBarShow = true
 						} else {
-							this.configTab = 'custom' //解決上一組件沒有数据表单导致tab栏未选中bug
+							this.configTab = 'custom'
 						}
 					}
 				},
@@ -160,19 +161,15 @@
 			return {
 				cptDataFormShow: false,
 				configTab: 'custom',
-				currentPosition: {
-					w: 30,
-					h: 30,
-					x: 0,
-					y: 0,
-					z: 0
-				},
 				dataLabels: ['数据', '接口地址', 'sql'],
 				configBarShow: false,
 				currentitem: {}
 			}
 		},
 		methods: {
+			changeComponent(data) {
+				this.currentitem.options.attribute = data
+			},
 			changeDataSource(val) { //静态数据不显示轮询按钮
 				if (val === 1) {
 					this.currentitem.option.cptDataForm.pollTime = 0
@@ -187,13 +184,8 @@
 			showConfigBar() {
 				this.configBarShow = true;
 			},
-			updateData(currentPosition) {
-				this.currentPosition = currentPosition
-			},
 			changeConfig() {
-				if (this.cptDataFormShow) {
-					this.$emit('change', this.currentPosition);
-				}
+
 			},
 			closeBar() {
 				this.configBarShow = false;

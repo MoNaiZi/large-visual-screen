@@ -42,14 +42,22 @@
 						:style="[cptDiv_fn(item,index)]">
 						<div v-resize="{key:'move',index:index}" class="activeMask"
 							:style="currentCptIndex === index ? {border:'1px solid #B6BFCE'}:{}" />
-						<div style="width: 100%;height: 100%">
+						<div style="width: 100%;height: 100%;position: relative;">
 							<component :is="item.name" :ref="item.name+index" :width="Math.round(item.w)"
 								:height="Math.round(item.h)" :option="item.options">
 							</component>
-						</div>
-						<div class="delTag">
-							<!-- <i class="el-icon-copy-document" @click.stop="copyCpt(item)" />
-							<i style="margin-left: 4px" class="el-icon-delete" @click.stop="delCpt(item,index)" /> -->
+							<div v-show="currentCptIndex === index" style="position: absolute;top: -92px;right: 4px;">
+								<el-icon style="cursor:pointer;" @click="copy(item)" color="#fff">
+									<component :is="'CopyDocument'">
+									</component>
+								</el-icon>
+
+								<el-icon style="cursor:pointer;" @click="this.dialogVisible = true" color="#fff">
+									<component :is="'Delete'">
+									</component>
+								</el-icon>
+							</div>
+
 						</div>
 						<div v-show="currentCptIndex === index" style="top: -3px;left: -3px;cursor: se-resize"
 							class="resizeTag" v-resize="{key:'lt',index:index}" />
@@ -72,11 +80,23 @@
 				</el-main>
 			</el-container>
 		</el-container>
-		<item-settings :currentItem="currentItem" ref="itemSettings"></item-settings>
+		<el-dialog v-model="dialogVisible" title="提示" width="30%" :before-close="handleClose">
+			<span>是否确认删除该元素</span>
+			<template #footer>
+				<span class="dialog-footer">
+					<el-button @click="dialogVisible = false">取消</el-button>
+					<el-button type="primary" @click="remove">确定</el-button>
+				</span>
+			</template>
+		</el-dialog>
+		<item-settings :currentItem="currentItem" @change="changeItemSettings" ref="itemSettings"></item-settings>
 	</div>
 </template>
 
 <script>
+	import {
+		ElMessageBox
+	} from 'element-plus'
 	import sidebar from '@/components/sidebar'
 	import options from '@/components/options'
 	import itemSettings from '@/components/item-settings'
@@ -85,7 +105,8 @@
 	export default {
 		components: {
 			sidebar,
-			itemSettings
+			itemSettings,
+			ElMessageBox
 		},
 		computed: {
 			elMainFn() {
@@ -104,6 +125,7 @@
 		},
 		data() {
 			return {
+				dialogVisible: false,
 				designData: {
 					id: '',
 					title: '我的大屏',
@@ -125,9 +147,7 @@
 				currentTab: 0,
 				defaultBg: require('@/assets/main_bg.png'),
 				containerScale: 1,
-				currentItem: {
-					options: {}
-				}
+				currentItem: {}
 			}
 		},
 		created() {
@@ -137,6 +157,22 @@
 			// console.log('模板',this.$app.component('custom-text'))
 		},
 		methods: {
+			remove() {
+				this.list.splice(this.currentCptIndex, 1)
+				this.dialogVisible = false
+			},
+			copy(item) {
+				let newObj = JSON.parse(JSON.stringify(item))
+				newObj.id = this.$createId()
+				newObj.x += 20
+				newObj.y += 20
+				this.list.push(newObj)
+				this.currentCptIndex = this.list.length - 1
+			},
+			// changeItemSettings(data) {
+			// console.log('data', data)
+			// this.list[this.currentCptIndex] = data
+			// },
 			cptDiv_fn(item, index) {
 				let currentCptIndex = this.currentCptIndex
 				let result = {
@@ -149,6 +185,10 @@
 				return result
 			},
 			selectItem(index) {
+				if (index >= 0) {
+					this.currentItem = this.list[index]
+				}
+
 				this.currentCptIndex = index
 			},
 			allowDrop(e) {
@@ -184,11 +224,9 @@
 					this.$message.error("未再options.js中查找到" + config.group + "." + config.name + "-option的自定义属性")
 					return;
 				}
-				console.log('data', data)
-				this.currentItem = {
-					name,
-					options: data.options
-				}
+				// const newData = JSON.parse(JSON.stringify(data))
+				this.currentItem = data
+
 				initOptionsComponents(this.$app, name)
 				this.list.push(data);
 				this.currentCptIndex = this.list.length - 1
@@ -207,7 +245,7 @@
 				let containerScale = that.containerScale
 				// let  elExample = createApp({})
 				el.onmousedown = function(e) {
-					console.log('按下元素', e)
+					console.log('按下元素', e.timeStamp)
 					const scaleClientX = e.clientX / containerScale;
 					const scaleClientY = e.clientY / containerScale;
 					const rbX = scaleClientX - el.parentNode.offsetWidth;
@@ -218,7 +256,6 @@
 					const disY = scaleClientY - el.parentNode.offsetTop;
 					let w, h, x, y;
 					document.onmousemove = function(me) {
-						console.log('移动元素', me)
 						const meScaleClientX = me.clientX / containerScale
 						const meScaleClientY = me.clientY / containerScale
 						if (key === 'move') {
@@ -281,6 +318,7 @@
 						if (h) that.list[index].h = Math.round(h);
 						if (x) that.list[index].x = Math.round(x);
 						if (y) that.list[index].y = Math.round(y);
+						that.currentItem = that.list[index]
 					}
 					return false;
 				}
