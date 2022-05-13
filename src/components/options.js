@@ -4,19 +4,19 @@ export default {
 		icon: '',
 		opened: true,
 		options: {
-			'cpt-dataV-border-option': {
+			'dataV-border-option': {
 				attribute: {
 					borderType: 'dv-border-box-1',
 					borderColor1: '#409eff',
-					borderColor2: '#f00',
+					borderColor2: 'rgba(8, 115, 255, 1)',
 					backgroundColor: 'rgba(0, 0, 0, 0)',
 					borderTitle: '标题1',
 					titleWidth: 250, //样式11特殊配置
-					dur: 3,
+					dur: 0,
 					reverse: false //样式8特殊配置
 				}
 			},
-			'cpt-button-option': {
+			'button-option': {
 				cptDataForm: {
 					dataText: '按钮2',
 					dataSource: 1,
@@ -48,7 +48,7 @@ export default {
 					bgColor: 'rgba(255, 255, 255, 0)'
 				}
 			},
-			'cpt-input-option': {
+			'input-option': {
 				attribute: {
 					label: '姓名',
 					placeholderValue: '请输入姓名',
@@ -59,14 +59,14 @@ export default {
 					formSize: 'mini'
 				}
 			},
-			'cpt-image-option': {
+			'image-option': {
 				attribute: {
 					url: require('/src/assets/logo.png'),
 					fit: 'fill',
 					preview: false
 				}
 			},
-			'cpt-carousel-option': {
+			'carousel-option': {
 				attribute: {
 					trigger: 'hover',
 					fit: 'cover',
@@ -76,7 +76,7 @@ export default {
 					],
 				}
 			},
-			'cpt-dataV-decoration-option': {
+			'dataV-decoration-option': {
 				attribute: {
 					decorationType: 'dv-decoration-1',
 					color1: '#409eff',
@@ -85,7 +85,7 @@ export default {
 					textColor: '#ff0'
 				}
 			},
-			'cpt-dataV-digitalFlop-option': {
+			'dataV-digitalFlop-option': {
 				cptDataForm: {
 					dataText: '29999,333',
 					dataSource: 1,
@@ -102,7 +102,7 @@ export default {
 					}
 				}
 			},
-			'cpt-dataV-percentPond-option': {
+			'dataV-percentPond-option': {
 				cptDataForm: {
 					dataText: '66',
 					dataSource: 1,
@@ -118,7 +118,7 @@ export default {
 					colors: ['#01c4f9', '#c135ff'],
 				}
 			},
-			'cpt-iframe-option': {
+			'iframe-option': {
 				attribute: {
 					url: 'https://www.rainy.pub/'
 				}
@@ -130,7 +130,7 @@ export default {
 		icon: '',
 		opened: true,
 		options: {
-			'cpt-chart-column-option': {
+			'chart-column-option': {
 				attribute: {
 					chartTitle: '标题一',
 					titleLeft: 'center',
@@ -168,7 +168,7 @@ export default {
 					pollTime: 0
 				},
 			},
-			'cpt-chart-tdColumn-option': {
+			'chart-tdColumn-option': {
 				attribute: {
 					chartTitle: '标题一',
 					titleLeft: 'center',
@@ -200,7 +200,7 @@ export default {
 					pollTime: 0
 				},
 			},
-			'cpt-chart-pie-option': {
+			'chart-pie-option': {
 				attribute: {
 					theme: 'light',
 					chartTitle: '标题一',
@@ -231,7 +231,7 @@ export default {
 					pollTime: 0
 				},
 			},
-			'cpt-chart-clock-option': {
+			'chart-clock-option': {
 				attribute: {
 					axisLineWidth: 3,
 					axisLabelSize: 16,
@@ -240,7 +240,7 @@ export default {
 					splitLineDistance: 4
 				}
 			},
-			'cpt-dataV-scrollTable-option': {
+			'dataV-scrollTable-option': {
 				cptDataForm: {
 					dataSource: 1,
 					pollTime: 0,
@@ -262,7 +262,7 @@ export default {
 					align: ['center'], //对齐方式
 				}
 			},
-			'cpt-dataV-scrollList-option': {
+			'dataV-scrollList-option': {
 				cptDataForm: {
 					dataSource: 1,
 					pollTime: 0,
@@ -278,7 +278,7 @@ export default {
 					valueFormatter: null, //数值格式化
 				}
 			},
-			'cpt-dataV-waterLevel-option': {
+			'dataV-waterLevel-option': {
 				cptDataForm: {
 					dataSource: 1,
 					pollTime: 0,
@@ -293,7 +293,7 @@ export default {
 					formatter: '{value}%', //信息格式化
 				}
 			},
-			'cpt-chart-line-option': {
+			'chart-line-option': {
 				cptDataForm: {
 					dataSource: 1,
 					pollTime: 0,
@@ -324,7 +324,7 @@ export default {
 					areaColor3: 'rgba(38,197,254,0.00)',
 				}
 			},
-			'cpt-dataV-activeRing-option': {
+			'dataV-activeRing-option': {
 				cptDataForm: {
 					dataSource: 1,
 					pollTime: 0,
@@ -338,7 +338,7 @@ export default {
 					color: ['#91cc75', '#fac858', '#ee6666', '#73c0de', '#5470c6', '#ff8c71']
 				}
 			},
-			'cpt-chart-gauge-option': {
+			'chart-gauge-option': {
 				cptDataForm: {
 					dataSource: 1,
 					pollTime: 0,
@@ -374,7 +374,7 @@ export default {
 		icon: '',
 		opened: true,
 		options: {
-			'cpt-chart-mapGc-option': {
+			'chart-mapGc-option': {
 				cptDataForm: {
 					dataSource: 1,
 					pollTime: 0,
@@ -405,7 +405,7 @@ export default {
 					piecesColor5: '#ffffff',
 				}
 			},
-			'cpt-chart-mapMigrate-option': {
+			'chart-mapMigrate-option': {
 				cptDataForm: {
 					dataSource: 1,
 					pollTime: 0,

@@ -34,7 +34,7 @@
 
 <script>
 export default {
-  name: "cpt-dataV-scrollTable-option",
+  name: "dataV-scrollTable-option",
   props: { attribute: Object },
 }
 </script>

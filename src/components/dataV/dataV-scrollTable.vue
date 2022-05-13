@@ -7,11 +7,11 @@
 </template>
 
 <script>
-import {getDataStr, pollingRefresh} from "@/utils/refreshCptData";
+
 export default {
-  name: "cpt-dataV-scrollTable",
+  name: "dataV-scrollTable",
   title: "滚动表格",
-  icon: 'el-icon-s-grid',
+  icon: 'SGrid',
   group: 'chart',
   props:{
     width:Number,
@@ -33,19 +33,10 @@ export default {
     },
   },
   created() {
-    this.uuid = require('uuid').v1();
-    this.refreshCptData();
+
   },
   methods:{
-    refreshCptData(){
-      pollingRefresh(this.uuid, this.option.cptDataForm, this.loadData)
-    },
-    loadData(){
-      getDataStr(this.option.cptDataForm).then(res => {
-        this.config = JSON.parse(JSON.stringify(this.option.attribute))
-        this.config.data = JSON.parse(res);
-      });
-    }
+ 
   }
 }
 </script>

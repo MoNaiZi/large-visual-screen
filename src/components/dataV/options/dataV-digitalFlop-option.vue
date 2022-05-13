@@ -27,7 +27,7 @@
 
 <script>
 export default {
-  name: "cpt-dataV-digitalFlop-option",
+  name: "dataV-digitalFlop-option",
   props: { attribute: Object },
   data(){
     return {

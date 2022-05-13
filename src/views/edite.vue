@@ -41,7 +41,7 @@
 					<div v-for="(item,index) in list" :key="index" class="cptDiv" @mousedown.stop="selectItem(index)"
 						:style="[cptDiv_fn(item,index)]">
 						<div v-resize="{key:'move',index:index}" class="activeMask"
-							:style="currentCptIndex === index ? {border:'1px solid #B6BFCE'}:{}" />
+							:style="{border:currentCptIndex === index?'1px solid #B6BFCE':'',zIndex:(item.options||{}).edite?0:100}" />
 						<div style="width: 100%;height: 100%;position: relative;">
 							<component :is="item.name" :ref="item.name+index" :width="Math.round(item.w)"
 								:height="Math.round(item.h)" :option="item.options">
@@ -147,7 +147,8 @@
 				currentTab: 0,
 				defaultBg: require('@/assets/main_bg.png'),
 				containerScale: 1,
-				currentItem: {}
+				currentItem: {},
+				clickTime: 0
 			}
 		},
 		created() {
@@ -169,10 +170,6 @@
 				this.list.push(newObj)
 				this.currentCptIndex = this.list.length - 1
 			},
-			// changeItemSettings(data) {
-			// console.log('data', data)
-			// this.list[this.currentCptIndex] = data
-			// },
 			cptDiv_fn(item, index) {
 				let currentCptIndex = this.currentCptIndex
 				let result = {
@@ -201,7 +198,6 @@
 			drop(e) {
 				let config = JSON.parse(this.dom.getAttribute('config'));
 				const that = this
-				console.log('config.name', config.name)
 				let data = {
 					groupTag: config.group,
 					title: config.title,
@@ -210,8 +206,8 @@
 					z: 100,
 					x: Math.round(e.offsetX),
 					y: Math.round(e.offsetY),
-					w: config.initWidth,
-					h: config.initHeight,
+					w: config.initWidth || 200,
+					h: config.initHeight || 200,
 					id: that.$createId()
 				}
 				const group = options[config.group];
@@ -227,7 +223,12 @@
 				// const newData = JSON.parse(JSON.stringify(data))
 				this.currentItem = data
 
-				initOptionsComponents(this.$app, name)
+				const initResult = initOptionsComponents(this.$app, name)
+				console.log('initResult', initResult)
+				if (initResult != true) {
+					this.$message.error(initResult)
+					return
+				}
 				this.list.push(data);
 				this.currentCptIndex = this.list.length - 1
 
@@ -245,7 +246,12 @@
 				let containerScale = that.containerScale
 				// let  elExample = createApp({})
 				el.onmousedown = function(e) {
-					console.log('按下元素', e.timeStamp)
+					console.log('按下元素', e.timeStamp, that.clickTime)
+					if (e.timeStamp - that.clickTime <= 200 && that.clickTime != 0) {
+						console.log('双击')
+						that.list[index].options.edite = true
+					}
+					that.clickTime = e.timeStamp
 					const scaleClientX = e.clientX / containerScale;
 					const scaleClientY = e.clientY / containerScale;
 					const rbX = scaleClientX - el.parentNode.offsetWidth;
@@ -349,7 +355,7 @@
 		width: 100%;
 		height: 100%;
 		position: absolute;
-		z-index: 1801
+		z-index: 100
 	}
 
 	.no_active {

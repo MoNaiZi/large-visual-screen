@@ -30,7 +30,7 @@
 
 <script>
 export default {
-  name: "cpt-dataV-decoration-option",
+  name: "dataV-decoration-option",
   props: { attribute: Object },
   data() {
     return {

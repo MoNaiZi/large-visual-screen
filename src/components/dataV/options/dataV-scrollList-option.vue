@@ -22,7 +22,7 @@
 
 <script>
 export default {
-  name: "cpt-dataV-scrollList-option",
+  name: "dataV-scrollList-option",
   props: { attribute: Object },
 }
 </script>

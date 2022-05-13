@@ -1,30 +1,22 @@
 <template>
-	<div :id="uuid" style="width: 100%;height:100%;"></div>
+	<dv-active-ring-chart :key="refreshFlagKey" :config="config" style="width:100%;height:100%" />
 </template>
 
 <script>
 	export default {
-		name: "cpt-chart-pie",
-		title: "饼图",
-		icon: 'PieChart',
+		name: "dataV-activeRing",
+		title: "动态环图",
+		icon: 'Help',
 		group: 'chart',
 		props: {
 			width: Number,
 			height: Number,
 			option: Object
 		},
-		data() {
-			return {
-				uuid: '',
-				chartOption: {},
-				chart: undefined,
-				cptData: []
-			}
-		},
 		watch: {
 			'option.attribute': {
-				handler(obj, newObj) {
-
+				handler() {
+					this.loadData();
 				},
 				deep: true //深度监听
 			},
@@ -35,10 +27,16 @@
 
 			}
 		},
+		data() {
+			return {
+				uuid: null,
+				config: {},
+				refreshFlagKey: null,
+			}
+		},
 		created() {
 
 		},
-		mounted() {},
 		methods: {
 
 		}

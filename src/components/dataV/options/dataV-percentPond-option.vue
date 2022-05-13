@@ -29,7 +29,7 @@
 
 <script>
 export default {
-  name: "cpt-dataV-percentPond-option",
+  name: "dataV-percentPond-option",
   props: { attribute: Object },
 }
 </script>

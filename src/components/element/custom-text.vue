@@ -1,7 +1,13 @@
 <template>
-	<div style="width: 100%;height: 100%" :style="[main_style]" @click="redirect">
-		{{cptData}}
+	<div>
+		<div v-if="!cptData.edite" style="width: 100%;height: 100%" :style="[main_style]">
+			{{cptData.cptDataForm.dataText}}
+		</div>
+		<div v-else style="width: 100%;height: 100%" :style="[main_style]">
+			<el-input @keyup.enter="enter" autosize :suffix-icon="Check" v-model="cptData.cptDataForm.dataText" />
+		</div>
 	</div>
+
 </template>
 
 <script>
@@ -19,7 +25,7 @@
 		},
 		data() {
 			return {
-				cptData: '',
+				cptData: {},
 				id: this.$createId()
 			}
 		},
@@ -51,10 +57,13 @@
 		},
 		created() {
 			// console.log('组件id', this.id, 'option', this.option)
-			this.cptData = this.option.cptDataForm.dataText
+			this.cptData = this.option
 			this.init();
 		},
 		methods: {
+			enter(){
+				this.cptData.edite = false
+			},
 			init() {
 				// pollingRefresh(this.uuid, this.option.cptDataForm, this.loadData)
 			},
@@ -62,16 +71,6 @@
 				// getDataStr(this.option.cptDataForm).then(res => {
 				//   this.cptData = res;
 				// });
-			},
-			redirect() {
-				if (this.option.attribute.url) {
-					if (this.option.attribute.url.startsWith("view")) {
-						this.$router.push(this.option.attribute.url)
-						this.$emit("reload")
-					} else {
-						window.open(this.option.attribute.url)
-					}
-				}
 			}
 		},
 	}

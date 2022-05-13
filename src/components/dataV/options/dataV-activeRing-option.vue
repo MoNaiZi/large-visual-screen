@@ -27,7 +27,7 @@
 
 <script>
 export default {
-  name: "cpt-dataV-activeRing-option",
+  name: "dataV-activeRing-option",
   props: { attribute: Object },
   data(){
     return {

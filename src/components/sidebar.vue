@@ -18,10 +18,10 @@
 					</el-icon>
 				</el-col>
 			</el-row>
-			
+
 			<template v-if="group.opened">
-				<el-row :gutter="2" v-for="(item,index) in group.list" :key="index">
-					<el-col :span="12">
+				<el-row :gutter="2" >
+					<el-col :span="12" v-for="(item,index) in group.list" :key="index">
 						<div class="item" draggable="true" :config="JSON.stringify(item)" @dragstart="dragStart">
 							<el-icon :size="30" style="margin-bottom: 10px;">
 								<component :is="item.icon">
@@ -32,7 +32,7 @@
 					</el-col>
 				</el-row>
 			</template>
-			
+
 		</template>
 	</template>
 	<template v-else>
@@ -50,6 +50,7 @@
 
 <script>
 	import initElementList from './initElement'
+	import initDataV from './initDataV'
 	import options from './options'
 	export default {
 		data() {
@@ -63,11 +64,13 @@
 					},
 					{
 						name: '图表',
+						groupName: 'chart',
 						opened: true,
 						list: []
 					},
 					{
 						name: '地图',
+						groupName: 'map',
 						opened: true,
 						list: []
 					}
@@ -76,7 +79,7 @@
 		},
 		created() {
 			console.log('options', options)
-			let list = [...initElementList]
+			let list = [...initElementList, ...initDataV]
 			for (let item of list) {
 				console.log('item', item)
 				this.$app.component(item.name, item)
@@ -86,7 +89,7 @@
 				}
 
 			}
-		
+
 		},
 		methods: {
 			openGroup(index) {

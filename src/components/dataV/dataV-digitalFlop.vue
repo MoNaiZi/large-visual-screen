@@ -1,13 +1,15 @@
 <template>
-	<div :id="uuid" style="width: 100%;height:100%;"></div>
+	<dv-digital-flop :config="flopConfig" style="width:100%;height:100%;" />
 </template>
 
 <script>
 	export default {
-		name: "cpt-chart-pie",
-		title: "饼图",
-		icon: 'PieChart',
-		group: 'chart',
+		name: "dataV-digitalFlop",
+		title: "数字翻牌器",
+		icon: 'DataAnalysis',
+		initWidth: 256,
+		initHeight: 80,
+		group: 'basic',
 		props: {
 			width: Number,
 			height: Number,
@@ -15,30 +17,24 @@
 		},
 		data() {
 			return {
-				uuid: '',
-				chartOption: {},
-				chart: undefined,
-				cptData: []
+				uuid: null,
+				flopConfig: {}
 			}
 		},
 		watch: {
 			'option.attribute': {
-				handler(obj, newObj) {
+				handler() {
 
 				},
 				deep: true //深度监听
 			},
 			width() {
 
-			},
-			height() {
-
 			}
 		},
 		created() {
 
 		},
-		mounted() {},
 		methods: {
 
 		}

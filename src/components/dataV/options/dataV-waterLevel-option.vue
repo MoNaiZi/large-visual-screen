@@ -22,6 +22,7 @@
       </el-form-item>
       <el-form-item label="波浪透明度">
         <el-input-number v-model="attribute.waveOpacity" :min="0" :max="2"/>
+		
       </el-form-item>
       <el-form-item label="信息格式化">
         <el-input type="textarea" v-model="attribute.formatter"/>
@@ -32,7 +33,7 @@
 
 <script>
 export default {
-  name: "cpt-dataV-waterLevel-option",
+  name: "dataV-waterLevel-option",
   props: { attribute: Object },
   data(){
     return {

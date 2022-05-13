@@ -18,7 +18,7 @@
 							<div>组件属性</div>
 						</div>
 						<div>
-							<div class="closeItem" @click="closeBar">
+							<div class="closeItem" @click.stop="closeBar">
 								<el-icon>
 									<component :is="'Close'">
 									</component>
@@ -241,7 +241,9 @@
 
 	.closeItem:hover {
 		cursor: pointer;
-		background: #2b3340
+		background: #2b3340;
+		padding: 10px;
+		margin-top: -7px;
 	}
 
 	.el-tabs {
