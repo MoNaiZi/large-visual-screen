@@ -109,6 +109,7 @@ export default {
 					pollTime: 0
 				},
 				attribute: {
+					value: 60,
 					borderWidth: 2,
 					borderRadius: 4,
 					borderGap: 3,

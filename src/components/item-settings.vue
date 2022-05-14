@@ -117,7 +117,9 @@
 		props: {
 			currentItem: {
 				type: Object,
-				default: () => {}
+				default: () => {
+
+				}
 			}
 		},
 		watch: {
@@ -130,7 +132,7 @@
 					if (!newVal) { //清空时
 						this.configBarShow = false
 					} else {
-						if (this.currentitem.options.cptDataForm) {
+						if (this.currentitem.options && this.currentitem.options.cptDataForm) {
 							this.configBarShow = true
 						} else {
 							this.configTab = 'custom'
@@ -142,7 +144,7 @@
 		computed: {
 			dataPollEnable: {
 				get() {
-					return !!(this.currentitem.options.cptDataForm &&
+					return !!(this.currentitem.options && this.currentitem.options.cptDataForm &&
 						this.currentitem.options.cptDataForm.pollTime &&
 						this.currentitem.options.cptDataForm.pollTime !== 0);
 				},

@@ -1,5 +1,5 @@
 <template>
-	<dv-digital-flop :config="flopConfig" style="width:100%;height:100%;" />
+	<dv-digital-flop :config="flopConfig" ref="digitalFlop" style="width:100%;height:100%;" />
 </template>
 
 <script>
@@ -18,7 +18,9 @@
 		data() {
 			return {
 				uuid: null,
-				flopConfig: {}
+				flopConfig: {
+					number: [999]
+				}
 			}
 		},
 		watch: {
@@ -37,6 +39,11 @@
 		},
 		methods: {
 
+		},
+		beforeUnmount() {
+			const digitalFlop = this.$refs.digitalFlop
+			clearTimeout(digitalFlop.animationHandler)
+			console.log('在卸载组件实例之前调用。在这个阶段，实例仍然是完全正常的。。')
 		}
 	}
 </script>

@@ -43,7 +43,7 @@
 						<div v-resize="{key:'move',index:index}" class="activeMask"
 							:style="{border:currentCptIndex === index?'1px solid #B6BFCE':'',zIndex:(item.options||{}).edite?0:100}" />
 						<div style="width: 100%;height: 100%;position: relative;">
-							<component :is="item.name" :ref="item.name+index" :width="Math.round(item.w)"
+							<component :is="item.name" :key="item.id" :ref="item.name+index" :width="Math.round(item.w)"
 								:height="Math.round(item.h)" :option="item.options">
 							</component>
 							<div v-show="currentCptIndex === index" style="position: absolute;top: -92px;right: 4px;">
@@ -127,16 +127,8 @@
 			return {
 				dialogVisible: false,
 				designData: {
-					id: '',
-					title: '我的大屏',
 					scaleX: 16,
 					scaleY: 9,
-					version: '',
-					bgColor: '#2B3340',
-					simpleDesc: '',
-					bgImg: '',
-					viewCode: '',
-					components: []
 				},
 				currentCptIndex: 0,
 				currentComponents: {
@@ -161,6 +153,7 @@
 			remove() {
 				this.list.splice(this.currentCptIndex, 1)
 				this.dialogVisible = false
+				this.currentItem = {}
 			},
 			copy(item) {
 				let newObj = JSON.parse(JSON.stringify(item))
