@@ -34,10 +34,7 @@
 			}
 		},
 		created() {
-			if (this.option && this.option.cptDataForm) {
-				this.attribute.data = JSON.parse(this.option.cptDataForm.dataText)
-			}
-
+			this.attribute.data = this.$getData(this.option)
 		},
 		beforeUnmount() {
 			this.$updateComponentStatus(this, 'ringChart')

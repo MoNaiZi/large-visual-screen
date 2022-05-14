@@ -7,7 +7,10 @@ import ElementPlus from 'element-plus';
 import 'element-plus/dist/index.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import dataV from '@jiaminghi/data-view'
-import updateComponentStatus from './utils/updateComponentStatus'
+import {
+	updateComponentStatus,
+	getData
+} from './utils/utils'
 // import initComponents from '@/components/index'
 
 function createRandomString(length, possibleString) {
@@ -32,6 +35,7 @@ const app = createApp(App)
 
 app.config.globalProperties.$createId = createId
 app.config.globalProperties.$updateComponentStatus = updateComponentStatus
+app.config.globalProperties.$getData = getData
 app.config.globalProperties.$app = app
 
 for (let [key, component] of Object.entries(ElementPlusIconsVue)) {

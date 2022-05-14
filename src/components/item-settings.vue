@@ -129,7 +129,8 @@
 					this.currentitem = this.currentItem
 					// console.log('currentitem', this.currentitem)
 					// this.$emit('change', JSON.parse(JSON.stringify(this.currentitem)))
-					if (!newVal) { //清空时
+
+					if (JSON.stringify(newVal) === '{}') { //清空时
 						this.configBarShow = false
 					} else {
 						if (this.currentitem.options && this.currentitem.options.cptDataForm) {

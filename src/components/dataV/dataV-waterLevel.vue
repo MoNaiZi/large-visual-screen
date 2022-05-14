@@ -1,5 +1,5 @@
 <template>
-	<dv-water-level-pond :key="refreshFlagKey" ref="waterLevel" :config="config"
+	<dv-water-level-pond :key="refreshFlagKey" ref="waterLevel" :config="attribute"
 		:style="{width:width+'px',height:height+'px'}" />
 </template>
 
@@ -18,31 +18,29 @@
 		},
 		data() {
 			return {
-				config: {},
-				uuid: null,
-				refreshFlagKey: null
+				attribute: {},
+				refreshFlagKey: ''
 			}
 		},
 		watch: {
-			'option.attribute': {
+			'option': {
 				handler() {
-					this.loadData();
+					this.$updateComponentStatus(this, 'waterLevel')
 				},
 				deep: true //深度监听
 			},
 			width() {
-
+				this.$updateComponentStatus(this, 'waterLevel')
 			},
 			height() {
-
+				this.$updateComponentStatus(this, 'waterLevel')
 			}
 		},
 		created() {
-
+			this.attribute.data = this.$getData(this.option)
 		},
 		beforeUnmount() {
-			const waterLevel = this.$refs.waterLevel
-			clearTimeout(waterLevel.animationHandler)
+			this.$updateComponentStatus(this, 'waterLevel')
 			console.log('在卸载组件实例之前调用。在这个阶段，实例仍然是完全正常的。。')
 		},
 		methods: {
