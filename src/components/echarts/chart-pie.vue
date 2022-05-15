@@ -4,7 +4,7 @@
 
 <script>
 	export default {
-		name: "cpt-chart-pie",
+		name: "chart-pie",
 		title: "饼图",
 		icon: 'PieChart',
 		group: 'chart',
@@ -23,7 +23,7 @@
 		},
 		watch: {
 			'option.attribute': {
-				handler(obj, newObj) {
+				handler() {
 
 				},
 				deep: true //深度监听

@@ -4,9 +4,9 @@
 
 <script>
 	export default {
-		name: "cpt-chart-tdColumn",
+		name: "chart-tdColumn",
 		title: "立体柱图",
-		icon: 'SData',
+		icon: 'Histogram',
 		group: 'chart',
 		props: {
 			width: Number,
@@ -23,7 +23,7 @@
 		},
 		watch: {
 			'option.attribute': {
-				handler(obj, newObj) {
+				handler() {
 
 				},
 				deep: true //深度监听

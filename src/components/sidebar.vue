@@ -35,11 +35,11 @@
 
 		</template>
 	</div>
-	<div  v-show="currentTab === 1">
-		<div v-show="selectList.length === 0" style="text-align: center;line-height: 50px;">
+	<div v-show="currentTab === 1">
+		<div v-show="list.length === 0" style="text-align: center;line-height: 50px;">
 			无图层
 		</div>
-		<el-row v-for="(item,index) in selectList" :key="index" class="selectedItem"
+		<el-row v-for="(item,index) in list" :key="index" class="selectedItem"
 			:style="{background: selectIndex === index ? '#3F4B5F':'#353f50'}">
 			<el-col :span="4" style="text-align: center">
 				<el-icon>
@@ -49,11 +49,11 @@
 			</el-col>
 			<el-col :span="15" @click="selectIndexFn(index)">{{item.title}}</el-col>
 			<el-col :span="5" style="text-align: center">
-				<el-icon>
+				<el-icon @click="copy(item)">
 					<component :is="'CopyDocument'">
 					</component>
 				</el-icon>
-				<el-icon>
+				<el-icon @click="this.dialogVisible = true">
 					<component :is="'Delete'">
 					</component>
 				</el-icon>
@@ -61,6 +61,15 @@
 			</el-col>
 		</el-row>
 	</div>
+	<el-dialog v-model="dialogVisible" title="提示" width="30%" :before-close="handleClose">
+		<span>是否确认删除该元素</span>
+		<template #footer>
+			<span class="dialog-footer">
+				<el-button @click="dialogVisible = false">取消</el-button>
+				<el-button type="primary" @click="remove">确定</el-button>
+			</span>
+		</template>
+	</el-dialog>
 </template>
 
 <script>
@@ -80,6 +89,9 @@
 		},
 		data() {
 			return {
+				list: this.selectList,
+				currentIndex: this.selectIndex,
+				dialogVisible: false,
 				currentTab: 0,
 				groupList: [{
 						name: '基础',
@@ -117,6 +129,20 @@
 
 		},
 		methods: {
+			remove() {
+				this.list.splice(this.currentIndex, 1)
+				this.dialogVisible = false
+				this.currentItem = {}
+				this.$emit('')
+			},
+			copy(item) {
+				let newObj = JSON.parse(JSON.stringify(item))
+				newObj.id = this.$createId()
+				newObj.x += 20
+				newObj.y += 20
+				this.list.push(newObj)
+				this.currentIndex = this.list.length - 1
+			},
 			selectIndexFn(index) {
 				this.$emit('selectIndexFn', index)
 			},

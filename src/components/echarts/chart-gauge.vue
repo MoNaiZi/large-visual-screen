@@ -3,12 +3,12 @@
 </template>
 
 <script>
-import {getDataStr, pollingRefresh} from "@/utils/refreshCptData";
+// import {getDataStr, pollingRefresh} from "@/utils/refreshCptData";
 
 export default {
-  name: "cpt-chart-gauge",
+  name: "chart-gauge",
   title: "仪表盘",
-  icon: 'el-icon-stopwatch',
+  icon: 'Stopwatch',
   initWidth: 300,
   initHeight: 200,
   group: 'chart',
@@ -48,13 +48,13 @@ export default {
   },
   methods:{
     refreshCptData(){
-      pollingRefresh(this.uuid, this.option.cptDataForm, this.loadData)
+      // pollingRefresh(this.uuid, this.option.cptDataForm, this.loadData)
     },
     loadData(){
-      getDataStr(this.option.cptDataForm).then(res => {
-        this.cptData = parseFloat(res);
-        this.loadChart(this.option.attribute);
-      });
+      // getDataStr(this.option.cptDataForm).then(res => {
+      //   this.cptData = parseFloat(res);
+      //   this.loadChart(this.option.attribute);
+      // });
     },
     loadChart(attribute) {
       const that = this;

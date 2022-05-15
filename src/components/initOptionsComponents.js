@@ -13,12 +13,26 @@ import dataV_waterLevel_option from '@/components/dataV/options/dataV-waterLevel
 
 //charts
 import chart_clock_option from '@/components/echarts/options/chart-clock-option'
+import chart_column_option from '@/components/echarts/options/chart-column-option'
+import chart_gauge_option from '@/components/echarts/options/chart-gauge-option'
+import chart_line_option from '@/components/echarts/options/chart-line-option'
+import chart_mapGc_option from '@/components/echarts/options/chart-mapGc-option'
+import chart_mapMigrate_option from '@/components/echarts/options/chart-mapMigrate-option'
+import chart_pie_option from '@/components/echarts/options/chart-pie-option'
+import chart_tdColumn_option from '@/components/echarts/options/chart-tdColumn-option'
 
 
 function main(app, name) {
 	try {
 		let charts = [
-			chart_clock_option
+			chart_clock_option,
+			chart_column_option,
+			chart_gauge_option,
+			chart_line_option,
+			chart_mapGc_option,
+			chart_mapMigrate_option,
+			chart_pie_option,
+			chart_tdColumn_option
 		]
 		let dataVlist = [
 			dataV_activeRingr_option,

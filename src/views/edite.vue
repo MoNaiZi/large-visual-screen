@@ -31,7 +31,7 @@
 				</div>
 			</el-header>
 			<el-container>
-				<el-aside width="220px">
+				<el-aside width="220px" style="overflow-x: hidden;">
 					<sidebar @dragStart="dragStart" :selectList="list" :selectIndex="currentCptIndex"
 						@selectIndexFn="selectItem"></sidebar>
 				</el-aside>
@@ -47,7 +47,7 @@
 							<component :is="item.name" :ref="item.name+index" :width="Math.round(item.w)"
 								:height="Math.round(item.h)" :option="item.options">
 							</component>
-							<div v-show="currentCptIndex === index" style="position: absolute;top: -92px;right: 4px;">
+					<!-- 		<div v-show="currentCptIndex === index" style="position: absolute;top: -92px;right: 4px;">
 								<el-icon style="cursor:pointer;" @click="copy(item)" color="#fff">
 									<component :is="'CopyDocument'">
 									</component>
@@ -57,7 +57,7 @@
 									<component :is="'Delete'">
 									</component>
 								</el-icon>
-							</div>
+							</div> -->
 
 						</div>
 						<div v-show="currentCptIndex === index" style="top: -3px;left: -3px;cursor: se-resize"
@@ -81,7 +81,7 @@
 				</el-main>
 			</el-container>
 		</el-container>
-		<el-dialog v-model="dialogVisible" title="提示" width="30%" :before-close="handleClose">
+<!-- 		<el-dialog v-model="dialogVisible" title="提示" width="30%" :before-close="handleClose">
 			<span>是否确认删除该元素</span>
 			<template #footer>
 				<span class="dialog-footer">
@@ -89,7 +89,7 @@
 					<el-button type="primary" @click="remove">确定</el-button>
 				</span>
 			</template>
-		</el-dialog>
+		</el-dialog> -->
 		<item-settings :currentItem="currentItem" ref="itemSettings"></item-settings>
 	</div>
 </template>
@@ -393,7 +393,7 @@
 		text-align: center;
 		line-height: 160px;
 		position: relative;
-		margin: 0 10px;
+		margin: 0px;
 		background-size: 100% 100%;
 		transform-origin: 0 0
 	}

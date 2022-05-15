@@ -3,12 +3,12 @@
 </template>
 
 <script>
-import {getDataStr, pollingRefresh} from "@/utils/refreshCptData";
+// import {getDataStr, pollingRefresh} from "@/utils/refreshCptData";
 
 export default {
-  name: "cpt-chart-mapGc",
+  name: "chart-mapGc",
   title: "渐变地图",
-  icon: 'el-icon-map-location',
+  icon: 'MapLocation',
   group: 'map',
   props:{
     width:Number,
@@ -46,13 +46,13 @@ export default {
   },
   methods:{
     refreshCptData(){
-      pollingRefresh(this.uuid, this.option.cptDataForm, this.loadData)
+      // pollingRefresh(this.uuid, this.option.cptDataForm, this.loadData)
     },
     loadData(){
-      getDataStr(this.option.cptDataForm).then(res => {
-        this.cptData = JSON.parse(res);
-        this.loadChart(this.option.attribute);
-      });
+      // getDataStr(this.option.cptDataForm).then(res => {
+      //   this.cptData = JSON.parse(res);
+      //   this.loadChart(this.option.attribute);
+      // });
     },
     loadChart(attribute) {
       const that = this;
