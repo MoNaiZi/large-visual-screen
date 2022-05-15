@@ -7,7 +7,7 @@
 			<div @click="currentTab = 1">图层</div>
 		</el-col>
 	</el-row>
-	<template v-if="currentTab === 0">
+	<div v-show="currentTab === 0">
 		<template v-for="(group,groupIndex) in groupList" :key="groupIndex">
 			<el-row class="tab_item" @click="openGroup(groupIndex)">
 				<el-col :span="8">{{group.name}}</el-col>
@@ -19,8 +19,8 @@
 				</el-col>
 			</el-row>
 
-			<template v-if="group.opened">
-				<el-row :gutter="2" >
+			<div v-show="group.opened">
+				<el-row :gutter="2">
 					<el-col :span="12" v-for="(item,index) in group.list" :key="index">
 						<div class="item" draggable="true" :config="JSON.stringify(item)" @dragstart="dragStart">
 							<el-icon :size="30" style="margin-bottom: 10px;">
@@ -31,28 +31,53 @@
 						</div>
 					</el-col>
 				</el-row>
-			</template>
+			</div>
 
 		</template>
-	</template>
-	<template v-else>
-		图层
-		<div>
-			<div>
-
-			</div>
-			<div>
-
-			</div>
+	</div>
+	<div  v-show="currentTab === 1">
+		<div v-show="selectList.length === 0" style="text-align: center;line-height: 50px;">
+			无图层
 		</div>
-	</template>
+		<el-row v-for="(item,index) in selectList" :key="index" class="selectedItem"
+			:style="{background: selectIndex === index ? '#3F4B5F':'#353f50'}">
+			<el-col :span="4" style="text-align: center">
+				<el-icon>
+					<component :is="item.icon">
+					</component>
+				</el-icon>
+			</el-col>
+			<el-col :span="15" @click="selectIndexFn(index)">{{item.title}}</el-col>
+			<el-col :span="5" style="text-align: center">
+				<el-icon>
+					<component :is="'CopyDocument'">
+					</component>
+				</el-icon>
+				<el-icon>
+					<component :is="'Delete'">
+					</component>
+				</el-icon>
+
+			</el-col>
+		</el-row>
+	</div>
 </template>
 
 <script>
 	import initElementList from './initElement'
 	import initDataV from './initDataV'
+	import initEcharts from './initEcharts'
 	import options from './options'
 	export default {
+		props: {
+			selectList: {
+				type: Array,
+				default: () => {
+					return []
+				}
+			},
+			selectIndex: Number
+		},
 		data() {
 			return {
 				currentTab: 0,
@@ -79,7 +104,7 @@
 		},
 		created() {
 			console.log('options', options)
-			let list = [...initElementList, ...initDataV]
+			let list = [...initElementList, ...initDataV, ...initEcharts]
 			for (let item of list) {
 				console.log('item', item)
 				this.$app.component(item.name, item)
@@ -92,6 +117,9 @@
 
 		},
 		methods: {
+			selectIndexFn(index) {
+				this.$emit('selectIndexFn', index)
+			},
 			openGroup(index) {
 				this.groupList[index].opened = !this.groupList[index].opened
 			},
@@ -106,6 +134,12 @@
 </script>
 
 <style>
+	.selectedItem {
+		line-height: 45px;
+		cursor: pointer;
+		box-shadow: 0 1px 3px #2b3340 inset;
+	}
+
 	.item {
 		background-color: rgb(63, 75, 95);
 		height: 80px;
@@ -130,7 +164,6 @@
 		text-align: center;
 		line-height: 40px;
 		cursor: pointer;
-		position: fixed;
 		z-index: 7;
 		background: #353f50;
 		box-shadow: 0 1px 3px #2b3340;

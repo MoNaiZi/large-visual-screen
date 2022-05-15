@@ -4,7 +4,7 @@
 			<el-input-number v-model="data.lineWidth" :min="1" :max="100" />
 		</el-form-item>
 		<el-form-item label="半径">
-			<el-input-number  v-model="data.radius" :min="1" :max="500" />
+			<el-input-number v-model="data.radius" :min="1" :max="500" />
 		</el-form-item>
 		<el-form-item label="动态半径">
 			<el-input-number v-model="data.activeRadius" :min="1" :max="510" />
@@ -36,6 +36,9 @@
 				data: this.attribute,
 				tempColor: ''
 			}
+		},
+		created() {
+			console.log('组件创建')
 		},
 		methods: {
 			addColor() {

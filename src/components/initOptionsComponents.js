@@ -11,9 +11,15 @@ import dataV_scrollList_option from '@/components/dataV/options/dataV-scrollList
 import dataV_scrollTable_option from '@/components/dataV/options/dataV-scrollTable-option'
 import dataV_waterLevel_option from '@/components/dataV/options/dataV-waterLevel-option'
 
+//charts
+import chart_clock_option from '@/components/echarts/options/chart-clock-option'
+
 
 function main(app, name) {
 	try {
+		let charts = [
+			chart_clock_option
+		]
 		let dataVlist = [
 			dataV_activeRingr_option,
 			dataV_border_option,
@@ -28,6 +34,7 @@ function main(app, name) {
 			custom_text_options
 		]
 		let list = [
+			...charts,
 			...dataVlist,
 			...elementList
 		]

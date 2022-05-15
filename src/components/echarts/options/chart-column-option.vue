@@ -109,7 +109,7 @@
 
 <script>
 export default {
-  name: "cpt-chart-column-option",
+  name: "chart-column-option",
   props: {
     attribute: Object
   },

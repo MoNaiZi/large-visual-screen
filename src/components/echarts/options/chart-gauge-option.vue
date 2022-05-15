@@ -65,7 +65,7 @@
 
 <script>
 export default {
-  name: "cpt-chart-gauge-option",
+  name: "chart-gauge-option",
   props: {attribute: Object},
 }
 </script>

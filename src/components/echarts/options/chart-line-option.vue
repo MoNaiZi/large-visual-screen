@@ -69,7 +69,7 @@
 
 <script>
 export default {
-  name: "cpt-chart-line-option",
+  name: "chart-line-option",
   props: {attribute: Object},
 }
 </script>

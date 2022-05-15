@@ -30,27 +30,27 @@
 						<el-tabs v-model="configTab" :stretch="true">
 							<el-tab-pane label="坐标" name="basic">
 								<div style="width: 98%;margin:0 auto">
-									<el-row>
+									<el-row class="set_item">
 										宽度：
 										<el-input-number :min="20" :max="2000" v-model="currentitem.w" size="small"
 											@change="changeConfig" />
 									</el-row>
-									<el-row>
+									<el-row class="set_item">
 										高度：
 										<el-input-number :min="20" :max="1500" v-model="currentitem.h" size="small"
 											@change="changeConfig" />
 									</el-row>
-									<el-row>
+									<el-row class="set_item">
 										X 轴：
 										<el-input-number :min="-500" :max="2500" v-model="currentitem.x" size="small"
 											@change="changeConfig" />
 									</el-row>
-									<el-row>
+									<el-row class="set_item">
 										Y 轴：
 										<el-input-number :min="-500" v-model="currentitem.y" size="small"
 											@change="changeConfig" />
 									</el-row>
-									<el-row>
+									<el-row class="set_item">
 										Z 轴：
 										<el-input-number :min="1" :max="1800" v-model="currentitem.z" size="small"
 											@change="changeConfig" />
@@ -127,17 +127,10 @@
 				deep: true,
 				handler: function(newVal) {
 					this.currentitem = this.currentItem
-					// console.log('currentitem', this.currentitem)
-					// this.$emit('change', JSON.parse(JSON.stringify(this.currentitem)))
-
-					if (JSON.stringify(newVal) === '{}') { //清空时
-						this.configBarShow = false
+					if (JSON.stringify(newVal) != '{}') {
+						this.configBarShow = true
 					} else {
-						if (this.currentitem.options && this.currentitem.options.cptDataForm) {
-							this.configBarShow = true
-						} else {
-							this.configTab = 'custom'
-						}
+						this.configBarShow = false
 					}
 				},
 			}
@@ -214,10 +207,9 @@
 </script>
 
 <style>
-	.el-row {
+	.set_item{
 		margin: 10px;
 	}
-
 	.el-tabs__content {
 		padding: 0px !important;
 		font-size: 26px !important;

@@ -7,6 +7,7 @@ import ElementPlus from 'element-plus';
 import 'element-plus/dist/index.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import dataV from '@jiaminghi/data-view'
+import * as echarts from 'echarts';
 import {
 	updateComponentStatus,
 	getData
@@ -32,11 +33,12 @@ function createId(length = 12) {
 const app = createApp(App)
 
 // initComponents(app)
-
+// app.config.performance = true
 app.config.globalProperties.$createId = createId
 app.config.globalProperties.$updateComponentStatus = updateComponentStatus
 app.config.globalProperties.$getData = getData
 app.config.globalProperties.$app = app
+app.config.globalProperties.$echarts = echarts
 
 for (let [key, component] of Object.entries(ElementPlusIconsVue)) {
 	// console.log('key',key)

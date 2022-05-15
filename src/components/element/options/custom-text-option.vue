@@ -105,7 +105,7 @@
 			}
 		},
 		created() {
-
+			
 		},
 		methods: {
 			selectBgColor(color) {

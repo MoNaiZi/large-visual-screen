@@ -236,9 +236,10 @@ export default {
 				attribute: {
 					axisLineWidth: 3,
 					axisLabelSize: 16,
+					fontColor: "#ffffff",
 					hourPointerColor: '#C0911F',
 					axisLabelDistance: 8,
-					splitLineDistance: 4
+					splitLineDistance: 4,
 				}
 			},
 			'dataV-scrollTable-option': {
