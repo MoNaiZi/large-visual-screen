@@ -25,7 +25,7 @@
 
 <script>
 export default {
-  name: "cpt-button-option",
+  name: "custom-button-option",
   props:{attribute:Object},
   data(){
     return{

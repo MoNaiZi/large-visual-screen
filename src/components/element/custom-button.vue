@@ -9,12 +9,12 @@
 </template>
 
 <script>
-import {getDataStr, pollingRefresh} from "@/utils/refreshCptData";
+
 
 export default {
-  name: "cpt-button",
+  name: "custom-button",
   title: "按钮",
-  icon: 'el-icon-thumb',
+  icon: 'Pointer',
   initWidth: 150,
   initHeight: 50,
   group:'basic',
@@ -26,17 +26,14 @@ export default {
     }
   },
   created() {
-    this.uuid = require('uuid').v1();
     this.refreshCptData();
   },
   methods:{
     refreshCptData(){
-      pollingRefresh(this.uuid, this.option.cptDataForm, this.loadData)
+ 
     },
     loadData(){
-      getDataStr(this.option.cptDataForm).then(res => {
-        this.cptData = res;
-      });
+  
     },
     redirect(){
       if (this.option.attribute.url){

@@ -8,7 +8,7 @@
 
 <script>
 export default {
-  name: "cpt-iframe-option",
+  name: "custom-iframe-option",
   props: {attribute: Object},
 }
 </script>

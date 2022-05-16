@@ -4,9 +4,9 @@
 
 <script>
 export default {
-  name: "cpt-iframe",
+  name: "custom-iframe",
   title: 'iframe',
-  icon: 'el-icon-s-promotion',
+  icon: 'Promotion',
   group:'basic',
   props: {
     option: Object

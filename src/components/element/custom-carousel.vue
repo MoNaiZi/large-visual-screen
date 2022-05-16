@@ -10,9 +10,9 @@
 
 <script>
 export default {
-  name: "cpt-carousel",
+  name: "custom-carousel",
   title: '走马灯',
-  icon: 'el-icon-money',
+  icon: 'Money',
   group:'basic',
   props:{
     height:{type:Number,default:168},

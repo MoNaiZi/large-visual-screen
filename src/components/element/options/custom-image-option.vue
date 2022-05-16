@@ -25,15 +25,15 @@
         </el-radio-group>
       </el-form-item>
     </el-form>
-    <gallery ref="gallery" @confirmCheck="confirmCheck"/>
+    <!-- <gallery ref="gallery" @confirmCheck="confirmCheck"/> -->
   </div>
 </template>
 
 <script>
-import Gallery from "@/components/gallery";
+// import Gallery from "@/components/gallery";
 export default {
-  name: "cpt-image-option",
-  components: {Gallery},
+  name: "custom-image-option",
+  // components: {Gallery},
   props: {attribute: Object},
   data(){
     return {

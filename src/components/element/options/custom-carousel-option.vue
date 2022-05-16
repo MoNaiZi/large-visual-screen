@@ -41,16 +41,16 @@
 </template>
 
 <script>
-import {fileUrl} from "/env";
-import {getToken} from "@/utils/auth";
+// import {fileUrl} from "/env";
+// import {getToken} from "@/utils/auth";
 
 export default {
-  name: "cpt-carousel-option",
+  name: "custom-carousel-option",
   props: {attribute: Object},
   data(){
     return {
-      fileUrl:fileUrl,
-      uploadHeaders:{'X-Token':getToken()},
+      fileUrl:'fileUrl',
+      uploadHeaders:{'X-Token':''},
       fileList:[]
     }
   },

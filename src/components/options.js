@@ -16,7 +16,7 @@ export default {
 					reverse: false //样式8特殊配置
 				}
 			},
-			'button-option': {
+			'custom-button-option': {
 				cptDataForm: {
 					dataText: '按钮2',
 					dataSource: 1,
@@ -48,7 +48,7 @@ export default {
 					bgColor: 'rgba(255, 255, 255, 0)'
 				}
 			},
-			'input-option': {
+			'custom-input-option': {
 				attribute: {
 					label: '姓名',
 					placeholderValue: '请输入姓名',
@@ -59,14 +59,14 @@ export default {
 					formSize: 'mini'
 				}
 			},
-			'image-option': {
+			'custom-image-option': {
 				attribute: {
 					url: require('/src/assets/logo.png'),
 					fit: 'fill',
 					preview: false
 				}
 			},
-			'carousel-option': {
+			'custom-carousel-option': {
 				attribute: {
 					trigger: 'hover',
 					fit: 'cover',
@@ -119,7 +119,7 @@ export default {
 					colors: ['#01c4f9', '#c135ff'],
 				}
 			},
-			'iframe-option': {
+			'custom-iframe-option': {
 				attribute: {
 					url: 'https://www.rainy.pub/'
 				}

@@ -41,7 +41,7 @@
 				}" @click.self="selectItem(-1)">
 					<div v-for="(item,index) in list" :key="index" class="cptDiv" @mousedown.stop="selectItem(index)"
 						:style="[cptDiv_fn(item,index)]">
-						<div v-resize="{key:'move',index:index}" class="activeMask"
+						<div v-resize="{key:'move',index:index}" @dblclick.stop="dblclick(index)" class="activeMask"
 							:style="{border:currentIndex === index?'1px solid #B6BFCE':'',zIndex:(item.options||{}).edite?0:100}" />
 						<div style="width: 100%;height: 100%;position: relative;">
 							<component :is="item.name" :ref="item.name+index" :width="Math.round(item.w)"
@@ -151,6 +151,11 @@
 			// console.log('模板',this.$app.component('custom-text'))
 		},
 		methods: {
+			dblclick(index) {
+				console.log('双击·')
+				this.list[index].options.edite = true
+				this.currentIndex = index
+			},
 			changeCurrentItem({
 				obj,
 				index
@@ -193,6 +198,11 @@
 				if (index >= 0) {
 					this.currentItem = this.list[index]
 				} else {
+					for (let item of this.list) {
+						if (item.options && item.options.edite) {
+							item.options.edite = false
+						}
+					}
 					this.currentItem = {}
 				}
 
@@ -259,10 +269,10 @@
 
 				el.onmousedown = function(e) {
 					console.log('按下元素', e.timeStamp, that.clickTime)
-					if (e.timeStamp - that.clickTime <= 200 && that.clickTime != 0) {
-						console.log('双击')
-						that.list[index].options.edite = true
-					}
+					// if (e.timeStamp - that.clickTime <= 200 && that.clickTime != 0) {
+					// 	console.log('双击')
+					// 	that.list[index].options.edite = true
+					// }
 					that.clickTime = e.timeStamp
 					const scaleClientX = e.clientX / containerScale;
 					const scaleClientY = e.clientY / containerScale;
