@@ -13,6 +13,10 @@ import {
 	getData
 } from './utils/utils'
 // import initComponents from '@/components/index'
+//注册echarts地图
+import chinaGeoJson from '@/assets/map/china.json'
+echarts.registerMap('china', chinaGeoJson);
+
 
 function createRandomString(length, possibleString) {
 	let text = ''
@@ -39,6 +43,8 @@ app.config.globalProperties.$updateComponentStatus = updateComponentStatus
 app.config.globalProperties.$getData = getData
 app.config.globalProperties.$app = app
 app.config.globalProperties.$echarts = echarts
+
+
 
 for (let [key, component] of Object.entries(ElementPlusIconsVue)) {
 	// console.log('key',key)

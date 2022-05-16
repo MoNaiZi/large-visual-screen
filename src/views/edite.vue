@@ -32,8 +32,8 @@
 			</el-header>
 			<el-container>
 				<el-aside width="220px" style="overflow-x: hidden;">
-					<sidebar @dragStart="dragStart" :selectList="list" :selectIndex="currentCptIndex"
-						@selectIndexFn="selectItem"></sidebar>
+					<sidebar @dragStart="dragStart" :selectList="list" :selectIndex="currentIndex"
+						@selectIndexFn="selectItem" @changeCurrentItem="changeCurrentItem"></sidebar>
 				</el-aside>
 				<el-main @dragover="allowDrop" @drop="drop" :style="{
 					background: 'url(' + defaultBg + ') repeat',
@@ -42,12 +42,12 @@
 					<div v-for="(item,index) in list" :key="index" class="cptDiv" @mousedown.stop="selectItem(index)"
 						:style="[cptDiv_fn(item,index)]">
 						<div v-resize="{key:'move',index:index}" class="activeMask"
-							:style="{border:currentCptIndex === index?'1px solid #B6BFCE':'',zIndex:(item.options||{}).edite?0:100}" />
+							:style="{border:currentIndex === index?'1px solid #B6BFCE':'',zIndex:(item.options||{}).edite?0:100}" />
 						<div style="width: 100%;height: 100%;position: relative;">
 							<component :is="item.name" :ref="item.name+index" :width="Math.round(item.w)"
 								:height="Math.round(item.h)" :option="item.options">
 							</component>
-					<!-- 		<div v-show="currentCptIndex === index" style="position: absolute;top: -92px;right: 4px;">
+							<!-- 		<div v-show="currentIndex === index" style="position: absolute;top: -92px;right: 4px;">
 								<el-icon style="cursor:pointer;" @click="copy(item)" color="#fff">
 									<component :is="'CopyDocument'">
 									</component>
@@ -60,28 +60,28 @@
 							</div> -->
 
 						</div>
-						<div v-show="currentCptIndex === index" style="top: -3px;left: -3px;cursor: se-resize"
+						<div v-show="currentIndex === index" style="top: -3px;left: -3px;cursor: se-resize"
 							class="resizeTag" v-resize="{key:'lt',index:index}" />
-						<div v-show="currentCptIndex === index" style="top: -3px;left: 48%;cursor: s-resize"
+						<div v-show="currentIndex === index" style="top: -3px;left: 48%;cursor: s-resize"
 							class="resizeTag" v-resize="{key:'t',index:index}" />
-						<div v-show="currentCptIndex === index" style="top: -3px;right: -4px;cursor: ne-resize"
+						<div v-show="currentIndex === index" style="top: -3px;right: -4px;cursor: ne-resize"
 							class="resizeTag" v-resize="{key:'rt',index:index}" />
-						<div v-show="currentCptIndex === index" style="top: 48%;right: -4px;cursor: w-resize"
+						<div v-show="currentIndex === index" style="top: 48%;right: -4px;cursor: w-resize"
 							class="resizeTag" v-resize="{key:'r',index:index}" />
-						<div v-show="currentCptIndex === index" style="bottom: -4px;right: -4px;cursor: se-resize"
+						<div v-show="currentIndex === index" style="bottom: -4px;right: -4px;cursor: se-resize"
 							class="resizeTag" v-resize="{key:'rb',index:index}" />
-						<div v-show="currentCptIndex === index" style="bottom: -4px;left: 48%;cursor: s-resize"
+						<div v-show="currentIndex === index" style="bottom: -4px;left: 48%;cursor: s-resize"
 							class="resizeTag" v-resize="{key:'b',index:index}" />
-						<div v-show="currentCptIndex === index" style="bottom: -4px;left: -3px;cursor: ne-resize"
+						<div v-show="currentIndex === index" style="bottom: -4px;left: -3px;cursor: ne-resize"
 							class="resizeTag" v-resize="{key:'lb',index:index}" />
-						<div v-show="currentCptIndex === index" style="top: 48%;left: -3px;cursor: w-resize"
+						<div v-show="currentIndex === index" style="top: 48%;left: -3px;cursor: w-resize"
 							class="resizeTag" v-resize="{key:'l',index:index}" />
 					</div>
 
 				</el-main>
 			</el-container>
 		</el-container>
-<!-- 		<el-dialog v-model="dialogVisible" title="提示" width="30%" :before-close="handleClose">
+		<!-- 		<el-dialog v-model="dialogVisible" title="提示" width="30%" :before-close="handleClose">
 			<span>是否确认删除该元素</span>
 			<template #footer>
 				<span class="dialog-footer">
@@ -131,7 +131,7 @@
 					scaleX: 16,
 					scaleY: 9,
 				},
-				currentCptIndex: 0,
+				currentIndex: 0,
 				currentComponents: {
 					option: undefined
 				},
@@ -151,8 +151,22 @@
 			// console.log('模板',this.$app.component('custom-text'))
 		},
 		methods: {
+			changeCurrentItem({
+				obj,
+				index
+			}) {
+				obj = JSON.parse(JSON.stringify(obj))
+				if (JSON.stringify(obj) === '{}') {
+					this.list.splice(index, 1)
+				} else {
+					this.list.push(obj)
+					index = this.list.length - 1
+				}
+				this.currentItem = obj
+				this.currentIndex = index
+			},
 			remove() {
-				this.list.splice(this.currentCptIndex, 1)
+				this.list.splice(this.currentIndex, 1)
 				this.dialogVisible = false
 				this.currentItem = {}
 			},
@@ -162,16 +176,16 @@
 				newObj.x += 20
 				newObj.y += 20
 				this.list.push(newObj)
-				this.currentCptIndex = this.list.length - 1
+				this.currentIndex = this.list.length - 1
 			},
 			cptDiv_fn(item, index) {
-				let currentCptIndex = this.currentCptIndex
+				let currentIndex = this.currentIndex
 				let result = {
 					width: Math.round(item.w) + 'px',
 					height: Math.round(item.h) + 'px',
 					top: Math.round(item.y) + 'px',
 					left: Math.round(item.x) + 'px',
-					zIndex: currentCptIndex === index ? 1800 : item.x
+					zIndex: currentIndex === index ? 1800 : item.x
 				}
 				return result
 			},
@@ -180,7 +194,7 @@
 					this.currentItem = this.list[index]
 				}
 
-				this.currentCptIndex = index
+				this.currentIndex = index
 			},
 			allowDrop(e) {
 				e.preventDefault()
@@ -190,6 +204,7 @@
 				dom.draggable = false;
 			},
 			drop(e) {
+				console.time()
 				let config = JSON.parse(this.dom.getAttribute('config'));
 				const that = this
 				let data = {
@@ -224,8 +239,8 @@
 					return
 				}
 				this.list.push(data);
-				this.currentCptIndex = this.list.length - 1
-
+				this.currentIndex = this.list.length - 1
+				console.timeEnd()
 			}
 		},
 		directives: {
@@ -239,6 +254,7 @@
 				const that = binding.instance
 				let containerScale = that.containerScale
 				// let  elExample = createApp({})
+
 				el.onmousedown = function(e) {
 					console.log('按下元素', e.timeStamp, that.clickTime)
 					if (e.timeStamp - that.clickTime <= 200 && that.clickTime != 0) {

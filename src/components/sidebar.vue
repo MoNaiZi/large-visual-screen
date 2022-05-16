@@ -53,7 +53,7 @@
 					<component :is="'CopyDocument'">
 					</component>
 				</el-icon>
-				<el-icon @click="this.dialogVisible = true">
+				<el-icon @click="showDialog(index)">
 					<component :is="'Delete'">
 					</component>
 				</el-icon>
@@ -73,11 +73,17 @@
 </template>
 
 <script>
+	import {
+		ElMessageBox
+	} from 'element-plus'
 	import initElementList from './initElement'
 	import initDataV from './initDataV'
 	import initEcharts from './initEcharts'
 	import options from './options'
 	export default {
+		components: {
+			ElMessageBox
+		},
 		props: {
 			selectList: {
 				type: Array,
@@ -129,19 +135,29 @@
 
 		},
 		methods: {
+			showDialog(index){
+				this.dialogVisible = true
+				this.currentIndex = index
+			},
 			remove() {
-				this.list.splice(this.currentIndex, 1)
 				this.dialogVisible = false
 				this.currentItem = {}
-				this.$emit('')
+				this.$emit('changeCurrentItem', {
+					obj: {},
+					index: this.currentIndex
+				})
 			},
 			copy(item) {
 				let newObj = JSON.parse(JSON.stringify(item))
 				newObj.id = this.$createId()
 				newObj.x += 20
 				newObj.y += 20
-				this.list.push(newObj)
-				this.currentIndex = this.list.length - 1
+		
+		
+				this.$emit('changeCurrentItem', {
+					obj: newObj,
+					index: this.currentIndex
+				})
 			},
 			selectIndexFn(index) {
 				this.$emit('selectIndexFn', index)

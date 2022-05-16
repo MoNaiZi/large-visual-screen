@@ -25,3 +25,9 @@ yarn lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+### 问题记录
+```
+vue3中使用proxy的方式监听响应式，this.chart会被在vue内部转换成响应式对象，从而在resize 的时候获取不到
+```
+
