@@ -7,6 +7,7 @@
 			<div @click="currentTab = 1">图层</div>
 		</el-col>
 	</el-row>
+	<div :style="{height:currentTab===0?'30px':'40px'}"></div>
 	<div v-show="currentTab === 0">
 		<template v-for="(group,groupIndex) in groupList" :key="groupIndex">
 			<el-row class="tab_item" @click="openGroup(groupIndex)">
@@ -135,7 +136,7 @@
 
 		},
 		methods: {
-			showDialog(index){
+			showDialog(index) {
 				this.dialogVisible = true
 				this.currentIndex = index
 			},
@@ -152,8 +153,8 @@
 				newObj.id = this.$createId()
 				newObj.x += 20
 				newObj.y += 20
-		
-		
+
+
 				this.$emit('changeCurrentItem', {
 					obj: newObj,
 					index: this.currentIndex
@@ -175,7 +176,7 @@
 	}
 </script>
 
-<style>
+<style scoped>
 	.selectedItem {
 		line-height: 45px;
 		cursor: pointer;
@@ -201,7 +202,8 @@
 	}
 
 	.top_tab {
-		width: 100%;
+		position: fixed;
+		width: 200px;
 		height: 40px;
 		text-align: center;
 		line-height: 40px;

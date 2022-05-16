@@ -192,6 +192,8 @@
 			selectItem(index) {
 				if (index >= 0) {
 					this.currentItem = this.list[index]
+				} else {
+					this.currentItem = {}
 				}
 
 				this.currentIndex = index
@@ -386,6 +388,7 @@
 
 	.el-container {
 		height: 100vh;
+		overflow: hidden;
 	}
 
 	.el-header,

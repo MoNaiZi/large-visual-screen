@@ -234,9 +234,8 @@
 		cursor: move
 	}
 
-	.closeItem:hover {
+	.closeItem {
 		cursor: pointer;
-		background: #2b3340;
 		padding: 10px;
 		margin-top: -7px;
 	}
