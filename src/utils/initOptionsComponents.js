@@ -20,7 +20,6 @@ import dataV_percentPond_option from '@/components/dataV/options/dataV-percentPo
 import dataV_scrollList_option from '@/components/dataV/options/dataV-scrollList-option'
 import dataV_scrollTable_option from '@/components/dataV/options/dataV-scrollTable-option'
 import dataV_waterLevel_option from '@/components/dataV/options/dataV-waterLevel-option'
-
 let dataVlist = [
 	dataV_activeRingr_option,
 	dataV_border_option,

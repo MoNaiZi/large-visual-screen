@@ -77,10 +77,10 @@
 	import {
 		ElMessageBox
 	} from 'element-plus'
-	import initElementList from './initElement'
-	import initDataV from './initDataV'
-	import initEcharts from './initEcharts'
-	import options from './options'
+	import initElementList from '@/utils/initElement'
+	import initDataV from '@/utils/initDataV'
+	import initEcharts from '@/utils/initEcharts'
+	import options from '@/utils/options'
 	export default {
 		components: {
 			ElMessageBox
@@ -177,6 +177,7 @@
 </script>
 
 <style scoped>
+
 	.selectedItem {
 		line-height: 45px;
 		cursor: pointer;

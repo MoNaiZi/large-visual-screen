@@ -4,9 +4,9 @@
 			<el-header>
 				<div style="display: flex;justify-content: space-between;">
 					<div class="logo">
-						<img src="@/assets/logo.png" alt="">
+						<img style="width: 45px;height: 45px;margin-top:5px;" src="@/assets/logo.png" alt="">
 					</div>
-					<div style="display: flex;justify-content: space-between;">
+					<div class="set">
 						<div>导入</div>
 						<div>导出</div>
 						<div>
@@ -35,12 +35,23 @@
 					<sidebar @dragStart="dragStart" :selectList="list" :selectIndex="currentIndex"
 						@selectIndexFn="selectItem" @changeCurrentItem="changeCurrentItem"></sidebar>
 				</el-aside>
+
 				<el-main @dragover="allowDrop" @drop="drop" :style="{
 					background: 'url(' + defaultBg + ') repeat',
 					transform: 'scale(' + containerScale + ')'
 				}" @click.self="selectItem(-1)">
 					<div v-for="(item,index) in list" :key="index" class="cptDiv" @mousedown.stop="selectItem(index)"
 						:style="[cptDiv_fn(item,index)]">
+
+						<div v-show="currentIndex === index" class="ScaleMarkX"
+							:style="{width:1920*containerScale+'px'}">
+							<ScaleMarkX />
+						</div>
+						<div v-show="currentIndex === index" class="ScaleMarkY"
+							:style="{height:1920*containerScale / designData.scaleX * designData.scaleY+'px'}">
+							<ScaleMarkY />
+						</div>
+
 						<div v-resize="{key:'move',index:index}" @dblclick.stop="dblclick(index)" class="activeMask"
 							:style="{border:currentIndex === index?'1px solid #B6BFCE':'',zIndex:(item.options||{}).edite?0:100}" />
 						<div style="width: 100%;height: 100%;position: relative;">
@@ -99,15 +110,18 @@
 		ElMessageBox
 	} from 'element-plus'
 	import sidebar from '@/components/sidebar'
-	import options from '@/components/options'
+	import options from '@/utils/options'
 	import itemSettings from '@/components/item-settings'
-	import initOptionsComponents from '@/components/initOptionsComponents'
-
+	import initOptionsComponents from '@/utils/initOptionsComponents'
+	import ScaleMarkX from "@/components/ScaleMarkX";
+	import ScaleMarkY from "@/components/ScaleMarkY";
 	export default {
 		components: {
 			sidebar,
 			itemSettings,
-			ElMessageBox
+			ElMessageBox,
+			ScaleMarkX,
+			ScaleMarkY
 		},
 		computed: {
 			elMainFn() {
@@ -356,6 +370,32 @@
 </script>
 
 <style>
+	.set {
+		display: flex;
+		justify-content: space-between;
+		width: 270px;
+		align-items: center;
+		line-height: 4px;
+	}
+
+	.logo {
+		width: 170px;
+	}
+
+	.ScaleMarkY {
+		position: fixed;
+		border-right: 3px dashed #808080;
+		height: 100%;
+		top: 0px;
+	}
+
+	.ScaleMarkX {
+		position: fixed;
+		border-top: 3px dashed #808080;
+		width: 100%;
+		left: 0px;
+	}
+
 	.resizeTag {
 		width: 6px;
 		height: 6px;

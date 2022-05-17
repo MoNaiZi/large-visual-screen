@@ -20,4 +20,7 @@
 		text-align: center;
 		color: #2c3e50;
 	}
+	*::-webkit-scrollbar {width: 4px;height: 4px;}
+	*::-webkit-scrollbar-thumb {border-radius: 4px;background: #5E708D;}
+	*::-webkit-scrollbar-track {border-radius: 4px;background: #ddd;}
 </style>
