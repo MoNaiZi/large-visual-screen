@@ -9,7 +9,7 @@
 					<div class="set">
 						<div class="header_set_item">导入</div>
 						<div class="header_set_item">导出</div>
-						<div class="header_set_item">
+						<div class="header_set_item" @click="removeList">
 							<el-icon>
 								<component :is="'Delete'">
 								</component>
@@ -36,16 +36,16 @@
 						@selectIndexFn="selectItem" @changeCurrentItem="changeCurrentItem"></sidebar>
 				</el-aside>
 
-				<el-main @dragover="allowDrop" @drop="drop" :style="{
+				<el-main id='mainId' @dragover="allowDrop" @drop="drop" :style="{
 					background: 'url(' + defaultBg + ') repeat',
 					transform: 'scale(' + containerScale + ')'
 				}" @click.self="selectItem(-1)">
-				<div style="height: 10px;position: fixed;width: 100%;">
-					<ScaleMarkX />
-				</div>
-				<div style="width: 10px;height: 100%;">
-					<ScaleMarkY />
-				</div>
+					<div style="height: 10px;position: fixed;width: 100%;">
+						<ScaleMarkX />
+					</div>
+					<div style="width: 10px;height: 100%;">
+						<ScaleMarkY />
+					</div>
 					<div v-for="(item,index) in list" :key="index" class="cptDiv" @mousedown.stop="selectItem(index)"
 						:style="[cptDiv_fn(item,index)]">
 						<div v-show="currentIndex === index" class="ScaleMarkX"
@@ -130,6 +130,7 @@
 		data() {
 			return {
 				dialogVisible: false,
+				mainId: this.$createId(),
 				designData: {
 					scaleX: 16,
 					scaleY: 9,
@@ -144,14 +145,18 @@
 				defaultBg: require('@/assets/main_bg.png'),
 				containerScale: 1,
 				currentItem: {},
-				clickTime: 0
+				clickTime: 0,
+				mainW: 0,
+				mainH: 0
 			}
 		},
 		created() {
 
 		},
 		mounted() {
-			// console.log('模板',this.$app.component('custom-text'))
+			// let main = document.getElementById(this.mainId)
+			// this.mainW = main.offsetWidth
+			// this.mainH = main.offsetHeight
 		},
 		methods: {
 			dblclick(index) {
@@ -289,6 +294,12 @@
 					document.onmousemove = function(me) {
 						const meScaleClientX = me.clientX / containerScale
 						const meScaleClientY = me.clientY / containerScale
+						// let offsetX = me.offsetX
+						// console.log('offsetX', offsetX)
+						// console.log('meScaleClientX', meScaleClientX)
+						// if (meScaleClientX <= offsetX + 220) {
+						// 	return
+						// }
 						if (key === 'move') {
 							x = meScaleClientX - disX;
 							y = meScaleClientY - disY;
@@ -334,6 +345,7 @@
 								case 'l':
 									w = ltX - meScaleClientX;
 									x = meScaleClientX - disX;
+									console.log('x', x, 'w', w)
 									el.parentNode.style.left = x + 'px';
 									break;
 							}
@@ -358,17 +370,17 @@
 	}
 </script>
 
-<style>
-	.header_set_item {
-		cursor: pointer;
-	}
-
+<style lang="scss">
 	.set {
 		display: flex;
 		justify-content: space-between;
 		width: 270px;
 		align-items: center;
 		line-height: 4px;
+
+		.header_set_item {
+			cursor: pointer;
+		}
 	}
 
 	.logo {
