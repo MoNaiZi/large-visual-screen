@@ -7,15 +7,15 @@
 						<img style="width: 45px;height: 45px;margin-top:5px;" src="@/assets/logo.png" alt="">
 					</div>
 					<div class="set">
-						<div>导入</div>
-						<div>导出</div>
-						<div>
+						<div class="header_set_item">导入</div>
+						<div class="header_set_item">导出</div>
+						<div class="header_set_item">
 							<el-icon>
 								<component :is="'Delete'">
 								</component>
 							</el-icon>
 						</div>
-						<div>
+						<div class="header_set_item">
 							<el-icon>
 								<component :is="'Tools'">
 								</component>
@@ -40,17 +40,18 @@
 					background: 'url(' + defaultBg + ') repeat',
 					transform: 'scale(' + containerScale + ')'
 				}" @click.self="selectItem(-1)">
+				<div style="height: 10px;position: fixed;width: 100%;">
+					<ScaleMarkX />
+				</div>
+				<div style="width: 10px;height: 100%;">
+					<ScaleMarkY />
+				</div>
 					<div v-for="(item,index) in list" :key="index" class="cptDiv" @mousedown.stop="selectItem(index)"
 						:style="[cptDiv_fn(item,index)]">
-
 						<div v-show="currentIndex === index" class="ScaleMarkX"
-							:style="{width:1920*containerScale+'px'}">
-							<ScaleMarkX />
-						</div>
+							:style="{width:1920*containerScale+'px'}"></div>
 						<div v-show="currentIndex === index" class="ScaleMarkY"
-							:style="{height:1920*containerScale / designData.scaleX * designData.scaleY+'px'}">
-							<ScaleMarkY />
-						</div>
+							:style="{height:1920*containerScale / designData.scaleX * designData.scaleY+'px'}"></div>
 
 						<div v-resize="{key:'move',index:index}" @dblclick.stop="dblclick(index)" class="activeMask"
 							:style="{border:currentIndex === index?'1px solid #B6BFCE':'',zIndex:(item.options||{}).edite?0:100}" />
@@ -58,18 +59,6 @@
 							<component :is="item.name" :ref="item.name+index" :width="Math.round(item.w)"
 								:height="Math.round(item.h)" :option="item.options">
 							</component>
-							<!-- 		<div v-show="currentIndex === index" style="position: absolute;top: -92px;right: 4px;">
-								<el-icon style="cursor:pointer;" @click="copy(item)" color="#fff">
-									<component :is="'CopyDocument'">
-									</component>
-								</el-icon>
-
-								<el-icon style="cursor:pointer;" @click="this.dialogVisible = true" color="#fff">
-									<component :is="'Delete'">
-									</component>
-								</el-icon>
-							</div> -->
-
 						</div>
 						<div v-show="currentIndex === index" style="top: -3px;left: -3px;cursor: se-resize"
 							class="resizeTag" v-resize="{key:'lt',index:index}" />
@@ -370,6 +359,10 @@
 </script>
 
 <style>
+	.header_set_item {
+		cursor: pointer;
+	}
+
 	.set {
 		display: flex;
 		justify-content: space-between;
@@ -439,6 +432,7 @@
 	.el-container {
 		height: 100vh;
 		overflow: hidden;
+		position: relative;
 	}
 
 	.el-header,
@@ -458,6 +452,7 @@
 	}
 
 	.el-main {
+		padding: 0px !important;
 		color: #333;
 		text-align: center;
 		line-height: 160px;
