@@ -63,7 +63,7 @@
 		</el-row>
 	</div>
 	<el-dialog v-model="dialogVisible" title="提示" width="30%" :before-close="handleClose">
-		<span>是否确认删除该元素</span>
+		<span>是否确认删除该图层</span>
 		<template #footer>
 			<span class="dialog-footer">
 				<el-button @click="dialogVisible = false">取消</el-button>
@@ -176,8 +176,7 @@
 	}
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
 	.selectedItem {
 		line-height: 45px;
 		cursor: pointer;
@@ -204,7 +203,7 @@
 
 	.top_tab {
 		position: fixed;
-		width: 200px;
+		width: 214px;
 		height: 40px;
 		text-align: center;
 		line-height: 40px;
@@ -212,5 +211,9 @@
 		z-index: 7;
 		background: #353f50;
 		box-shadow: 0 1px 3px #2b3340;
+
+		.no_active {
+			background: #3F4B5F;
+		}
 	}
 </style>

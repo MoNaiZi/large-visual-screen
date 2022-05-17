@@ -10,13 +10,13 @@
 						<div class="header_set_item">导入</div>
 						<div class="header_set_item">导出</div>
 						<div class="header_set_item" @click="removeList">
-							<el-icon>
+							<el-icon :size="22">
 								<component :is="'Delete'">
 								</component>
 							</el-icon>
 						</div>
-						<div class="header_set_item">
-							<el-icon>
+						<div class="header_set_item" @click="this.dialogVisible = true">
+							<el-icon :size="22">
 								<component :is="'Tools'">
 								</component>
 							</el-icon>
@@ -81,22 +81,57 @@
 				</el-main>
 			</el-container>
 		</el-container>
-		<!-- 		<el-dialog v-model="dialogVisible" title="提示" width="30%" :before-close="handleClose">
-			<span>是否确认删除该元素</span>
+		<el-dialog v-model="dialogVisible" title="界面设置" width="30%">
+			<div class="dialog_main">
+				<el-form ref="formRef" label-width="80px" label-position="left">
+					<el-form-item label="标题" prop="age">
+						<el-input type="text" autocomplete="off" />
+					</el-form-item>
+					<el-form-item label="屏幕宽">
+						<el-input-number v-model="num" :min="1" @change="handleChange" />
+					</el-form-item>
+					<el-form-item label="屏幕高">
+						<el-input-number v-model="num" :min="1" @change="handleChange" />
+					</el-form-item>
+					<el-form-item label="显示比例">
+						<el-select v-model="scale" placeholder="请选择" style="width: 100%" @change="scaleChange">
+							<el-option v-for="item in scaleOptions" :key="item.value" :label="item.label"
+								:value="item.value" />
+						</el-select>
+					</el-form-item>
+					<el-form-item label="背景颜色">
+						<el-color-picker v-model="designData.bgColor" show-alpha />
+					</el-form-item>
+					<el-form-item label="背景图片">
+						<div v-if="designData.bgImg" style="width: 100%;height: 100%;position: relative">
+							<img :src="fileUrl+'/file/img/'+designData.bgImg" style="width: 100%;height: 100%;" />
+							<i style="position: absolute;z-index: 6;right: 0;font-size: 20px;color: #FFCCCC"
+								class="el-icon-delete" @click.stop="handleRemove"></i>
+						</div>
+						<div v-else class="uploadItem" @click="showGallery">
+							<el-icon style="font-size: 40px;color: #aaa">
+								<component :is="'Plus'">
+								</component>
+							</el-icon>
+						</div>
+					</el-form-item>
+				</el-form>
+			</div>
 			<template #footer>
 				<span class="dialog-footer">
 					<el-button @click="dialogVisible = false">取消</el-button>
 					<el-button type="primary" @click="remove">确定</el-button>
 				</span>
 			</template>
-		</el-dialog> -->
+		</el-dialog>
 		<item-settings :currentItem="currentItem" ref="itemSettings"></item-settings>
 	</div>
 </template>
 
 <script>
 	import {
-		ElMessageBox
+		ElMessageBox,
+		ElMessage
 	} from 'element-plus'
 	import sidebar from '@/components/sidebar'
 	import options from '@/utils/options'
@@ -129,6 +164,23 @@
 		},
 		data() {
 			return {
+				scaleOptions: [{
+						value: '21*9',
+						label: '30%'
+					},
+					{
+						value: '18*9',
+						label: '50%'
+					},
+					{
+						value: '16*10',
+						label: '70%'
+					},
+					{
+						value: '16*10',
+						label: '100%'
+					}
+				],
 				dialogVisible: false,
 				mainId: this.$createId(),
 				designData: {
@@ -154,11 +206,32 @@
 
 		},
 		mounted() {
-			// let main = document.getElementById(this.mainId)
-			// this.mainW = main.offsetWidth
-			// this.mainH = main.offsetHeight
+			let main = document.getElementById('mainId')
+			this.mainW = main.offsetWidth
+			this.mainH = main.offsetHeight
 		},
 		methods: {
+			removeList() {
+				const that = this
+				ElMessageBox.alert('是否清空所有图层', {
+					confirmButtonText: '确认',
+					callback: (action) => {
+						let message = '清空取消'
+						let type = 'info '
+						if (action === 'confirm') {
+							message = '清空成功'
+							type = 'success'
+							that.list = []
+							that.currentIndex = -1
+							that.currentItem = {}
+						}
+						ElMessage({
+							type,
+							message,
+						})
+					},
+				})
+			},
 			dblclick(index) {
 				console.log('双击·')
 				this.list[index].options.edite = true
@@ -371,6 +444,19 @@
 </script>
 
 <style lang="scss">
+	.dialog_main {
+		height: 50vh;
+
+		.uploadItem {
+			width: 120px;
+			height: 120px;
+			text-align: center;
+			line-height: 150px;
+			border: 1px solid #ddd;
+			cursor: pointer
+		}
+	}
+
 	.set {
 		display: flex;
 		justify-content: space-between;
@@ -425,9 +511,6 @@
 		z-index: 100
 	}
 
-	.no_active {
-		background: #3F4B5F;
-	}
 
 	.el-tabs__content {
 		padding: 32px;
