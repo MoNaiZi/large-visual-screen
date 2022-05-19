@@ -10,7 +10,12 @@ function updateComponentStatus(that, refName, dataKey = "refreshFlagKey") {
 
 function getData(option) {
 	if (option && option.cptDataForm) {
-		return JSON.parse(option.cptDataForm.dataText)
+		try {
+			return JSON.parse(option.cptDataForm.dataText)
+		} catch (err) {
+			return option.cptDataForm.dataText
+		}
+
 	}
 	return {}
 }

@@ -2,7 +2,14 @@
 </template>
 
 <script>
+	export default {
+		ddata() {
+			return {
+
+			}
+		}
+	}
 </script>
 
-<style>
+<style lang="scss">
 </style>

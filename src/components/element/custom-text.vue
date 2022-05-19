@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div  style="width: 100%;height: 100%">
 		<div v-if="!cptData.edite" style="width: 100%;height: 100%" :style="[main_style]">
 			{{cptData.cptDataForm.dataText}}
 		</div>

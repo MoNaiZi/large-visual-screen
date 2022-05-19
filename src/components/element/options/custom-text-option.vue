@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<el-form label-width="90px">
+		<el-form label-width="70px" label-position="left">
 			<el-form-item label="字体">
 				<el-select v-model="data.textFamily">
 					<el-option v-for="(item,index) in textFamilyList" :key="index+item" :label="item" :value="item" />

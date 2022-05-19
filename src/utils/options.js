@@ -71,8 +71,8 @@ export default {
 					trigger: 'hover',
 					fit: 'cover',
 					imgUrls: [
-						require('@/assets/readme/test.png'),
-						require('@/assets/readme/options.png')
+						require('@/assets/img.png'),
+						require('@/assets/logo.png')
 					],
 				}
 			},

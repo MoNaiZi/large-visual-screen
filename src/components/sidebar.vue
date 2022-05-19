@@ -94,6 +94,14 @@
 			},
 			selectIndex: Number
 		},
+		watch: {
+			'selectList': {
+				deep: true,
+				handler() {
+					this.list = this.selectList
+				}
+			}
+		},
 		data() {
 			return {
 				list: this.selectList,

@@ -11,8 +11,7 @@
 		</div>
 		<transition appear name="configTs">
 			<div v-show="configBarShow">
-				<el-row style="position: fixed;width: 260px;height:450px;z-index: 1802;
-      bottom: 84px;right: 30px;border-radius: 6px;background: rgba(228,230,236,.9);border: 1px solid #3F4B5F">
+				<el-row class="main">
 					<div v-drag class="title">
 						<div>
 							<div>组件属性</div>
@@ -206,29 +205,55 @@
 	}
 </script>
 
-<style>
-	.set_item{
-		margin: 10px;
+<style lang="scss">
+	.main {
+		position: fixed !important;
+		width: 260px;
+		height: 450px;
+		z-index: 1802;
+		bottom: 84px;
+		right: 30px;
+		border-radius: 6px;
+		background: rgba(228, 230, 236, .9);
+		border: 1px solid #3F4B5F;
+
+		.title {
+			display: flex;
+			width: 100%;
+			justify-content: space-between;
+			padding: 10px;
+			background: #3F4B5F;
+			color: #fff;
+			height: 26px;
+		}
+
+		.set_item {
+			margin: 10px;
+		}
+
+		.el-tabs {
+			height: 398px;
+			width: 100%;
+		}
+
+		.customForm {
+			width: 95%;
+			padding: 0 6px 0 4px;
+			height: 345px;
+			overflow: auto
+		}
 	}
+
 	.el-tabs__content {
 		padding: 0px !important;
 		font-size: 26px !important;
 	}
 
 	.el-input__inner {
-		height: 33px !important;
+		height: 36px !important;
 		font-size: 15px !important;
 	}
 
-	.title {
-		display: flex;
-		width: 100%;
-		justify-content: space-between;
-		padding: 10px;
-		background: #3F4B5F;
-		color: #fff;
-		height: 26px;
-	}
 
 	.cptTitle:hover {
 		cursor: move
@@ -240,17 +265,7 @@
 		margin-top: -7px;
 	}
 
-	.el-tabs {
-		height: 398px;
-		width: 100%;
-	}
 
-	.customForm {
-		width: 100%;
-		padding: 0 6px 0 4px;
-		height: 333px;
-		overflow: auto
-	}
 
 	.configTs-enter-active,
 	.configTs-leave-active {

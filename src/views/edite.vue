@@ -36,71 +36,70 @@
 						@selectIndexFn="selectItem" @changeCurrentItem="changeCurrentItem"></sidebar>
 				</el-aside>
 
-				<el-main id='mainId' @dragover="allowDrop" @drop="drop" :style="{
-					background: 'url(' + defaultBg + ') repeat',
-					transform: 'scale(' + containerScale + ')'
-				}" @click.self="selectItem(-1)">
-					<div style="height: 10px;position: fixed;width: 100%;">
+				<el-main :id='mainId'>
+					<div class="ScaleMarkX">
 						<ScaleMarkX />
 					</div>
-					<div style="width: 10px;height: 100%;">
+					<div class="ScaleMarkY">
 						<ScaleMarkY />
 					</div>
-					<div v-for="(item,index) in list" :key="index" class="cptDiv" @mousedown.stop="selectItem(index)"
-						:style="[cptDiv_fn(item,index)]">
-						<div v-show="currentIndex === index" class="ScaleMarkX"
-							:style="{width:1920*containerScale+'px'}"></div>
-						<div v-show="currentIndex === index" class="ScaleMarkY"
-							:style="{height:1920*containerScale / designData.scaleX * designData.scaleY+'px'}"></div>
+					<div class="wrap" @dragover="allowDrop" @drop="drop" :style="[setWrap_style]"
+						@click.self="selectItem(-1)">
+						<div v-for="(item,index) in list" :key="index" class="cptDiv" @mousedown="selectItem(index)"
+							:style="[cptDiv_fn(item,index)]">
+							<div v-show="currentIndex === index" class="lineX"></div>
+							<div v-show="currentIndex === index" class="lineY"></div>
 
-						<div v-resize="{key:'move',index:index}" @dblclick.stop="dblclick(index)" class="activeMask"
-							:style="{border:currentIndex === index?'1px solid #B6BFCE':'',zIndex:(item.options||{}).edite?0:100}" />
-						<div style="width: 100%;height: 100%;position: relative;">
-							<component :is="item.name" :ref="item.name+index" :width="Math.round(item.w)"
-								:height="Math.round(item.h)" :option="item.options">
-							</component>
+							<div v-resize="{key:'move',index:index}" @dblclick.stop="dblclick(index)" class="activeMask"
+								:style="{border:currentIndex === index?'1px solid #B6BFCE':'',zIndex:(item.options||{}).edite?0:100}" />
+							<div style="width: 100%;height: 100%;position: relative;">
+								<component :is="item.name" :ref="item.name+index" :width="Math.round(item.w)"
+									:height="Math.round(item.h)" :option="item.options">
+								</component>
+							</div>
+							<div v-show="currentIndex === index" style="top: -3px;left: -3px;cursor: se-resize"
+								class="resizeTag" v-resize="{key:'lt',index:index}" />
+							<div v-show="currentIndex === index" style="top: -3px;left: 48%;cursor: s-resize"
+								class="resizeTag" v-resize="{key:'t',index:index}" />
+							<div v-show="currentIndex === index" style="top: -3px;right: -4px;cursor: ne-resize"
+								class="resizeTag" v-resize="{key:'rt',index:index}" />
+							<div v-show="currentIndex === index" style="top: 48%;right: -4px;cursor: w-resize"
+								class="resizeTag" v-resize="{key:'r',index:index}" />
+							<div v-show="currentIndex === index" style="bottom: -4px;right: -4px;cursor: se-resize"
+								class="resizeTag" v-resize="{key:'rb',index:index}" />
+							<div v-show="currentIndex === index" style="bottom: -4px;left: 48%;cursor: s-resize"
+								class="resizeTag" v-resize="{key:'b',index:index}" />
+							<div v-show="currentIndex === index" style="bottom: -4px;left: -3px;cursor: ne-resize"
+								class="resizeTag" v-resize="{key:'lb',index:index}" />
+							<div v-show="currentIndex === index" style="top: 48%;left: -3px;cursor: w-resize"
+								class="resizeTag" v-resize="{key:'l',index:index}" />
 						</div>
-						<div v-show="currentIndex === index" style="top: -3px;left: -3px;cursor: se-resize"
-							class="resizeTag" v-resize="{key:'lt',index:index}" />
-						<div v-show="currentIndex === index" style="top: -3px;left: 48%;cursor: s-resize"
-							class="resizeTag" v-resize="{key:'t',index:index}" />
-						<div v-show="currentIndex === index" style="top: -3px;right: -4px;cursor: ne-resize"
-							class="resizeTag" v-resize="{key:'rt',index:index}" />
-						<div v-show="currentIndex === index" style="top: 48%;right: -4px;cursor: w-resize"
-							class="resizeTag" v-resize="{key:'r',index:index}" />
-						<div v-show="currentIndex === index" style="bottom: -4px;right: -4px;cursor: se-resize"
-							class="resizeTag" v-resize="{key:'rb',index:index}" />
-						<div v-show="currentIndex === index" style="bottom: -4px;left: 48%;cursor: s-resize"
-							class="resizeTag" v-resize="{key:'b',index:index}" />
-						<div v-show="currentIndex === index" style="bottom: -4px;left: -3px;cursor: ne-resize"
-							class="resizeTag" v-resize="{key:'lb',index:index}" />
-						<div v-show="currentIndex === index" style="top: 48%;left: -3px;cursor: w-resize"
-							class="resizeTag" v-resize="{key:'l',index:index}" />
 					</div>
-
 				</el-main>
+
 			</el-container>
 		</el-container>
 		<el-dialog v-model="dialogVisible" title="界面设置" width="30%">
 			<div class="dialog_main">
 				<el-form ref="formRef" label-width="80px" label-position="left">
 					<el-form-item label="标题" prop="age">
-						<el-input type="text" autocomplete="off" />
+						<el-input type="text" v-model="designData.title" autocomplete="off" />
 					</el-form-item>
 					<el-form-item label="屏幕宽">
-						<el-input-number v-model="num" :min="1" @change="handleChange" />
+						<el-input-number v-model="designData.mainW" :min="1" @change="handleMainW" />
 					</el-form-item>
 					<el-form-item label="屏幕高">
-						<el-input-number v-model="num" :min="1" @change="handleChange" />
+						<el-input-number v-model="designData.mainH" :min="1" @change="handleMainH" />
 					</el-form-item>
 					<el-form-item label="显示比例">
-						<el-select v-model="scale" placeholder="请选择" style="width: 100%" @change="scaleChange">
+						<el-select v-model="designData.scale" placeholder="请选择" style="width: 100%"
+							@change="scaleChange">
 							<el-option v-for="item in scaleOptions" :key="item.value" :label="item.label"
 								:value="item.value" />
 						</el-select>
 					</el-form-item>
 					<el-form-item label="背景颜色">
-						<el-color-picker v-model="designData.bgColor" show-alpha />
+						<el-color-picker v-model="designData.bgColor" @active-change="changeBgColor" show-alpha />
 					</el-form-item>
 					<el-form-item label="背景图片">
 						<div v-if="designData.bgImg" style="width: 100%;height: 100%;position: relative">
@@ -119,8 +118,8 @@
 			</div>
 			<template #footer>
 				<span class="dialog-footer">
-					<el-button @click="dialogVisible = false">取消</el-button>
-					<el-button type="primary" @click="remove">确定</el-button>
+					<!-- <el-button @click="dialogVisible = false">取消</el-button> -->
+					<el-button type="primary" @click="this.dialogVisible = false">确定</el-button>
 				</span>
 			</template>
 		</el-dialog>
@@ -148,6 +147,18 @@
 			ScaleMarkY
 		},
 		computed: {
+			setWrap_style() {
+				let designData = this.designData
+				let defaultBg = this.defaultBg
+				let containerScale = this.containerScale
+				let result = {
+					width: designData.mainW + 'px',
+					height: designData.mainH + 'px',
+					background: designData.bgColor ? designData.bgColor : 'url(' + defaultBg + ') repeat',
+					transform: 'scale(' + containerScale + ')',
+				}
+				return result
+			},
 			elMainFn() {
 				let {
 					defaultBg,
@@ -165,27 +176,32 @@
 		data() {
 			return {
 				scaleOptions: [{
-						value: '21*9',
+						value: '0.3',
 						label: '30%'
 					},
 					{
-						value: '18*9',
+						value: '0.5',
 						label: '50%'
 					},
 					{
-						value: '16*10',
+						value: '0.7',
 						label: '70%'
 					},
 					{
-						value: '16*10',
+						value: '1',
 						label: '100%'
 					}
 				],
 				dialogVisible: false,
 				mainId: this.$createId(),
 				designData: {
+					title: '我的大屏',
 					scaleX: 16,
 					scaleY: 9,
+					mainW: 0,
+					mainH: 0,
+					scale: '100%',
+					bgColor: ''
 				},
 				currentIndex: 0,
 				currentComponents: {
@@ -199,18 +215,73 @@
 				currentItem: {},
 				clickTime: 0,
 				mainW: 0,
-				mainH: 0
+				mainH: 0,
+				wrap: {}
 			}
 		},
 		created() {
 
 		},
 		mounted() {
-			let main = document.getElementById('mainId')
-			this.mainW = main.offsetWidth
-			this.mainH = main.offsetHeight
+			this.wrap = document.getElementById(this.mainId)
+			if (this.wrap) {
+				this.designData.mainW = this.wrap.offsetWidth
+				this.designData.mainH = this.wrap.offsetHeight
+			}
+			const wrap = this.wrap
+			document.onkeydown = function(e) {
+				let code = e.code
+				if (code === 'Space') {
+					e.preventDefault()
+					console.log('e', e)
+					wrap.style.cursor = 'move'
+					// document.onmousemove = function(me) {
+					// 	console.log('按下移动', me)
+					// 	let options = {
+					// 		top: me.y,
+					// 		left: me.x,
+					// 		behavior: 'smooth'
+					// 	}
+					// 	wrap.scrollTo(options)
+					// }
+					// document.onmouseup = function(me) {
+					// 	console.log('松开鼠标', me)
+					// 	wrap.style.cursor = 'default'
+					// 	document.onmousemove = document.onmouseup = null;
+					// }
+				}
+			}
 		},
 		methods: {
+			press() {
+				const wrap = this.wrap
+				document.onmousemove = function(me) {
+					console.log('按下移动', me)
+					let options = {
+						left: me.x,
+						// behavior: 'smooth'
+					}
+					wrap.scrollTo(options)
+				}
+				document.onmouseup = function(me) {
+					console.log('松开鼠标', me)
+					document.onmousemove = document.onmouseup = null;
+				}
+			},
+			changeBgColor(value) {
+				this.designData.bgColor = value
+			},
+			scaleChange(value) {
+				this.containerScale = value
+				console.log('wrap', this.wrap)
+			},
+			handleMainW(value) {
+				this.designData.mainW = value
+
+			},
+			handleMainH(value) {
+				this.designData.mainH = value
+			},
 			removeList() {
 				const that = this
 				ElMessageBox.alert('是否清空所有图层', {
@@ -276,6 +347,7 @@
 				return result
 			},
 			selectItem(index) {
+				console.log('选择', index)
 				if (index >= 0) {
 					this.currentItem = this.list[index]
 				} else {
@@ -444,6 +516,21 @@
 </script>
 
 <style lang="scss">
+	@mixin ScaleMarkXY($w, $h) {
+		position: fixed;
+		z-index: 100;
+		width: $w;
+		height: $h;
+	}
+
+	.ScaleMarkX {
+		@include ScaleMarkXY(100%, 10px);
+	}
+
+	.ScaleMarkY {
+		@include ScaleMarkXY(10px, 100%);
+	}
+
 	.dialog_main {
 		height: 50vh;
 
@@ -473,14 +560,14 @@
 		width: 170px;
 	}
 
-	.ScaleMarkY {
+	.lineY {
 		position: fixed;
 		border-right: 3px dashed #808080;
 		height: 100%;
 		top: 0px;
 	}
 
-	.ScaleMarkX {
+	.lineX {
 		position: fixed;
 		border-top: 3px dashed #808080;
 		width: 100%;
@@ -498,17 +585,17 @@
 
 	.cptDiv {
 		position: absolute;
+
+		.activeMask {
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			z-index: 100
+		}
 	}
 
 	.cptDiv:hover .delTag {
 		display: block
-	}
-
-	.activeMask {
-		width: 100%;
-		height: 100%;
-		position: absolute;
-		z-index: 100
 	}
 
 
@@ -554,6 +641,14 @@
 		position: relative;
 		margin: 0px;
 		background-size: 100% 100%;
-		transform-origin: 0 0
+		overflow: hidden;
+		transform-origin: 0 0;
+		background: #000000;
+
+		.wrap {
+			position: relative;
+			overflow: hidden;
+			// cursor: default;
+		}
 	}
 </style>
