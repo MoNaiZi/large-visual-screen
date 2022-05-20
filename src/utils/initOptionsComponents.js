@@ -4,6 +4,7 @@ import custom_carousel_option from '@/components/element/options/custom-carousel
 import custom_iframe_option from '@/components/element/options/custom-iframe-option'
 import custom_image_option from '@/components/element/options/custom-image-option'
 import custom_text_option from '@/components/element/options/custom-text-option'
+
 let elementList = [
 	custom_button_option,
 	custom_carousel_option,
@@ -40,6 +41,7 @@ import chart_mapGc_option from '@/components/echarts/options/chart-mapGc-option'
 import chart_mapMigrate_option from '@/components/echarts/options/chart-mapMigrate-option'
 import chart_pie_option from '@/components/echarts/options/chart-pie-option'
 import chart_tdColumn_option from '@/components/echarts/options/chart-tdColumn-option'
+import chart_funnel_option from '@/components/echarts/options/chart-funnel-option'
 let charts = [
 	chart_clock_option,
 	chart_column_option,
@@ -48,7 +50,8 @@ let charts = [
 	chart_mapGc_option,
 	chart_mapMigrate_option,
 	chart_pie_option,
-	chart_tdColumn_option
+	chart_tdColumn_option,
+	chart_funnel_option
 ]
 
 function main(app, name) {

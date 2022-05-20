@@ -14,7 +14,7 @@
 		icon: 'Timer',
 		initWidth: 256,
 		initHeight: 191,
-		group: 'chart',
+		group: 'basic',
 		props: {
 			width: Number,
 			height: Number,

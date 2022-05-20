@@ -10,7 +10,7 @@
 export default {
   name: "custom-image",
   title: '图片',
-  icon: 'View',
+  icon: 'Picture',
   group:'basic',
   props: {option: Object},
   data() {

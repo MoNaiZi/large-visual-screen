@@ -1,0 +1,127 @@
+<template>
+	<div :id="id" style="width:100%;height:100%;"></div>
+</template>
+
+<script>
+	import {
+		markRaw
+	} from 'vue'
+	export default {
+		name: 'chart-funnel',
+		title: '漏斗图',
+		icon: 'Filter',
+		group: 'chart',
+		initWidth: 400,
+		initHeight: 400,
+		props: {
+			option: Object,
+			width: [String, Number],
+			height: [String, Number]
+		},
+		watch: {
+			width() {
+				this.chart.resize();
+			},
+			height() {
+				this.chart.resize();
+			}
+		},
+		data() {
+			return {
+				id: this.$createId(),
+				data: [],
+				chart: {}
+			}
+		},
+		created() {
+			this.data = this.$getData(this.option)
+		},
+		mounted() {
+			this.chart = markRaw(this.$echarts.init(document.getElementById(this.id)))
+			this.generate()
+		},
+		methods: {
+			generate() {
+				let data = this.data
+				let attribute = this.option.attribute
+				let dataNameList = data.map(item => item.name)
+				let option = {
+					title: {
+						text: attribute.title,
+						bottom: 10,
+						x: 'center',
+						textStyle: {
+							color: '#fff',
+							fontSize: 18
+						}
+					},
+					tooltip: {
+						trigger: 'item',
+						formatter: '{a} <br/>{b} : {c}%'
+					},
+					// toolbox: {
+					// 	feature: {
+					// 		dataView: {
+					// 			readOnly: false
+					// 		},
+					// 		restore: {},
+					// 		saveAsImage: {}
+					// 	}
+					// },
+					legend: {
+						data: dataNameList,
+						textStyle: {
+							color: '#fff',
+							fontSize: 15,
+							lineHeight: 50,
+							marginTop: 20,
+						}
+					},
+
+					series: [{
+						name: 'Funnel',
+						type: 'funnel',
+						left: '10%',
+						top: 60,
+						bottom: 60,
+						width: '80%',
+						min: 0,
+						max: 100,
+						minSize: '0%',
+						maxSize: '100%',
+						sort: 'descending',
+						gap: 10,
+						label: {
+							show: true,
+							position: 'inside',
+							fontSize: 15
+						},
+						labelLine: {
+							length: 10,
+
+							lineStyle: {
+								width: 1,
+								type: 'solid'
+							}
+						},
+						itemStyle: {
+
+							borderColor: '#42b98300',
+							// borderWidth: 20,
+						},
+						emphasis: {
+							label: {
+								fontSize: 30
+							}
+						},
+						data
+					}]
+				};
+				this.chart.setOption(option)
+			}
+		}
+	}
+</script>
+
+<style>
+</style>

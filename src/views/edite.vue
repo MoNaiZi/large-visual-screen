@@ -50,12 +50,18 @@
 							<div v-show="currentIndex === index" class="lineX"></div>
 							<div v-show="currentIndex === index" class="lineY"></div>
 
-							<div v-resize="{key:'move',index:index}" @dblclick.stop="dblclick(index)" class="activeMask"
-								:style="{border:currentIndex === index?'1px solid #B6BFCE':'',zIndex:(item.options||{}).edite?0:100}" />
-							<div style="width: 100%;height: 100%;position: relative;">
+							<div v-show="!(item.options||{}).edite" v-resize="{key:'move',index:index}"
+								@dblclick.stop="dblclick(index)" class="activeMask" style="z-index:100" />
+							<div class="component_main" :style="{border:currentIndex === index?'1px solid #B6BFCE':''}">
 								<component :is="item.name" :ref="item.name+index" :width="Math.round(item.w)"
 									:height="Math.round(item.h)" :option="item.options">
 								</component>
+
+								<el-icon @click.stop="edite(index)" v-show="currentIndex === index" 
+									style="position: absolute;color: #fff; top: 0px;right: 0px;cursor: pointer;z-index:110;">
+									<component :is="(item.options||{}).edite?'View':'Hide'">
+									</component>
+								</el-icon>
 							</div>
 							<div v-show="currentIndex === index" style="top: -3px;left: -3px;cursor: se-resize"
 								class="resizeTag" v-resize="{key:'lt',index:index}" />
@@ -253,20 +259,19 @@
 			}
 		},
 		methods: {
-			press() {
-				const wrap = this.wrap
-				document.onmousemove = function(me) {
-					console.log('按下移动', me)
-					let options = {
-						left: me.x,
-						// behavior: 'smooth'
-					}
-					wrap.scrollTo(options)
+			edite(index) {
+				let result = this.list[index].options.edite ? false : true
+				this.list[index].options.edite = result
+				let message = '开启操作'
+				let type = 'success'
+				if (!result) {
+					message = '关闭操作'
+					type = ''
 				}
-				document.onmouseup = function(me) {
-					console.log('松开鼠标', me)
-					document.onmousemove = document.onmouseup = null;
-				}
+				ElMessage({
+					message,
+					type
+				})
 			},
 			changeBgColor(value) {
 				this.designData.bgColor = value
@@ -303,10 +308,10 @@
 					},
 				})
 			},
-			dblclick(index) {
+			dblclick() {
 				console.log('双击·')
-				this.list[index].options.edite = true
-				this.currentIndex = index
+				// this.list[index].options.edite = true
+				// this.currentIndex = index
 			},
 			changeCurrentItem({
 				obj,
@@ -490,7 +495,7 @@
 								case 'l':
 									w = ltX - meScaleClientX;
 									x = meScaleClientX - disX;
-									console.log('x', x, 'w', w)
+									// console.log('x', x, 'w', w)
 									el.parentNode.style.left = x + 'px';
 									break;
 							}
@@ -516,6 +521,12 @@
 </script>
 
 <style lang="scss">
+	.component_main {
+		width: 100%;
+		height: 100%;
+		position: relative;
+	}
+
 	@mixin ScaleMarkXY($w, $h) {
 		position: fixed;
 		z-index: 100;

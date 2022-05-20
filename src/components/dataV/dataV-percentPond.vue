@@ -9,7 +9,7 @@
 		icon: 'Film',
 		initWidth: 300,
 		initHeight: 100,
-		group: 'basic',
+		group: 'chart',
 		props: {
 			width: Number,
 			height: Number,

@@ -9,7 +9,7 @@
 		icon: 'DataAnalysis',
 		initWidth: 256,
 		initHeight: 80,
-		group: 'basic',
+		group: 'chart',
 		props: {
 			width: Number,
 			height: Number,
