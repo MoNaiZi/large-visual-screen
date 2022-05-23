@@ -19,6 +19,12 @@
 			height: [String, Number]
 		},
 		watch: {
+			'option.attribute': {
+				deep: true,
+				handler() {
+					this.generate()
+				}
+			},
 			width() {
 				this.chart.resize();
 			},
@@ -51,8 +57,8 @@
 						bottom: 10,
 						x: 'center',
 						textStyle: {
-							color: '#fff',
-							fontSize: 18
+							color: attribute.titleColor,
+							fontSize: attribute.titleFontSize
 						}
 					},
 					tooltip: {
@@ -90,11 +96,11 @@
 						minSize: '0%',
 						maxSize: '100%',
 						sort: 'descending',
-						gap: 10,
+						gap: attribute.gap,
 						label: {
 							show: true,
 							position: 'inside',
-							fontSize: 15
+							fontSize: attribute.itemFontSize
 						},
 						labelLine: {
 							length: 10,
@@ -105,9 +111,8 @@
 							}
 						},
 						itemStyle: {
-
-							borderColor: '#42b98300',
-							// borderWidth: 20,
+							borderColor: attribute.itemBorderColor,
+							borderWidth: attribute.itemBorderWidth,
 						},
 						emphasis: {
 							label: {

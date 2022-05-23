@@ -136,10 +136,10 @@ export default {
 					title: '漏斗图',
 					titleFontSize: 18,
 					titleColor: '#fff',
-					gap: 2, //各类型之间的间距
+					gap: 10, //各类型之间的间距
 					itemBorderWidth: 5,
-					itemBorderColor: '#fff',
-					itemFontSize: 15
+					itemBorderColor: '#42b98300',
+					itemFontSize: 13
 				},
 				cptDataForm: {
 					dataText: [{

@@ -162,8 +162,8 @@
 			}
 		},
 		methods: {
-			changeComponent(data) {
-				this.currentitem.options.attribute = data
+			changeComponent() {
+				// this.currentitem.options.attribute = data
 			},
 			changeDataSource(val) { //静态数据不显示轮询按钮
 				if (val === 1) {
