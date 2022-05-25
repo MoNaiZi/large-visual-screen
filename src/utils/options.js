@@ -4,6 +4,16 @@ export default {
 		icon: '',
 		opened: true,
 		options: {
+			'chart-clock-option': {
+				attribute: {
+					axisLineWidth: 3,
+					axisLabelSize: 16,
+					fontColor: "#ffffff",
+					hourPointerColor: '#C0911F',
+					axisLabelDistance: 8,
+					splitLineDistance: 4,
+				}
+			},
 			'dataV-border-option': {
 				attribute: {
 					borderType: 'dv-border-box-1',
@@ -100,23 +110,6 @@ export default {
 						fontSize: 30,
 						fill: '#3de7c9'
 					}
-				}
-			},
-			'dataV-percentPond-option': {
-				cptDataForm: {
-					dataText: '66',
-					dataSource: 1,
-					pollTime: 0
-				},
-				attribute: {
-					value: 60,
-					borderWidth: 2,
-					borderRadius: 4,
-					borderGap: 3,
-					lineWidth: 3,
-					lineSpace: 2,
-					localGradient: true,
-					colors: ['#01c4f9', '#c135ff'],
 				}
 			},
 			'custom-iframe-option': {
@@ -290,14 +283,21 @@ export default {
 					pollTime: 0
 				},
 			},
-			'chart-clock-option': {
+			'dataV-percentPond-option': {
+				cptDataForm: {
+					dataText: '66',
+					dataSource: 1,
+					pollTime: 0
+				},
 				attribute: {
-					axisLineWidth: 3,
-					axisLabelSize: 16,
-					fontColor: "#ffffff",
-					hourPointerColor: '#C0911F',
-					axisLabelDistance: 8,
-					splitLineDistance: 4,
+					value: 60,
+					borderWidth: 2,
+					borderRadius: 4,
+					borderGap: 3,
+					lineWidth: 3,
+					lineSpace: 2,
+					localGradient: true,
+					colors: ['#01c4f9', '#c135ff'],
 				}
 			},
 			'dataV-scrollTable-option': {

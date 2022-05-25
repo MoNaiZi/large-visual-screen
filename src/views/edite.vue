@@ -25,7 +25,7 @@
 							<el-button type="primary" plain>保存</el-button>
 						</div>
 						<div>
-							<el-button type="primary" plain>预览</el-button>
+							<el-button type="primary" @click="toPreview" plain>预览</el-button>
 						</div>
 					</div>
 				</div>
@@ -57,7 +57,7 @@
 									:height="Math.round(item.h)" :option="item.options">
 								</component>
 
-								<el-icon @click.stop="edite(index)" v-show="currentIndex === index" 
+								<el-icon @click.stop="edite(index)" v-show="currentIndex === index"
 									style="position: absolute;color: #fff; top: 0px;right: 0px;cursor: pointer;z-index:110;">
 									<component :is="(item.options||{}).edite?'View':'Hide'">
 									</component>
@@ -87,23 +87,28 @@
 		</el-container>
 		<el-dialog v-model="dialogVisible" title="界面设置" width="30%">
 			<div class="dialog_main">
-				<el-form ref="formRef" label-width="80px" label-position="left">
+				<el-form ref="formRef" label-width="100px" label-position="left">
 					<el-form-item label="标题" prop="age">
 						<el-input type="text" v-model="designData.title" autocomplete="off" />
 					</el-form-item>
-					<el-form-item label="屏幕宽">
-						<el-input-number v-model="designData.mainW" :min="1" @change="handleMainW" />
+					<el-form-item label="屏幕自适应">
+						<el-switch v-model="designData.isAuto" />
 					</el-form-item>
-					<el-form-item label="屏幕高">
-						<el-input-number v-model="designData.mainH" :min="1" @change="handleMainH" />
-					</el-form-item>
-					<el-form-item label="显示比例">
-						<el-select v-model="designData.scale" placeholder="请选择" style="width: 100%"
-							@change="scaleChange">
-							<el-option v-for="item in scaleOptions" :key="item.value" :label="item.label"
-								:value="item.value" />
-						</el-select>
-					</el-form-item>
+					<template v-if="!designData.isAuto">
+						<el-form-item label="屏幕宽">
+							<el-input-number v-model="designData.mainW" :min="1" @change="handleMainW" />
+						</el-form-item>
+						<el-form-item label="屏幕高">
+							<el-input-number v-model="designData.mainH" :min="1" @change="handleMainH" />
+						</el-form-item>
+						<el-form-item label="显示比例">
+							<el-select v-model="designData.scale" placeholder="请选择" style="width: 100%"
+								@change="scaleChange">
+								<el-option v-for="item in scaleOptions" :key="item.value" :label="item.label"
+									:value="item.value" />
+							</el-select>
+						</el-form-item>
+					</template>
 					<el-form-item label="背景颜色">
 						<el-color-picker v-model="designData.bgColor" @active-change="changeBgColor" show-alpha />
 					</el-form-item>
@@ -207,7 +212,8 @@
 					mainW: 0,
 					mainH: 0,
 					scale: '100%',
-					bgColor: ''
+					bgColor: '',
+					isAuto: true,
 				},
 				currentIndex: 0,
 				currentComponents: {
@@ -220,13 +226,11 @@
 				containerScale: 1,
 				currentItem: {},
 				clickTime: 0,
-				mainW: 0,
-				mainH: 0,
 				wrap: {}
 			}
 		},
 		created() {
-
+			console.log('created')
 		},
 		mounted() {
 			this.wrap = document.getElementById(this.mainId)
@@ -259,6 +263,30 @@
 			}
 		},
 		methods: {
+			toPreview() {
+				let designData = this.designData
+				designData.defaultBg = this.defaultBg
+				designData.containerScale = this.containerScale
+				designData = encodeURIComponent(JSON.stringify(designData))
+				let list = encodeURIComponent(JSON.stringify(this.list))
+				console.log('list', list)
+				// this.$router.push({
+				// 	path: "/preview",
+				// 	query: {
+				// 		list,
+				// 		designData
+				// 	}
+				// })
+				const routeUrl = this.$router.resolve({
+					path: "/preview",
+					query: {
+						list,
+						designData
+					}
+				});
+				window.open(routeUrl.href, '_blank');
+				// 打开新标签，需要重新注册组件
+			},
 			edite(index) {
 				let result = this.list[index].options.edite ? false : true
 				this.list[index].options.edite = result
@@ -544,6 +572,7 @@
 
 	.dialog_main {
 		height: 50vh;
+		margin-bottom: 30px;
 
 		.uploadItem {
 			width: 120px;
