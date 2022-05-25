@@ -28,6 +28,6 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ### 问题记录
 ```
-
+dataV 目前只支持vue2 引入到vue3里会有一些语法报错，我们要根据报错提示自行修改
 ```
 

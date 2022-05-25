@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 function updateComponentStatus(that, refName, dataKey = "refreshFlagKey") {
 	const ringChart = that.$refs[refName]
 	if (ringChart) {
@@ -20,12 +22,18 @@ function getData(option) {
 	return {}
 }
 
-// export default {
-// 	getData,
-// 	 updateComponentStatus
-// }
+function request(url, params) {
+	console.log('url', url)
+	let baseUrl = 'http://127.168.0.0:3000/'
+	axios.get(baseUrl, {
+		params
+	}).then(res => {
+		console.log('请求回来的', res)
+	})
+}
 
-module.exports = {
+export {
 	getData,
-	updateComponentStatus
+	updateComponentStatus,
+	request
 }
