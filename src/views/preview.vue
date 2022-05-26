@@ -26,7 +26,8 @@
 					height: isAuto ? '100vh' : mainH + "px",
 					background: `url(${designData.defaultBg}) repeat`,
 					transform: `scale(${designData.containerScale})`,
-					margin: '0 auto'
+					margin: '0 auto',
+					overflow: 'hidden'
 				}
 			},
 			item_style: function() {
