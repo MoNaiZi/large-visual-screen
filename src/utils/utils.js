@@ -22,10 +22,9 @@ function getData(option) {
 	return {}
 }
 
-function request(url, params) {
-	console.log('url', url)
-	let baseUrl = 'http://127.168.0.0:3000/'
-	axios.get(baseUrl, {
+function request(url = '/', method = 'get', params) {
+	let baseUrl = 'http://127.168.0.0:3000' + url
+	axios[method](baseUrl, {
 		params
 	}).then(res => {
 		console.log('请求回来的', res)

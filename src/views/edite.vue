@@ -163,8 +163,8 @@
 				let defaultBg = this.defaultBg
 				let containerScale = this.containerScale
 				let result = {
-					width: designData.mainW + 'px',
-					height: designData.mainH + 'px',
+					// width: designData.mainW + 'px',
+					// height: designData.mainH + 'px',
 					background: designData.bgColor ? designData.bgColor : 'url(' + defaultBg + ') repeat',
 					transform: 'scale(' + containerScale + ')',
 				}
@@ -223,7 +223,7 @@
 				dom: {},
 				currentTab: 0,
 				defaultBg: require('@/assets/main_bg.png'),
-				containerScale: 1,
+				containerScale: 0.8,
 				currentItem: {},
 				clickTime: 0,
 				wrap: {}
@@ -266,7 +266,7 @@
 			toPreview() {
 				let designData = this.designData
 				designData.defaultBg = this.defaultBg
-				designData.containerScale = this.containerScale
+				designData.containerScale = designData.isAuto ? 1 : this.containerScale
 				designData = encodeURIComponent(JSON.stringify(designData))
 				let list = encodeURIComponent(JSON.stringify(this.list))
 				console.log('list', list)
@@ -687,6 +687,11 @@
 
 		.wrap {
 			position: relative;
+			left: -120px;
+			top: -26px;
+			width: 100vw;
+			height: 100vh;
+			margin: 0 auto;
 			overflow: hidden;
 			// cursor: default;
 		}
