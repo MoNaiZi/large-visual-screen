@@ -1,6 +1,6 @@
 <template>
 	<div  style="width: 100%;height: 100%">
-		<div v-if="!cptData.edite" style="width: 100%;height: 100%" :style="[main_style]">
+		<div v-if="!cptData.edite" style="width: 100%;height: 100%;word-wrap: break-word;overflow: hidden;" :style="[main_style]">
 			{{cptData.cptDataForm.dataText}}
 		</div>
 		<div v-else style="width: 100%;height: 100%" :style="[main_style]">

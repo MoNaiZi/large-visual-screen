@@ -7,7 +7,7 @@
 						<img style="width: 45px;height: 45px;margin-top:5px;" src="@/assets/logo.png" alt="">
 					</div>
 					<div style="line-height: 28px;">
-						<h3>预览显示比例{{designData.scale}}</h3>
+						<h3>编辑显示比例{{designData.scale}}</h3>
 					</div>
 					<div class="set">
 						<div class="header_set_item">导入</div>
@@ -39,7 +39,7 @@
 						@selectIndexFn="selectItem" @changeCurrentItem="changeCurrentItem"></sidebar>
 				</el-aside>
 
-				<el-main :id='mainId'>
+				<el-main :id='mainId' :style="{overflow:designData.isAuto?'hidden':'auto' }">
 					<div class="ScaleMarkX">
 						<ScaleMarkX />
 					</div>
@@ -239,6 +239,9 @@
 		},
 		created() {
 			console.log('created')
+			this.list = JSON.parse(decodeURIComponent(localStorage.getItem('list'))) || []
+			const designData = JSON.parse(decodeURIComponent(localStorage.getItem('designData')))
+			if (designData) this.designData = designData
 		},
 		mounted() {
 
@@ -261,7 +264,10 @@
 				designData.containerScale = designData.isAuto ? 1 : this.containerScale
 				designData = encodeURIComponent(JSON.stringify(designData))
 				let list = encodeURIComponent(JSON.stringify(this.list))
-				console.log('list', list)
+
+				localStorage.setItem('designData', designData);
+				localStorage.setItem('list', list);
+				// console.log('list', list)
 				// this.$router.push({
 				// 	path: "/preview",
 				// 	query: {
@@ -271,10 +277,6 @@
 				// })
 				const routeUrl = this.$router.resolve({
 					path: "/preview",
-					query: {
-						list,
-						designData
-					}
 				});
 				window.open(routeUrl.href, '_blank');
 				// 打开新标签，需要重新注册组件

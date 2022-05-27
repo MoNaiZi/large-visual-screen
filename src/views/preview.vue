@@ -53,13 +53,13 @@
 		},
 		created() {
 			console.log('this.$route.query', this.$route.query)
-			const list = JSON.parse(decodeURIComponent(this.$route.query.list))
+			const list = JSON.parse(decodeURIComponent(localStorage.getItem('list')))
 			let componentsList = [...initElementList, ...initDataV, ...initEcharts]
 			for (let item of list) {
 				let template = componentsList.find(j => j.name === item.name)
 				this.$app.component(template.name, template)
 			}
-			this.designData = JSON.parse(decodeURIComponent(this.$route.query.designData))
+			this.designData = JSON.parse(decodeURIComponent(localStorage.getItem('designData')))
 			this.list = list
 		}
 	}
