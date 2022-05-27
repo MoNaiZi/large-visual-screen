@@ -6,6 +6,9 @@
 					<div class="logo">
 						<img style="width: 45px;height: 45px;margin-top:5px;" src="@/assets/logo.png" alt="">
 					</div>
+					<div style="line-height: 28px;">
+						<h3>预览显示比例{{designData.scale}}</h3>
+					</div>
 					<div class="set">
 						<div class="header_set_item">导入</div>
 						<div class="header_set_item">导出</div>
@@ -92,7 +95,7 @@
 						<el-input type="text" v-model="designData.title" autocomplete="off" />
 					</el-form-item>
 					<el-form-item label="屏幕自适应">
-						<el-switch v-model="designData.isAuto" />
+						<el-switch @change="isAutoFn" v-model="designData.isAuto" />
 					</el-form-item>
 					<template v-if="!designData.isAuto">
 						<el-form-item label="屏幕宽">
@@ -211,7 +214,7 @@
 					scaleY: 9,
 					mainW: 0,
 					mainH: 0,
-					scale: '100%',
+					scale: '80%',
 					bgColor: '',
 					isAuto: true,
 				},
@@ -229,40 +232,29 @@
 				wrap: {}
 			}
 		},
+		watch: {
+			'containerScale': function(val) {
+				this.designData.scale = `${val*100}%`
+			}
+		},
 		created() {
 			console.log('created')
 		},
 		mounted() {
-			this.wrap = document.getElementById(this.mainId)
-			if (this.wrap) {
-				this.designData.mainW = this.wrap.offsetWidth
-				this.designData.mainH = this.wrap.offsetHeight
-			}
-			const wrap = this.wrap
-			document.onkeydown = function(e) {
-				let code = e.code
-				if (code === 'Space') {
-					e.preventDefault()
-					console.log('e', e)
-					wrap.style.cursor = 'move'
-					// document.onmousemove = function(me) {
-					// 	console.log('按下移动', me)
-					// 	let options = {
-					// 		top: me.y,
-					// 		left: me.x,
-					// 		behavior: 'smooth'
-					// 	}
-					// 	wrap.scrollTo(options)
-					// }
-					// document.onmouseup = function(me) {
-					// 	console.log('松开鼠标', me)
-					// 	wrap.style.cursor = 'default'
-					// 	document.onmousemove = document.onmouseup = null;
-					// }
-				}
-			}
+
 		},
 		methods: {
+			isAutoFn(isBool) {
+				this.containerScale = isBool ? 0.8 : 1
+				this.$nextTick(() => {
+					this.wrap = document.querySelector('.wrap')
+					if (this.wrap) {
+						this.designData.mainW = this.wrap.offsetWidth
+						this.designData.mainH = this.wrap.offsetHeight
+					}
+				})
+
+			},
 			toPreview() {
 				let designData = this.designData
 				designData.defaultBg = this.defaultBg

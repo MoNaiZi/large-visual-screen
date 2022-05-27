@@ -95,6 +95,18 @@ export default {
 					textColor: '#ff0'
 				}
 			},
+			'custom-iframe-option': {
+				attribute: {
+					url: 'https://www.rainy.pub/'
+				}
+			}
+		}
+	},
+	chart: {
+		name: '图表',
+		icon: '',
+		opened: true,
+		options: {
 			'dataV-digitalFlop-option': {
 				cptDataForm: {
 					dataText: '29999,333',
@@ -112,18 +124,6 @@ export default {
 					}
 				}
 			},
-			'custom-iframe-option': {
-				attribute: {
-					url: 'https://www.rainy.pub/'
-				}
-			}
-		}
-	},
-	chart: {
-		name: '图表',
-		icon: '',
-		opened: true,
-		options: {
 			'chart-funnel-option': {
 				attribute: {
 					title: '漏斗图',
