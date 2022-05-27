@@ -3,6 +3,9 @@
 </template>
 
 <script>
+	import {
+		markRaw
+	} from 'vue'
 	export default {
 		name: "chart-tdColumn",
 		title: "立体柱图",
@@ -39,7 +42,7 @@
 			this.cptData = this.$getData(this.option)
 		},
 		mounted() {
-			this.chart = this.$echarts.init(document.getElementById(this.id));
+			this.chart = markRaw(this.$echarts.init(document.getElementById(this.id)))
 			this.loadChart(this.option.attribute)
 		},
 		methods: {
