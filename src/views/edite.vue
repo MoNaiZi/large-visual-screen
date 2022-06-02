@@ -25,7 +25,7 @@
 							</el-icon>
 						</div>
 						<div>
-							<el-button type="primary" plain>保存</el-button>
+							<el-button type="primary" @click="save" plain>保存</el-button>
 						</div>
 						<div>
 							<el-button type="primary" @click="toPreview" plain>预览</el-button>
@@ -247,6 +247,13 @@
 
 		},
 		methods: {
+			save() {
+				this.$message({
+					message: '保存成功',
+					type: 'success'
+				});
+				this.setLocalStorage(this.designData, this.list)
+			},
 			isAutoFn(isBool) {
 				this.containerScale = isBool ? 0.8 : 1
 				this.$nextTick(() => {
@@ -258,23 +265,18 @@
 				})
 
 			},
+			setLocalStorage(designData, list) {
+				designData = encodeURIComponent(JSON.stringify(designData))
+				list = encodeURIComponent(JSON.stringify(list))
+				localStorage.setItem('designData', designData);
+				localStorage.setItem('list', list);
+			},
 			toPreview() {
 				let designData = this.designData
 				designData.defaultBg = this.defaultBg
 				designData.containerScale = designData.isAuto ? 1 : this.containerScale
-				designData = encodeURIComponent(JSON.stringify(designData))
-				let list = encodeURIComponent(JSON.stringify(this.list))
 
-				localStorage.setItem('designData', designData);
-				localStorage.setItem('list', list);
-				// console.log('list', list)
-				// this.$router.push({
-				// 	path: "/preview",
-				// 	query: {
-				// 		list,
-				// 		designData
-				// 	}
-				// })
+				this.setLocalStorage(designData, this.list)
 				const routeUrl = this.$router.resolve({
 					path: "/preview",
 				});
@@ -597,15 +599,15 @@
 	.lineY {
 		position: fixed;
 		border-right: 3px dashed #808080;
-		height: 100%;
-		top: 0px;
+		height: 130%;
+		top: -10%;
 	}
 
 	.lineX {
 		position: fixed;
 		border-top: 3px dashed #808080;
-		width: 100%;
-		left: 0px;
+		width: 130%;
+		left: -10%;
 	}
 
 	.resizeTag {
