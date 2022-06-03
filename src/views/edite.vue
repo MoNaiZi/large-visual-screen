@@ -248,6 +248,7 @@
 		},
 		methods: {
 			save() {
+				this.$api('/save', 'post', this.designData)
 				this.$message({
 					message: '保存成功',
 					type: 'success'

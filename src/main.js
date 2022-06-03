@@ -19,8 +19,6 @@ import chinaGeoJson from '@/assets/map/china.json'
 echarts.registerMap('china', chinaGeoJson);
 
 
-console.log('request', request())
-
 function createRandomString(length, possibleString) {
 	let text = ''
 	const possible = possibleString || 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
@@ -46,6 +44,7 @@ app.config.globalProperties.$updateComponentStatus = updateComponentStatus
 app.config.globalProperties.$getData = getData
 app.config.globalProperties.$app = app
 app.config.globalProperties.$echarts = echarts
+app.config.globalProperties.$api = request
 
 
 
