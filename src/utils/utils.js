@@ -1,5 +1,5 @@
 import axios from 'axios'
-// import qs from 'qs'
+import Qs from 'qs'
 
 function updateComponentStatus(that, refName, dataKey = "refreshFlagKey") {
 	const ringChart = that.$refs[refName]
@@ -27,13 +27,12 @@ function getData(option) {
 
 //请求拦截器
 axios.interceptors.request.use(req => {
-	// console.log('req111111', req)
-	// if (req.method === 'post') {
-	// 	req.data = qs.stringify(req.data)
-	// 	// req.headers = {
-	// 	// 	'Content-Type': 'application/x-www-form-urlencoded'
-	// 	// };
-	// }
+
+	req.data = Qs.stringify(req.data);
+	console.log('data', req.data)
+	req.headers = {
+		'Content-Type': 'application/x-www-form-urlencoded',
+	};
 	return req
 }, error => Promise.reject(error))
 //响应拦截器
@@ -48,9 +47,11 @@ function request(url = '/', method = 'get') {
 	// for (let key in params) {
 	// 	formData.append(key, params[key])
 	// }
-	let params = new URLSearchParams()
-	params.append('aaa', 'bbbb')
-	axios[method](baseUrl, params).then(res => {
+	// let params = new URLSearchParams()
+	const data = {
+		a: 111
+	}
+	axios[method](baseUrl, data).then(res => {
 		console.log('请求回来的', res)
 	})
 }

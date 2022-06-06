@@ -7,7 +7,7 @@ router.get('/', function(req, res) {
 })
 
 router.post('/save', (req, res) => {
-	console.log('res', req.params)
+	console.log('body', req.body)
 })
 
 
