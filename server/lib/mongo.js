@@ -10,8 +10,35 @@ exports.largeScreenData = mongolass.model('largeScreenData', {
 	},
 	isAuto: {
 		type: 'boolean'
+	},
+	mainW: {
+		type: 'string'
+	},
+	mainH: {
+		type: 'string'
+	},
+	bg: {
+		type: 'string'
+	},
+	scale: {
+		type: 'number'
+	},
+	list: {
+		type: 'array'
+	},
+	createdUserId: {
+		type: 'string'
+	},
+	createdAt: {
+		type: 'string'
+	},
+	updateAt: {
+		type: 'string'
+	},
+	updatedUserId: {
+		type: 'string'
 	}
 })
-exports.largeScreenData.index({
-	_id: 1
-}).exec()
+// exports.largeScreenData.index({
+// 	_id: 1
+// }).exec()

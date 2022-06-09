@@ -238,6 +238,7 @@
 			}
 		},
 		created() {
+			this.$api()
 			console.log('created')
 			this.list = JSON.parse(decodeURIComponent(localStorage.getItem('list'))) || []
 			const designData = JSON.parse(decodeURIComponent(localStorage.getItem('designData')))

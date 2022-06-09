@@ -9,6 +9,7 @@
     "express": "^4.14.0",
     "moment": "^2.29.3",
     "mongolass": "^4.4.7",
-    "mongoose": "^6.3.4"
+    "mongoose": "^6.3.4",
+    "qs": "^6.10.3"
   }
 }

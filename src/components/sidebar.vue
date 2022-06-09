@@ -80,7 +80,7 @@
 	import initElementList from '@/utils/initElement'
 	import initDataV from '@/utils/initDataV'
 	import initEcharts from '@/utils/initEcharts'
-	import options from '@/utils/options'
+	// import options from '@/utils/options'
 	export default {
 		components: {
 			ElMessageBox
@@ -130,10 +130,10 @@
 			}
 		},
 		created() {
-			console.log('options', options)
+			// console.log('options', options)
 			let list = [...initElementList, ...initDataV, ...initEcharts]
 			for (let item of list) {
-				console.log('item', item)
+				// console.log('item', item)
 				this.$app.component(item.name, item)
 				let groupIndex = this.groupList.findIndex(j => j.groupName === item.group)
 				if (groupIndex != -1) {

@@ -27,12 +27,15 @@ function getData(option) {
 
 //请求拦截器
 axios.interceptors.request.use(req => {
+	console.log('req', req)
+	const method = req.method
+	if (method === 'post') {
+		req.data = Qs.stringify(req.data);
+		req.headers = {
+			'Content-Type': 'application/x-www-form-urlencoded',
+		};
+	}
 
-	req.data = Qs.stringify(req.data);
-	console.log('data', req.data)
-	req.headers = {
-		'Content-Type': 'application/x-www-form-urlencoded',
-	};
 	return req
 }, error => Promise.reject(error))
 //响应拦截器
@@ -40,17 +43,8 @@ axios.interceptors.response.use(response => {
 	return response
 }, error => Promise.reject(error))
 
-function request(url = '/', method = 'get') {
+function request(url = '/', method = 'get', data) {
 	let baseUrl = 'http://127.168.0.0:3000' + url
-	// let formData = new FormData()
-
-	// for (let key in params) {
-	// 	formData.append(key, params[key])
-	// }
-	// let params = new URLSearchParams()
-	const data = {
-		a: 111
-	}
 	axios[method](baseUrl, data).then(res => {
 		console.log('请求回来的', res)
 	})
