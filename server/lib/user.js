@@ -3,10 +3,12 @@ const mongolass = new Mongolass()
 
 exports.user = mongolass.model('user', {
 	name: {
-		type: 'string'
+		type: 'string',
+		require: true
 	},
 	email: {
-		type: 'string'
+		type: 'string',
+		require: true
 	},
 	password: {
 		type: 'string'

@@ -5,6 +5,7 @@ import {
 
 import edite from '@/views/edite'
 import preview from '@/views/preview'
+import login from '@/views/login'
 
 const routes = [{
 		path: '/',
@@ -15,6 +16,11 @@ const routes = [{
 		path: '/preview',
 		name: 'preview',
 		component: preview
+	},
+	{
+		path: '/login',
+		name: 'login',
+		component: login
 	}
 ]
 

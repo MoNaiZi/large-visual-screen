@@ -7,5 +7,19 @@ module.exports = {
 	},
 	getData(data) {
 		return db.findOne(data).exec()
+	},
+	getDataList(data) {
+		return db.find(data).exec()
+	},
+	remove(data) {
+		return db.findOne(data).remove().exec()
+	},
+	update(data) {
+		const _id = data._id
+		delete data._id
+		const updateData = data
+		return db.update({
+			_id
+		}, updateData).exec()
 	}
 }

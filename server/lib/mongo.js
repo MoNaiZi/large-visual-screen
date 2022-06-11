@@ -12,15 +12,15 @@ exports.largeScreenData = mongolass.model('largeScreenData', {
 		type: 'boolean'
 	},
 	mainW: {
-		type: 'string'
+		type: 'number'
 	},
 	mainH: {
-		type: 'string'
+		type: 'number'
 	},
 	bg: {
 		type: 'string'
 	},
-	scale: {
+	containerScale: {
 		type: 'number'
 	},
 	list: {

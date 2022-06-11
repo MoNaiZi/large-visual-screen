@@ -249,12 +249,14 @@
 		},
 		methods: {
 			save() {
-				this.$api('/save', 'post', this.designData)
+				const designData = JSON.parse(JSON.stringify(this.designData))
+				designData.containerScale = this.containerScale
+				this.$api('/save', 'post', designData)
 				this.$message({
 					message: '保存成功',
 					type: 'success'
 				});
-				this.setLocalStorage(this.designData, this.list)
+				this.setLocalStorage(designData, this.list)
 			},
 			isAutoFn(isBool) {
 				this.containerScale = isBool ? 0.8 : 1
