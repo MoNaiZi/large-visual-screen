@@ -45,8 +45,10 @@ axios.interceptors.response.use(response => {
 
 function request(url = '/', method = 'get', data) {
 	let baseUrl = 'http://127.168.0.0:3000' + url
-	axios[method](baseUrl, data).then(res => {
+	return axios[method](baseUrl, data).then(res => {
 		console.log('请求回来的', res)
+		const data = res.data
+		return data
 	})
 }
 

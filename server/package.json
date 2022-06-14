@@ -8,6 +8,7 @@
     "cors": "^2.8.5",
     "express": "^4.14.0",
     "moment": "^2.29.3",
+    "mongodb": "^4.7.0",
     "mongolass": "^4.4.7",
     "mongoose": "^6.3.4",
     "qs": "^6.10.3"

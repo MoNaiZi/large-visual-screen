@@ -2,6 +2,8 @@ const express = require('express')
 const Qs = require('qs')
 const router = express.Router()
 const largeScreenData = require('../api/largeScreenData')
+const user = require('../api/user')
+const ObjectId = require('mongodb').ObjectId;
 
 router.get('/', async (req, res) => {
 	const result = await largeScreenData.getData({
@@ -36,6 +38,13 @@ router.post('/save', async (req, res) => {
 	})
 })
 
+router.post('/login', async (req, res) => {
+	return await user.login(req, res)
+})
+
+router.post('/register', async (req, res) => {
+	return await user.register(req, res)
+})
 
 
 module.exports = router

@@ -1,24 +1,21 @@
-const db = require('../lib/mongo').largeScreenData
-
-
 module.exports = {
 	saveData(data) {
-		return db.create(data).exec()
+		return global.db.largescreendata.insertOne(data)
 	},
 	getData(data) {
-		return db.findOne(data).exec()
+		return global.db.largescreendata.findOne(data)
 	},
 	getDataList(data) {
-		return db.find(data).exec()
+		return global.db.largescreendata.find(data)
 	},
 	remove(data) {
-		return db.findOne(data).remove().exec()
+		return global.db.largescreendata.findOne(data).remove()
 	},
 	update(data) {
 		const _id = data._id
 		delete data._id
 		const updateData = data
-		return db.update({
+		return global.db.largescreendata.update({
 			_id
 		}, updateData).exec()
 	}

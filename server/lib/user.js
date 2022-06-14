@@ -11,6 +11,12 @@ exports.user = mongolass.model('user', {
 		require: true
 	},
 	password: {
-		type: 'string'
+		type: 'string',
+		require: true
 	}
 })
+exports.user.createIndex({
+	name: 1,
+}, {
+	unique: true
+}).exec()
