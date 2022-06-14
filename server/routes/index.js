@@ -38,6 +38,14 @@ router.post('/save', async (req, res) => {
 	})
 })
 
+router.get('/getDataList', async (req, res) => {
+	return await largeScreenData.getDataList(req, res)
+})
+
+router.get('/getData', async (req, res) => {
+	return await largeScreenData.getData(req, res)
+})
+
 router.post('/login', async (req, res) => {
 	return await user.login(req, res)
 })

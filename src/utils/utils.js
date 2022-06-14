@@ -34,6 +34,9 @@ axios.interceptors.request.use(req => {
 		req.headers = {
 			'Content-Type': 'application/x-www-form-urlencoded',
 		};
+	} else if (method === 'get') {
+		const params = { id: req.id }
+		req.params = params;
 	}
 
 	return req
@@ -47,8 +50,8 @@ function request(url = '/', method = 'get', data) {
 	let baseUrl = 'http://127.168.0.0:3000' + url
 	return axios[method](baseUrl, data).then(res => {
 		console.log('请求回来的', res)
-		const data = res.data
-		return data
+		const resultData = res.data
+		return resultData
 	})
 }
 

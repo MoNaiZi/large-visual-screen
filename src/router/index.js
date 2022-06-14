@@ -6,9 +6,22 @@ import {
 import edite from '@/views/edite'
 import preview from '@/views/preview'
 import login from '@/views/login'
+import index from '@/views/index'
 
-const routes = [{
+const routes = [
+	{
+		path: '/:catchAll(.*)',
+		name: '/',
+		redirect: '/',
+		// component: edite
+	},
+	{
 		path: '/',
+		name: 'index',
+		component: index
+	},
+	{
+		path: '/edite',
 		name: 'edite',
 		component: edite
 	},

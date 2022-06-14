@@ -16,7 +16,8 @@ module.exports = {
 		}
 		res.send({
 			msg,
-			code
+			code,
+			data: findResult
 		})
 	},
 	async register(req, res) {

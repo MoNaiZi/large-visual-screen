@@ -1,12 +1,23 @@
+const ObjectId = require('mongodb').ObjectId;
 module.exports = {
 	saveData(data) {
 		return global.db.largescreendata.insertOne(data)
 	},
-	getData(data) {
-		return global.db.largescreendata.findOne(data)
+	async getData(req, res) {
+		const _id = ObjectId(req.query.id)
+		let where = {
+			_id
+		}
+		const result = await global.db.largescreendata.findOne(where)
+		res.send(result)
 	},
-	getDataList(data) {
-		return global.db.largescreendata.find(data)
+	async getDataList(req, res) {
+		const _id = ObjectId(req.query.id)
+		let where = {
+			createdUserId: _id
+		}
+		const list = await global.db.largescreendata.find(where).toArray()
+		res.send(list)
 	},
 	remove(data) {
 		return global.db.largescreendata.findOne(data).remove()

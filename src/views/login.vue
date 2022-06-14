@@ -117,7 +117,8 @@
 
 				const {
 					code,
-					msg
+					msg,
+					data
 				} = result
 				let type = 'success'
 
@@ -133,7 +134,13 @@
 				} else if (code == 1 && !active) {
 					type = 'warning'
 				}
+				if (msg === '登录成功') {
+					localStorage.setItem('users', JSON.stringify(data))
+					setTimeout(() => {
+						this.$router.push('/index')
+					}, 2000)
 
+				}
 
 
 				this.$message({
