@@ -218,27 +218,18 @@
             />
           </el-form-item>
           <el-form-item label="背景图片">
-            <div
-              v-if="designData.bgImg"
-              style="width: 100%; height: 100%; position: relative"
-            >
-              <img
-                :src="fileUrl + '/file/img/' + designData.bgImg"
+            <div class="uploadItem" v-if="designData.bgImg" @click="upBgImg">
+              <el-icon class="remove_bgImg" @click.stop="designData.bgImg = ''">
+                <component :is="'Close'"></component>
+              </el-icon>
+
+              <el-image
                 style="width: 100%; height: 100%"
+                :src="designData.bgImg"
+                fit="cover"
               />
-              <i
-                style="
-                  position: absolute;
-                  z-index: 6;
-                  right: 0;
-                  font-size: 20px;
-                  color: #ffcccc;
-                "
-                class="el-icon-delete"
-                @click.stop="handleRemove"
-              ></i>
             </div>
-            <div v-else class="uploadItem" @click="showGallery">
+            <div v-else class="uploadItem" @click="upBgImg">
               <el-icon style="font-size: 40px; color: #aaa">
                 <component :is="'Plus'"> </component>
               </el-icon>
@@ -259,7 +250,7 @@
       :currentItem="currentItem"
       ref="itemSettings"
     ></item-settings>
-    <el-dialog v-model="coverComputed" @close="this.cover = ''">
+    <el-dialog v-model="isShowCover" @close="this.cover = ''">
       <img class="cover" style="width: 100%" :src="cover" />
       <div class="save_img">
         <el-button type="primary" @click="saveImg">保存图片</el-button>
@@ -277,6 +268,8 @@ import initOptionsComponents from "@/utils/initOptionsComponents";
 import ScaleMarkX from "@/components/ScaleMarkX";
 import ScaleMarkY from "@/components/ScaleMarkY";
 import html2canvas from "html2canvas";
+// import utils from "@/utils/utils";
+const utils = require("@/utils/utils");
 export default {
   components: {
     sidebar,
@@ -286,14 +279,11 @@ export default {
     ScaleMarkY,
   },
   computed: {
-    coverComputed() {
-      const cover = this.cover;
-      return cover === "" ? false : true;
-    },
     setWrap_style() {
       let designData = this.designData;
       let defaultBg = this.defaultBg;
       let containerScale = this.containerScale;
+      let bgImg = designData.bgImg;
       let result = {
         // width: designData.mainW + 'px',
         // height: designData.mainH + 'px',
@@ -302,6 +292,10 @@ export default {
           : "url(" + defaultBg + ") repeat",
         transform: "scale(" + containerScale + ")",
       };
+      if (bgImg) {
+        result.background = "url(" + bgImg + ") no-repeat";
+      }
+
       return result;
     },
     elMainFn() {
@@ -345,6 +339,7 @@ export default {
         scale: "80%",
         bgColor: "",
         isAuto: true,
+        bgImg: "",
       },
       currentIndex: 0,
       currentComponents: {
@@ -360,6 +355,7 @@ export default {
       wrap: {},
       id: "",
       cover: "",
+      isShowCover: false,
     };
   },
   watch: {
@@ -384,32 +380,43 @@ export default {
   },
   mounted() {},
   methods: {
+    async upBgImg() {
+      const img = await utils.asyncUpImg();
+      if (img) {
+        this.designData.bgImg = img;
+      }
+    },
     saveImg() {
-      var img = document.querySelector(".cover");
+      let img = document.querySelector(".cover");
       // 将图片的src属性作为URL地址
-      var url = img.src;
-      var a = document.createElement("a");
-      var event = new MouseEvent("click");
+      let url = img.src;
+      let a = document.createElement("a");
+      let event = new MouseEvent("click");
 
       a.download = this.designData.title || "下载图片名称";
       a.href = url;
 
       a.dispatchEvent(event);
     },
-    createdImg() {
+    createdImg(isShowCover = true) {
       const loadingInstance = ElLoading.service({ fullscreen: true });
       this.currentIndex = -1;
       const that = this;
-      this.$nextTick(() => {
-        const dom = document.querySelector(".wrap");
-        html2canvas(dom).then((canvas) => {
-          that.cover = canvas.toDataURL("image/png");
-          loadingInstance.close();
-        });
-      });
       setTimeout(() => {
         loadingInstance.close();
       }, 10000);
+      return new Promise((resolve) => {
+        this.$nextTick(() => {
+          const dom = document.querySelector(".wrap");
+          return html2canvas(dom).then((canvas) => {
+            const cover = canvas.toDataURL("image/png");
+            that.cover = cover;
+            that.isShowCover = isShowCover;
+            loadingInstance.close();
+            resolve(cover);
+          });
+        });
+      });
     },
     getData() {
       const id = this.id;
@@ -418,15 +425,20 @@ export default {
         console.log("获取大屏数据", data);
       });
     },
-    save() {
+    async save() {
       const designData = JSON.parse(JSON.stringify(this.designData));
+      const list = this.list;
+
       designData.containerScale = this.containerScale;
+      designData.cover = await this.createdImg(false);
+      designData.list = list;
+
       this.$api("/save", "post", designData);
       this.$message({
         message: "保存成功",
         type: "success",
       });
-      this.setLocalStorage(designData, this.list);
+      this.setLocalStorage(designData, list);
     },
     isAutoFn(isBool) {
       this.containerScale = isBool ? 0.8 : 1;
@@ -746,12 +758,23 @@ export default {
   margin-bottom: 30px;
 
   .uploadItem {
+    position: relative;
     width: 120px;
     height: 120px;
     text-align: center;
     line-height: 150px;
     border: 1px solid #ddd;
     cursor: pointer;
+    .remove_bgImg {
+      font-size: 18px;
+      color: rgb(75 75 75);
+      position: absolute;
+      z-index: 1;
+      right: -6px;
+      top: -6px;
+      background: #c4c4c4;
+      border-radius: 10px;
+    }
   }
 }
 

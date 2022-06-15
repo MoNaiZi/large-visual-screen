@@ -1,5 +1,6 @@
 import axios from 'axios'
 import Qs from 'qs'
+import { ElMessage } from "element-plus";
 
 function updateComponentStatus(that, refName, dataKey = "refreshFlagKey") {
 	const ringChart = that.$refs[refName]
@@ -55,8 +56,33 @@ function request(url = '/', method = 'get', data) {
 	})
 }
 
+function asyncUpImg() {
+	let input = document.createElement("input");
+	input.type = "file";
+	return new Promise(resolve => {
+		input.onchange = function (e) {
+			let files = e.path[0].files || [];
+			let type = "warning";
+			let message = "上传图片失败";
+			if (files.length) {
+				const img = URL.createObjectURL(files[0]);
+				resolve(img)
+				type = "success";
+				message = "上传图片成功";
+			}
+			ElMessage({
+				type,
+				message,
+			});
+		};
+		let event = new MouseEvent("click");
+		input.dispatchEvent(event);
+	})
+}
+
 export {
 	getData,
 	updateComponentStatus,
-	request
+	request,
+	asyncUpImg
 }
