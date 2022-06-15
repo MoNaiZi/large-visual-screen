@@ -22,7 +22,7 @@ router.post('/save', async (req, res) => {
 			body[key] = Number(body[key])
 		}
 	}
-	console.log('body', body)
+
 	let msg = '保存成功'
 	let code = 0
 	const {
@@ -44,6 +44,14 @@ router.get('/getDataList', async (req, res) => {
 
 router.get('/getData', async (req, res) => {
 	return await largeScreenData.getData(req, res)
+})
+
+router.post('/remove', async (req, res) => {
+	return await largeScreenData.remove(req, res)
+})
+
+router.post('/update', async (req, res) => {
+	return await largeScreenData.update(req, res)
 })
 
 router.post('/login', async (req, res) => {

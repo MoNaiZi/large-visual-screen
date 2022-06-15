@@ -19,15 +19,24 @@ module.exports = {
 		const list = await global.db.largescreendata.find(where).toArray()
 		res.send(list)
 	},
-	remove(data) {
-		return global.db.largescreendata.findOne(data).remove()
+	async remove(req, res) {
+		const _id = ObjectId(req.body.id)
+		let where = {
+			createdUserId: _id
+		}
+		const result = await global.db.largescreendata.findOne(where).remove()
+		console.log('删除结果', result)
+		res.send(result)
 	},
-	update(data) {
-		const _id = data._id
-		delete data._id
-		const updateData = data
-		return global.db.largescreendata.update({
-			_id
-		}, updateData).exec()
+	async update(req, res) {
+		const _id = ObjectId(req.body.id)
+		const updateData = req.body.data
+		let where = {
+			createdUserId: _id
+		}
+		const result = await global.db.largescreendata.update(where, updateData)
+		console.log('更新结果', result)
+		res.send(result)
+
 	}
 }

@@ -15,7 +15,7 @@
           </div>
           <div class="set">
             <div class="header_set_item">导入</div>
-            <div class="header_set_item">导出</div>
+            <div class="header_set_item" @click="createdImg">生成图片</div>
             <div class="header_set_item" @click="removeList">
               <el-icon :size="22">
                 <component :is="'Delete'"> </component>
@@ -259,17 +259,24 @@
       :currentItem="currentItem"
       ref="itemSettings"
     ></item-settings>
+    <el-dialog v-model="coverComputed" @close="this.cover = ''">
+      <img class="cover" style="width: 100%" :src="cover" />
+      <div class="save_img">
+        <el-button type="primary" @click="saveImg">保存图片</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { ElMessageBox, ElMessage } from "element-plus";
+import { ElMessageBox, ElMessage, ElLoading } from "element-plus";
 import sidebar from "@/components/sidebar";
 import options from "@/utils/options";
 import itemSettings from "@/components/item-settings";
 import initOptionsComponents from "@/utils/initOptionsComponents";
 import ScaleMarkX from "@/components/ScaleMarkX";
 import ScaleMarkY from "@/components/ScaleMarkY";
+import html2canvas from "html2canvas";
 export default {
   components: {
     sidebar,
@@ -279,6 +286,10 @@ export default {
     ScaleMarkY,
   },
   computed: {
+    coverComputed() {
+      const cover = this.cover;
+      return cover === "" ? false : true;
+    },
     setWrap_style() {
       let designData = this.designData;
       let defaultBg = this.defaultBg;
@@ -348,6 +359,7 @@ export default {
       clickTime: 0,
       wrap: {},
       id: "",
+      cover: "",
     };
   },
   watch: {
@@ -372,6 +384,33 @@ export default {
   },
   mounted() {},
   methods: {
+    saveImg() {
+      var img = document.querySelector(".cover");
+      // 将图片的src属性作为URL地址
+      var url = img.src;
+      var a = document.createElement("a");
+      var event = new MouseEvent("click");
+
+      a.download = this.designData.title || "下载图片名称";
+      a.href = url;
+
+      a.dispatchEvent(event);
+    },
+    createdImg() {
+      const loadingInstance = ElLoading.service({ fullscreen: true });
+      this.currentIndex = -1;
+      const that = this;
+      this.$nextTick(() => {
+        const dom = document.querySelector(".wrap");
+        html2canvas(dom).then((canvas) => {
+          that.cover = canvas.toDataURL("image/png");
+          loadingInstance.close();
+        });
+      });
+      setTimeout(() => {
+        loadingInstance.close();
+      }, 10000);
+    },
     getData() {
       const id = this.id;
       console.log("id", id);
@@ -677,6 +716,10 @@ export default {
 </script>
 
 <style lang="scss">
+.save_img {
+  position: relative;
+  top: 13px;
+}
 .component_main {
   width: 100%;
   height: 100%;
@@ -715,12 +758,13 @@ export default {
 .set {
   display: flex;
   justify-content: space-between;
-  width: 270px;
+  width: 300px;
   align-items: center;
   line-height: 4px;
 
   .header_set_item {
     cursor: pointer;
+    margin-right: 10px;
   }
 }
 
