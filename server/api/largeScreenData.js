@@ -1,7 +1,35 @@
 const ObjectId = require('mongodb').ObjectId;
+const handlerLargescreendata = function (data) {
+	const isAuto = data.isAuto === 'true' ? true : false
+	data.isAuto = typeof data.isAuto === 'string' ? isAuto : data.isAuto
+	data.createdAt = new Date()
+
+	for (let key in data) {
+		if (['mainW', 'mainH', 'containerScale'].includes(key)) {
+			data[key] = Number(data[key])
+		}
+	}
+}
 module.exports = {
-	saveData(data) {
-		return global.db.largescreendata.insertOne(data)
+	async saveData(req, res) {
+		const body = req.body
+		handlerLargescreendata(body)
+		let msg = '保存失败'
+		let code = 1
+		let id = ''
+		const result = await global.db.largescreendata.insertOne(body)
+
+		if (result && result.insertedId) {
+			msg = '保存成功'
+			code = 0
+			id = result.insertedId
+		}
+		res.send({
+			msg,
+			code,
+			id
+		})
+
 	},
 	async getData(req, res) {
 		const _id = ObjectId(req.query.id)
@@ -9,10 +37,12 @@ module.exports = {
 			_id
 		}
 		const result = await global.db.largescreendata.findOne(where)
-		res.send(result)
+		const list = JSON.parse(JSON.stringify(result.list))
+		delete result.list
+		res.send({ list, data: result })
 	},
 	async getDataList(req, res) {
-		const _id = ObjectId(req.query.id)
+		const _id = req.query.id
 		let where = {
 			createdUserId: _id
 		}
@@ -20,23 +50,39 @@ module.exports = {
 		res.send(list)
 	},
 	async remove(req, res) {
-		const _id = ObjectId(req.body.id)
+		const _id = req.body.id
 		let where = {
-			createdUserId: _id
+			_id: ObjectId(_id)
 		}
-		const result = await global.db.largescreendata.findOne(where).remove()
-		console.log('删除结果', result)
-		res.send(result)
+		let msg = '删除失败'
+		let code = 1
+		const result = await global.db.largescreendata.deleteOne(where)
+		console.log('result', result)
+		if (result && result.acknowledged && result.deletedCount > 0) {
+			msg = '删除成功'
+			code = 0
+		}
+		res.send({
+			msg,
+			code
+		})
 	},
 	async update(req, res) {
-		const _id = ObjectId(req.body.id)
 		const updateData = req.body.data
-		let where = {
-			createdUserId: _id
+		let where = { _id: ObjectId(req.body.id) }
+		let msg = '更新失败'
+		let code = 1
+		handlerLargescreendata(updateData)
+		const result = await global.db.largescreendata.replaceOne(where, updateData)
+
+		if (result && result.acknowledged) {
+			msg = '更新成功'
+			code = 0
 		}
-		const result = await global.db.largescreendata.update(where, updateData)
-		console.log('更新结果', result)
-		res.send(result)
+		res.send({
+			msg,
+			code
+		})
 
 	}
 }

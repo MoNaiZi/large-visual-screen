@@ -3,7 +3,7 @@
     <el-container>
       <el-header>
         <div style="display: flex; justify-content: space-between">
-          <div class="logo">
+          <div class="logo" @click="toIndex">
             <img
               style="width: 45px; height: 45px; margin-top: 5px"
               src="@/assets/logo.png"
@@ -356,6 +356,7 @@ export default {
       id: "",
       cover: "",
       isShowCover: false,
+      users: JSON.parse(localStorage.getItem("users") || "{}"),
     };
   },
   watch: {
@@ -367,19 +368,30 @@ export default {
     const query = this.$route.query || {};
     const id = query._id;
     this.id = id;
+    const users = this.users;
+    if (!users && !users._id) {
+      this.$message({
+        message: "请先登录",
+      });
+      this.$router.push("/login");
+      return;
+    }
     if (id) {
       this.getData();
     } else {
-      this.list =
-        JSON.parse(decodeURIComponent(localStorage.getItem("list"))) || [];
-      const designData = JSON.parse(
-        decodeURIComponent(localStorage.getItem("designData"))
-      );
-      if (designData) this.designData = designData;
+      // this.list =
+      //   JSON.parse(decodeURIComponent(localStorage.getItem("list"))) || [];
+      // const designData = JSON.parse(
+      //   decodeURIComponent(localStorage.getItem("designData"))
+      // );
+      // if (designData) this.designData = designData;
     }
   },
   mounted() {},
   methods: {
+    toIndex() {
+      this.$router.push("/index");
+    },
     async upBgImg() {
       const img = await utils.asyncUpImg();
       if (img) {
@@ -421,24 +433,55 @@ export default {
     getData() {
       const id = this.id;
       console.log("id", id);
-      this.$api("/getData", "get", { id }).then((data) => {
-        console.log("获取大屏数据", data);
-      });
+      this.$api("/getData", "get", { id })
+        .then((data) => {
+          console.log("获取大屏数据", data);
+
+          const list = data.list || [];
+          this.designData = data.data || {};
+          for (let item of list) {
+            const initResult = initOptionsComponents(
+              this.$app,
+              item.name + "-option"
+            );
+            console.log("initResult", initResult);
+            if (initResult != true) {
+              this.$message.error(initResult);
+              return;
+            }
+          }
+          this.list = list;
+        })
+        .catch((err) => {
+          console.log("服务器错误", err);
+        });
     },
     async save() {
-      const designData = JSON.parse(JSON.stringify(this.designData));
-      const list = this.list;
+      const that = this;
+      const designData = JSON.parse(JSON.stringify(that.designData));
+      const list = that.list;
+      const users = that.users;
+      const id = that.id;
 
-      designData.containerScale = this.containerScale;
-      designData.cover = await this.createdImg(false);
+      designData.containerScale = that.containerScale;
+      designData.cover = await that.createdImg(false);
       designData.list = list;
+      designData.createdUserId = users._id;
 
-      this.$api("/save", "post", designData);
-      this.$message({
-        message: "保存成功",
-        type: "success",
+      let result = {};
+      if (id) {
+        let updateObj = { id, data: designData };
+        result = await that.$api("/update", "post", updateObj);
+      } else {
+        result = await that.$api("/save", "post", designData);
+        that.id = result.id;
+      }
+      that.$message({
+        message: result.msg,
+        type: result.code ? "error" : "success",
       });
-      this.setLocalStorage(designData, list);
+
+      utils.setLocalStorage(designData, list);
     },
     isAutoFn(isBool) {
       this.containerScale = isBool ? 0.8 : 1;
@@ -450,18 +493,13 @@ export default {
         }
       });
     },
-    setLocalStorage(designData, list) {
-      designData = encodeURIComponent(JSON.stringify(designData));
-      list = encodeURIComponent(JSON.stringify(list));
-      localStorage.setItem("designData", designData);
-      localStorage.setItem("list", list);
-    },
+
     toPreview() {
       let designData = this.designData;
       designData.defaultBg = this.defaultBg;
       designData.containerScale = designData.isAuto ? 1 : this.containerScale;
 
-      this.setLocalStorage(designData, this.list);
+      utils.setLocalStorage(designData, this.list);
       const routeUrl = this.$router.resolve({
         path: "/preview",
       });
@@ -793,6 +831,7 @@ export default {
 
 .logo {
   width: 170px;
+  cursor: pointer;
 }
 
 .lineY {

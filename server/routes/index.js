@@ -13,29 +13,7 @@ router.get('/', async (req, res) => {
 })
 
 router.post('/save', async (req, res) => {
-	const body = req.body
-	const isAuto = body.isAuto === 'true' ? true : false
-	body.isAuto = typeof body.isAuto === 'string' ? isAuto : body.isAuto
-
-	for (let key in body) {
-		if (['mainW', 'mainH', 'containerScale'].includes(key)) {
-			body[key] = Number(body[key])
-		}
-	}
-
-	let msg = '保存成功'
-	let code = 0
-	const {
-		result
-	} = await largeScreenData.saveData(body)
-	if (!result || !result.ok) {
-		code = 1
-		msg = '保存失败'
-	}
-	res.send({
-		msg,
-		code
-	})
+	return await largeScreenData.saveData(req, res)
 })
 
 router.get('/getDataList', async (req, res) => {

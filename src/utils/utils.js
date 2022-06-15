@@ -79,10 +79,16 @@ function asyncUpImg() {
 		input.dispatchEvent(event);
 	})
 }
-
+function setLocalStorage(designData, list) {
+	designData = encodeURIComponent(JSON.stringify(designData));
+	list = encodeURIComponent(JSON.stringify(list));
+	localStorage.setItem("designData", designData);
+	localStorage.setItem("list", list);
+}
 export {
 	getData,
 	updateComponentStatus,
 	request,
-	asyncUpImg
+	asyncUpImg,
+	setLocalStorage
 }

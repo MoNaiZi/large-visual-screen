@@ -15,16 +15,18 @@
 				</div> -->
         <el-row :gutter="20">
           <el-col :span="6" v-for="(item, index) in list" :key="index">
-            <div class="item">
+            <div class="item" @click="toPreview(item)">
               <el-image
                 style="width: 100%; height: 100%"
-                src="https://t7.baidu.com/it/u=810585695,3039658333&fm=193&f=GIF"
-                :fit="fit"
+                :src="item.cover"
+                fit="scale-down"
               />
-              <text>{{ item }}</text>
+              <div class="title">
+                <text>{{ item.title }}</text>
+              </div>
               <div class="operation">
-                <div @click="toEdite(item)">编辑</div>
-                <div @click="remove">删除</div>
+                <div @click.stop="toEdite(item)">编辑</div>
+                <div @click.stop="remove(item)">删除</div>
               </div>
             </div>
           </el-col>
@@ -39,6 +41,7 @@
 
 <script>
 import { ElMessage, ElMessageBox } from "element-plus";
+const utils = require("@/utils/utils");
 export default {
   data() {
     return {
@@ -50,11 +53,21 @@ export default {
     this.getDataList();
   },
   methods: {
+    toPreview(item) {
+      const designData = JSON.parse(JSON.stringify(item));
+      const list = JSON.parse(JSON.stringify(designData.list));
+      delete designData.list;
+      utils.setLocalStorage(designData, list);
+      const routeUrl = this.$router.resolve({
+        path: "/preview",
+      });
+      window.open(routeUrl.href, "_blank");
+    },
     getDataList() {
       const _id = this.users._id;
       if (!_id) {
         ElMessage({
-          type: "success",
+          type: "error",
           message: "请先登录",
         });
         setTimeout(() => {
@@ -68,20 +81,28 @@ export default {
     },
     toEdite(item) {
       const _id = item && item._id ? item._id : "";
+      console.log("_id", _id);
       this.$router.push({
         path: "/edite",
         query: { _id },
       });
     },
-    remove() {
+    remove(item) {
+      const that = this;
+      console.log("item", item);
       ElMessageBox.confirm("确认要删除吗，删除之后不可恢复?", "提示", {
         confirmButtonText: "确认",
         cancelButtonText: "取消",
         type: "warning",
       }).then(() => {
-        ElMessage({
-          type: "success",
-          message: "删除成功",
+        that.$api("/remove", "post", { id: item._id }).then((res) => {
+          console.log("删除结果", res);
+          let code = res.code;
+          ElMessage({
+            type: code ? "error" : "success",
+            message: res.msg,
+          });
+          that.getDataList();
         });
       });
     },
@@ -104,10 +125,21 @@ $zIndex1: 1;
   margin: 10px;
   cursor: pointer;
   box-shadow: 2px 2px 5px 0px #dedede;
-
-  text {
+  overflow: hidden;
+  .title {
     position: absolute;
-    z-index: $zIndex1;
+    left: 34px;
+    right: 41px;
+    background: #ffffff;
+    height: 32px;
+    border-radius: 10px;
+    top: 11px;
+    line-height: 32px;
+    color: #000;
+  }
+  text {
+    // position: absolute;
+    // z-index: $zIndex1;
   }
 
   .el-image {
