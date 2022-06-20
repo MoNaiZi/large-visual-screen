@@ -3,10 +3,27 @@ const handlerLargescreendata = function (data) {
 	const isAuto = data.isAuto === 'true' ? true : false
 	data.isAuto = typeof data.isAuto === 'string' ? isAuto : data.isAuto
 	data.createdAt = new Date()
-
 	for (let key in data) {
 		if (['mainW', 'mainH', 'containerScale'].includes(key)) {
 			data[key] = Number(data[key])
+		}
+	}
+	const list = data.list || []
+	for (let item of list) {
+		item.z = Number(item.z || 0)
+		item.x = Number(item.x || 0)
+		item.y = Number(item.y || 0)
+		item.w = Number(item.w || 0)
+		item.h = Number(item.h || 0)
+		let cptDataForm = item.options.cptDataForm || {}
+		if (cptDataForm.hasOwnProperty('pollTime')) {
+			cptDataForm.pollTime = Number(cptDataForm.pollTime)
+		}
+		let dataText = cptDataForm.dataText
+		if (Array.isArray(dataText)) {
+			for (let j of dataText) {
+				j.value = Number(j.value)
+			}
 		}
 	}
 }
@@ -72,6 +89,7 @@ module.exports = {
 		let where = { _id: ObjectId(req.body.id) }
 		let msg = '更新失败'
 		let code = 1
+		delete updateData._id
 		handlerLargescreendata(updateData)
 		const result = await global.db.largescreendata.replaceOne(where, updateData)
 

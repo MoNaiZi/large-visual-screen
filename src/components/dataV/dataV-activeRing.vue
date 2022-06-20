@@ -53,11 +53,11 @@
 
 <style>
 	.active-ring-info {
-		top: -72px !important;
+		/* top: -72px !important; */
 	}
 
 	.active-ring-name {
-		height: 0px !important;
+		width: 150px !important;
 		overflow: visible !important;
 	}
 </style>

@@ -1,6 +1,8 @@
 import axios from 'axios'
 import Qs from 'qs'
-import { ElMessage } from "element-plus";
+import {
+	ElMessage
+} from "element-plus";
 
 function updateComponentStatus(that, refName, dataKey = "refreshFlagKey") {
 	const ringChart = that.$refs[refName]
@@ -36,7 +38,9 @@ axios.interceptors.request.use(req => {
 			'Content-Type': 'application/x-www-form-urlencoded',
 		};
 	} else if (method === 'get') {
-		const params = { id: req.id }
+		const params = {
+			id: req.id
+		}
 		req.params = params;
 	}
 
@@ -53,14 +57,29 @@ function request(url = '/', method = 'get', data) {
 		console.log('请求回来的', res)
 		const resultData = res.data
 		return resultData
+	}).catch(err => {
+		const code = err.code
+		let msg = ''
+		switch (code) {
+			case "ERR_NETWORK":
+				msg = "服务器网络错误"
+				break
+			default:
+				msg = '请求失败'
+				break
+		}
+		err.msg = msg
+		return err
 	})
 }
+
+
 
 function asyncUpImg() {
 	let input = document.createElement("input");
 	input.type = "file";
 	return new Promise(resolve => {
-		input.onchange = function (e) {
+		input.onchange = function(e) {
 			let files = e.path[0].files || [];
 			let type = "warning";
 			let message = "上传图片失败";
@@ -79,6 +98,7 @@ function asyncUpImg() {
 		input.dispatchEvent(event);
 	})
 }
+
 function setLocalStorage(designData, list) {
 	designData = encodeURIComponent(JSON.stringify(designData));
 	list = encodeURIComponent(JSON.stringify(list));
