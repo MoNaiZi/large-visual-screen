@@ -40,6 +40,7 @@ export default {
 				}
 			},
 			'custom-text-option': {
+				editeTextMsg: '编辑',
 				cptDataForm: {
 					dataText: '普通文本',
 					dataSource: 1,

@@ -36,7 +36,7 @@ export default {
         width: isAuto ? "100vw" : mainW + "px",
         height: isAuto ? "100vh" : mainH + "px",
         background: `url(${defaultBg}) repeat`,
-        transform: `scale(${designData.containerScale})`,
+        // transform: `scale(${designData.containerScale})`,
         margin: "0 auto",
         overflow: "hidden",
       };
