@@ -47,7 +47,7 @@ export default {
 				},
 				attribute: {
 					url: '',
-					textColor: '#4BB344',
+					textColor: '#fff',
 					textSize: 16,
 					fontWeight: 'normal',
 					textLineHeight: 30,

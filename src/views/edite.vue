@@ -482,10 +482,10 @@
 					},
 				});
 			},
-			dblclick() {
+			dblclick(index) {
 				console.log("双击·");
-				// this.list[index].options.edite = true
-				// this.currentIndex = index
+				this.list[index].options.edite = true
+				this.currentIndex = index
 			},
 			changeCurrentItem({
 				obj,
