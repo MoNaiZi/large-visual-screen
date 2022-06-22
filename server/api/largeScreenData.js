@@ -93,7 +93,10 @@ module.exports = {
 		let code = 1
 
 		// handlerLargescreendata(updateData)
+
 		const result = await global.db.largescreendata.replaceOne(where, updateData)
+
+
 
 		if (result && result.acknowledged) {
 			msg = '更新成功'

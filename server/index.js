@@ -14,10 +14,10 @@ const fs = require('fs'); //立即执行函数需要引入
 
 
 app.use(bodyParser.urlencoded({
-	limit: '10mb',
+	limit: '20mb',
 	extended: true
 }))
-app.use(bodyParser.json())
+app.use(bodyParser.json({ limit: '20mb' }));
 app.use(cors())
 app.use('/', indexRouter)
 

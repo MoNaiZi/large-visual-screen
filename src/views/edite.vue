@@ -162,7 +162,7 @@
               />
             </div>
           </div>
-          <rightAside></rightAside>
+          <!-- <rightAside></rightAside> -->
         </el-main>
       </el-container>
     </el-container>
@@ -477,11 +477,12 @@ export default {
       this.$api("/getData", "get", {
         id,
       })
-        .then((data) => {
-          console.log("获取大屏数据", data);
+        .then((res) => {
+          console.log("获取大屏数据", res);
 
-          const list = data.list || [];
-          this.designData = data.data || {};
+          const list = res.list || [];
+          this.designData = res.data || {};
+          this.containerScale = res.data.containerScale;
           for (let item of list) {
             const initResult = initOptionsComponents(
               this.$app,
@@ -859,7 +860,7 @@ export default {
 .set {
   display: flex;
   justify-content: space-between;
-  width: 300px;
+  width: 320px;
   align-items: center;
   line-height: 4px;
 
