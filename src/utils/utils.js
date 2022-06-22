@@ -1,5 +1,5 @@
 import axios from 'axios'
-import Qs from 'qs'
+// import Qs from 'qs'
 import {
 	ElMessage
 } from "element-plus";
@@ -33,9 +33,12 @@ axios.interceptors.request.use(req => {
 	console.log('req', req)
 	const method = req.method
 	if (method === 'post') {
-		req.data = Qs.stringify(req.data);
+		console.log('req.data', req.data)
+		// req.data = Qs.stringify(req.data)
+		req.data = JSON.stringify(req.data)
+
 		req.headers = {
-			'Content-Type': 'application/x-www-form-urlencoded',
+			'Content-Type': 'application/json'
 		};
 	} else if (method === 'get') {
 		const params = {
@@ -79,7 +82,7 @@ function asyncUpImg() {
 	let input = document.createElement("input");
 	input.type = "file";
 	return new Promise(resolve => {
-		input.onchange = function(e) {
+		input.onchange = function (e) {
 			let files = e.path[0].files || [];
 			let type = "warning";
 			let message = "上传图片失败";

@@ -1,4 +1,5 @@
 const ObjectId = require('mongodb').ObjectId;
+const Qs = require('qs')
 const handlerLargescreendata = function (data) {
 	const isAuto = data.isAuto === 'true' ? true : false
 	data.isAuto = typeof data.isAuto === 'string' ? isAuto : data.isAuto
@@ -30,7 +31,6 @@ const handlerLargescreendata = function (data) {
 module.exports = {
 	async saveData(req, res) {
 		const body = req.body
-		handlerLargescreendata(body)
 		let msg = '保存失败'
 		let code = 1
 		let id = ''
@@ -85,12 +85,14 @@ module.exports = {
 		})
 	},
 	async update(req, res) {
-		const updateData = req.body.data
-		let where = { _id: ObjectId(req.body.id) }
+		const updateData = req.body
+		const _id = updateData._id
+		delete updateData._id
+		let where = { _id: ObjectId(_id) }
 		let msg = '更新失败'
 		let code = 1
-		delete updateData._id
-		handlerLargescreendata(updateData)
+
+		// handlerLargescreendata(updateData)
 		const result = await global.db.largescreendata.replaceOne(where, updateData)
 
 		if (result && result.acknowledged) {

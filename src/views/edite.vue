@@ -513,11 +513,7 @@ export default {
 
       let result = {};
       if (id) {
-        let updateObj = {
-          id,
-          data: designData,
-        };
-        result = await that.$api("/update", "post", updateObj);
+        result = await that.$api("/update", "post", designData);
       } else {
         result = await that.$api("/save", "post", designData);
         that.id = result.id;
