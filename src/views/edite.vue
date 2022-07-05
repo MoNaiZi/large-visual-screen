@@ -45,6 +45,13 @@
           </div>
         </div>
       </el-header>
+      <contextMenu
+        :X="menuX"
+        :Y="menuY"
+        :menuShow="showMenu"
+        :currentItem="currentItem"
+        @change="changeMenu"
+      ></contextMenu>
       <el-container>
         <el-aside width="220px" style="overflow-x: hidden">
           <sidebar
@@ -87,6 +94,7 @@
                 v-show="!(item.options || {}).edite"
                 v-resize="{ key: 'move', index: index }"
                 @dblclick.stop="dblclick(index)"
+                @contextmenu="handleContextMenu($event, item)"
                 class="activeMask"
                 style="z-index: 100"
               />
@@ -105,7 +113,7 @@
                 >
                 </component>
 
-                <el-icon
+                <!-- <el-icon
                   @click.stop="edite(index)"
                   v-show="currentIndex === index"
                   style="
@@ -115,10 +123,12 @@
                     right: 0px;
                     cursor: pointer;
                     z-index: 110;
+                    background: #f2f2f2;
+                    color: #000;
                   "
                 >
-                  <component :is="handleIcon(item)"> </component>
-                </el-icon>
+                  <component color="#000" :is="handleIcon(item)"> </component>
+                </el-icon> -->
               </div>
               <div
                 v-show="currentIndex === index"
@@ -276,6 +286,7 @@ import itemSettings from "@/components/item-settings";
 import initOptionsComponents from "@/utils/initOptionsComponents";
 import ScaleMarkX from "@/components/ScaleMarkX";
 import ScaleMarkY from "@/components/ScaleMarkY";
+import contextMenu from "@/components/context_menu";
 import html2canvas from "html2canvas";
 // import utils from "@/utils/utils";
 const utils = require("@/utils/utils");
@@ -287,6 +298,7 @@ export default {
     ElMessageBox,
     ScaleMarkX,
     ScaleMarkY,
+    contextMenu,
   },
   computed: {
     setWrap_style() {
@@ -343,6 +355,9 @@ export default {
         },
       ],
       dialogVisible: false,
+      showMenu: false,
+      menuX: 0,
+      menuY: 0,
       mainId: this.$createId(),
       designData: {
         title: "我的大屏",
@@ -402,22 +417,24 @@ export default {
     }
   },
   mounted() {
+    const that = this;
     const wrap = document.querySelector(".wrap");
-    this.wrap = wrap;
-    if (this.wrap) {
-      this.designData.mainW = this.wrap.offsetWidth;
-      this.designData.mainH = this.wrap.offsetHeight;
+    that.wrap = wrap;
+    if (that.wrap) {
+      that.designData.mainW = that.wrap.offsetWidth;
+      that.designData.mainH = that.wrap.offsetHeight;
     }
     const body = document.querySelector("body");
     window.addEventListener("keydown", (e) => {
+      console.log("e", e);
       let keyCode = e.keyCode;
-      e.preventDefault();
+      that.showMenu = false;
       if (keyCode === 32) {
+        e.preventDefault();
         body.style.cursor = "grab";
       }
     });
     window.addEventListener("keyup", (e) => {
-      e.preventDefault();
       let keyCode = e.keyCode;
       if (keyCode === 32) {
         body.style.cursor = "auto";
@@ -448,6 +465,43 @@ export default {
     };
   },
   methods: {
+    handleContextMenu(e, item) {
+      e.stopPropagation();
+      e.preventDefault();
+      this.menuX = e.clientX;
+      this.menuY = e.clientY;
+      this.currentItem = item;
+      this.showMenu = !this.showMenu;
+    },
+    changeMenu(type) {
+      console.log("type", type);
+      const that = this;
+      switch (type) {
+        case 0:
+          {
+            const index = that.currentIndex;
+            let result = that.list[index].options.edite ? false : true;
+            that.list[index].options.edite = result;
+            let msg = that.list[index].options.editeTextMsg || "预览";
+            let message = `开启${msg}`;
+            let type = "success";
+            if (!result) {
+              message = `关闭${msg}`;
+              type = "";
+            }
+            ElMessage({
+              message,
+              type,
+            });
+          }
+
+          break;
+
+        default:
+          break;
+      }
+      that.showMenu = false;
+    },
     handleIcon(item) {
       const options = item.options || {};
       let icon = item.minIcon;
@@ -591,21 +645,21 @@ export default {
       window.open(routeUrl.href, "_blank");
       // 打开新标签，需要重新注册组件
     },
-    edite(index) {
-      let result = this.list[index].options.edite ? false : true;
-      this.list[index].options.edite = result;
-      let msg = this.list[index].options.editeTextMsg || "预览";
-      let message = `开启${msg}`;
-      let type = "success";
-      if (!result) {
-        message = `关闭${msg}`;
-        type = "";
-      }
-      ElMessage({
-        message,
-        type,
-      });
-    },
+    // edite(index) {
+    //   let result = this.list[index].options.edite ? false : true;
+    //   this.list[index].options.edite = result;
+    //   let msg = this.list[index].options.editeTextMsg || "预览";
+    //   let message = `开启${msg}`;
+    //   let type = "success";
+    //   if (!result) {
+    //     message = `关闭${msg}`;
+    //     type = "";
+    //   }
+    //   ElMessage({
+    //     message,
+    //     type,
+    //   });
+    // },
     changeBgColor(value) {
       this.designData.bgColor = value;
     },
@@ -777,6 +831,7 @@ export default {
         document.onmousemove = function (me) {
           const meScaleClientX = me.clientX / containerScale;
           const meScaleClientY = me.clientY / containerScale;
+          that.showMenu = false;
           // let offsetX = me.offsetX
           // console.log('offsetX', offsetX)
           // console.log('meScaleClientX', meScaleClientX)

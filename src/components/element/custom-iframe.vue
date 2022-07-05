@@ -10,7 +10,7 @@
 <script>
 export default {
   name: "custom-iframe",
-  title: "iframe",
+  title: "外部网页",
   icon: "Promotion",
   group: "basic",
   catalogue: "element",
