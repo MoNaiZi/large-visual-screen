@@ -399,6 +399,38 @@ export default {
       this.designData.mainW = this.wrap.offsetWidth;
       this.designData.mainH = this.wrap.offsetHeight;
     }
+    const body = document.querySelector("body");
+    window.addEventListener("keydown", (e) => {
+      let keyCode = e.keyCode;
+      e.preventDefault();
+      if (keyCode === 32) {
+        body.style.cursor = "grab";
+      }
+    });
+    window.addEventListener("keyup", (e) => {
+      e.preventDefault();
+      let keyCode = e.keyCode;
+      if (keyCode === 32) {
+        body.style.cursor = "auto";
+      }
+    });
+    let isDoown = false;
+    body.onmousedown = function () {
+      console.log("按下鼠标");
+      isDoown = true;
+    };
+    body.onmouseup = function () {
+      console.log("松开鼠标");
+      // body.onmousemove = null;
+      body.onmousedown = null;
+      isDoown = false;
+    };
+    body.onmousemove = () => {
+      console.log("isDoown", isDoown);
+      if (body.style.cursor === "grab" && isDoown) {
+        console.log("移动");
+      }
+    };
   },
   methods: {
     handleIcon(item) {
@@ -486,7 +518,8 @@ export default {
           for (let item of list) {
             const initResult = initOptionsComponents(
               this.$app,
-              item.name + "-option"
+              item.name + "-option",
+              item.catalogue
             );
             console.log("initResult", initResult);
             if (initResult != true) {
@@ -663,6 +696,7 @@ export default {
         title: config.title,
         icon: config.icon,
         name: config.name,
+        catalogue: config.catalogue,
         minIcon: config.minIcon,
         z: 100,
         x: Math.round(e.offsetX),
@@ -673,7 +707,7 @@ export default {
       };
       const group = options[config.group];
       let name = config.name + "-option";
-
+      let catalogue = config.catalogue;
       if (group && group.options[name]) {
         const configOptions = group.options[name];
         data.options = JSON.parse(JSON.stringify(configOptions));
@@ -690,7 +724,7 @@ export default {
       // const newData = JSON.parse(JSON.stringify(data))
       this.currentItem = data;
 
-      const initResult = initOptionsComponents(this.$app, name);
+      const initResult = initOptionsComponents(this.$app, name, catalogue);
       console.log("initResult", initResult);
       if (initResult != true) {
         this.$message.error(initResult);

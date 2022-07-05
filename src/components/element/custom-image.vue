@@ -1,23 +1,26 @@
 <template>
   <div style="width: 100%; height: 100%">
-    <el-image style="width: 100%; height: 100%"
-        :preview-src-list="option.attribute.preview ? [option.attribute.url]:[]"
-        :src="option.attribute.url" :fit="option.attribute.fit"/>
+    <el-image
+      style="width: 100%; height: 100%"
+      :preview-src-list="option.attribute.preview ? [option.attribute.url] : []"
+      :src="option.attribute.url"
+      :fit="option.attribute.fit"
+    />
   </div>
 </template>
 
 <script>
 export default {
   name: "custom-image",
-  title: '图片',
-  icon: 'Picture',
-  group:'basic',
-  props: {option: Object},
+  title: "图片",
+  icon: "Picture",
+  group: "basic",
+  catalogue: "element",
+  props: { option: Object },
   data() {
-    return {
-    }
-  }
-}
+    return {};
+  },
+};
 </script>
 
 <style scoped>

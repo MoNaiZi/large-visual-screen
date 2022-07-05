@@ -1,19 +1,24 @@
 <template>
-  <iframe loading="lazy" width="100%" height="100%" :src="option.attribute.url"></iframe>
+  <iframe
+    loading="lazy"
+    width="100%"
+    height="100%"
+    :src="option.attribute.url"
+  ></iframe>
 </template>
 
 <script>
 export default {
   name: "custom-iframe",
-  title: 'iframe',
-  icon: 'Promotion',
-  group:'basic',
+  title: "iframe",
+  icon: "Promotion",
+  group: "basic",
+  catalogue: "element",
   props: {
-    option: Object
+    option: Object,
   },
-}
+};
 </script>
 
 <style scoped>
-
 </style>

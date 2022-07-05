@@ -1,19 +1,19 @@
 <template>
   <el-form label-width="100px" size="mini">
     <el-form-item label="相机X">
-      <el-input-number v-model="attribute.cameraX" :min="-180" :max="180"/>
+      <el-input-number v-model="data.cameraX" :min="-180" :max="180" />
     </el-form-item>
     <el-form-item label="相机Y">
-      <el-input-number v-model="attribute.cameraY" :min="-180" :max="180"/>
+      <el-input-number v-model="data.cameraY" :min="-180" :max="180" />
     </el-form-item>
     <el-form-item label="相机Z">
-      <el-input-number v-model="attribute.cameraZ" :min="-180" :max="180"/>
+      <el-input-number v-model="data.cameraZ" :min="-180" :max="180" />
     </el-form-item>
     <el-form-item label="背景颜色">
-      <el-color-picker v-model="attribute.bgColor"/>
+      <el-color-picker v-model="data.bgColor" />
     </el-form-item>
     <el-form-item label="背景透明度">
-      <el-input-number v-model="attribute.bgAlpha" :step="0.1" :min="0" :max="1"/>
+      <el-input-number v-model="data.bgAlpha" :step="0.1" :min="0" :max="1" />
     </el-form-item>
   </el-form>
 </template>
@@ -22,11 +22,15 @@
 export default {
   name: "cpt-threeJs-dom-option",
   props: {
-    attribute: Object
+    attribute: Object,
   },
-}
+  data() {
+    return {
+      data: this.attribute,
+    };
+  },
+};
 </script>
 
 <style scoped>
-
 </style>

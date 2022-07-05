@@ -1,43 +1,45 @@
 <template>
-	<router-view></router-view>
+  <router-view></router-view>
 </template>
 
 <script>
-	export default {
-		name: 'App',
-		components: {}
-	}
+export default {
+  name: "App",
+  components: {},
+};
 </script>
 
 <style lang="scss">
-	body {
-		margin: 0px;
-	}
+body {
+  margin: 0px;
+}
 
-	.flex {
-		display: flex;
-	}
+.flex {
+  display: flex;
+}
+.el-header {
+  z-index: 10 !important;
+}
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
 
-	#app {
-		font-family: Avenir, Helvetica, Arial, sans-serif;
-		-webkit-font-smoothing: antialiased;
-		-moz-osx-font-smoothing: grayscale;
-		text-align: center;
-		color: #2c3e50;
-	}
+*::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
 
-	*::-webkit-scrollbar {
-		width: 4px;
-		height: 4px;
-	}
+*::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background: #5e708d;
+}
 
-	*::-webkit-scrollbar-thumb {
-		border-radius: 4px;
-		background: #5E708D;
-	}
-
-	*::-webkit-scrollbar-track {
-		border-radius: 4px;
-		background: #ddd;
-	}
+*::-webkit-scrollbar-track {
+  border-radius: 4px;
+  background: #ddd;
+}
 </style>

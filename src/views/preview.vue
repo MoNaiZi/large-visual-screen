@@ -62,6 +62,7 @@ export default {
   },
   data() {
     return {
+      name: "preview",
       defaultBg: require("@/assets/main_bg.png"),
       list: [],
       designData: {},

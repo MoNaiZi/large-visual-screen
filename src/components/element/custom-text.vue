@@ -24,6 +24,7 @@ export default {
   initWidth: 150,
   initHeight: 40,
   group: "basic",
+  catalogue: "element",
   props: {
     option: Object,
   },

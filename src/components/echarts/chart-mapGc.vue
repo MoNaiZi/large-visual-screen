@@ -6,6 +6,7 @@
 import { markRaw } from "vue";
 export default {
   name: "chart-mapGc",
+  catalogue: "echarts",
   title: "渐变地图",
   icon: "MapLocation",
   group: "map",
