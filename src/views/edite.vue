@@ -14,7 +14,15 @@
             <h3>编辑显示比例{{ designData.scale }}</h3>
           </div>
           <div class="set">
-            <div class="header_set_item">导入</div>
+            <el-tooltip
+              class="box-item"
+              effect="dark"
+              content="按住空格+鼠标左键拖动屏幕移动"
+              placement="bottom"
+            >
+              <div class="header_set_item">快捷键</div>
+            </el-tooltip>
+
             <div class="header_set_item" @click="createdImg">生成图片</div>
             <div class="header_set_item" @click="removeList">
               <el-icon :size="22">
@@ -394,7 +402,8 @@ export default {
     }
   },
   mounted() {
-    this.wrap = document.querySelector(".wrap");
+    const wrap = document.querySelector(".wrap");
+    this.wrap = wrap;
     if (this.wrap) {
       this.designData.mainW = this.wrap.offsetWidth;
       this.designData.mainH = this.wrap.offsetHeight;
@@ -416,19 +425,25 @@ export default {
     });
     let isDoown = false;
     body.onmousedown = function () {
-      console.log("按下鼠标");
       isDoown = true;
+      console.log("按下鼠标", isDoown);
     };
     body.onmouseup = function () {
-      console.log("松开鼠标");
-      // body.onmousemove = null;
-      body.onmousedown = null;
       isDoown = false;
     };
-    body.onmousemove = () => {
-      console.log("isDoown", isDoown);
+    const el_main = document.querySelector(".el-main");
+    console.log("el_main", el_main);
+    body.onmousemove = (e) => {
       if (body.style.cursor === "grab" && isDoown) {
-        console.log("移动");
+        let x = e.movementX;
+        let y = e.movementY;
+        console.log("x", x, "y", y);
+        el_main.scrollBy({
+          top: y,
+          left: x,
+          behavior: "auto",
+        });
+        // wrap.scroll({ top: y, left: x });
       }
     };
   },
