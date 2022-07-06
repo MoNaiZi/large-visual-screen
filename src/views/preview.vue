@@ -12,6 +12,7 @@
           :width="Math.round(item.w)"
           :height="Math.round(item.h)"
           :option="item.options"
+          :pageType="'preview'"
         >
         </component>
       </div>

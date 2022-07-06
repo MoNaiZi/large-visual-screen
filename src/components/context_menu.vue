@@ -7,10 +7,10 @@
     <ul @mouseup="handleMouseUp">
       <li @click="change(0)">编辑/预览</li>
       <!-- <li @click="change(3)">预览</li> -->
-      <li @click="change(1)">
+      <!-- <li @click="change(1)">
         {{ currentItem.isTopping ? "取消置顶" : "置顶" }}
-      </li>
-      <li @click="change(2)">删除</li>
+      </li> -->
+      <li @click="change(1)">删除</li>
     </ul>
   </div>
 </template>

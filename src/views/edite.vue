@@ -84,6 +84,7 @@
               v-for="(item, index) in list"
               :key="index"
               class="cptDiv"
+              @contextmenu.stop="handleContextMenu($event, item)"
               @mousedown="selectItem(index)"
               :style="[cptDiv_fn(item, index)]"
             >
@@ -93,8 +94,6 @@
               <div
                 v-show="!(item.options || {}).edite"
                 v-resize="{ key: 'move', index: index }"
-                @dblclick.stop="dblclick(index)"
-                @contextmenu="handleContextMenu($event, item)"
                 class="activeMask"
                 style="z-index: 100"
               />
@@ -454,13 +453,11 @@ export default {
       if (body.style.cursor === "grab" && isDoown) {
         let x = e.movementX;
         let y = e.movementY;
-        console.log("x", x, "y", y);
         el_main.scrollBy({
           top: y,
           left: x,
           behavior: "auto",
         });
-        // wrap.scroll({ top: y, left: x });
       }
     };
   },
@@ -476,6 +473,7 @@ export default {
     changeMenu(type) {
       console.log("type", type);
       const that = this;
+
       switch (type) {
         case 0:
           {
@@ -494,9 +492,12 @@ export default {
               type,
             });
           }
-
           break;
-
+        case 1:
+          {
+            that.remove();
+          }
+          break;
         default:
           break;
       }
@@ -694,11 +695,11 @@ export default {
         },
       });
     },
-    dblclick(index) {
-      console.log("双击·");
-      this.list[index].options.edite = true;
-      this.currentIndex = index;
-    },
+    // dblclick(index) {
+    //   console.log("双击·");
+    //   this.list[index].options.edite = true;
+    //   this.currentIndex = index;
+    // },
     changeCurrentItem({ obj, index }) {
       obj = JSON.parse(JSON.stringify(obj));
       if (JSON.stringify(obj) === "{}") {
@@ -736,6 +737,7 @@ export default {
     },
     selectItem(index) {
       console.log("选择", index);
+      this.showMenu = false;
       if (index >= 0) {
         this.currentItem = this.list[index];
       } else {

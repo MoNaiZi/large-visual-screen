@@ -4,7 +4,7 @@
     ref="ringChart"
     :config="attribute"
     style="width: 100%; height: 100%"
-    :style="{ '--top': edite ? '-45px' : '0' }"
+    :style="{ '--top': pageType === 'preview' ? '0px' : '-45px' }"
   />
 </template>
 
@@ -19,6 +19,7 @@ export default {
     width: Number,
     height: Number,
     option: Object,
+    pageType: String,
   },
   watch: {
     option: {
@@ -38,7 +39,6 @@ export default {
   },
   data() {
     return {
-      edite: true,
       attribute: this.option.attribute,
       refreshFlagKey: this.$createId(),
     };
