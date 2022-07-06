@@ -13,6 +13,8 @@
         background: option.attribute.bgColor,
         color: option.attribute.textColor,
         borderRadius: option.attribute.radius + 'px',
+        fontSize: option.attribute.fontSize + 'px',
+        fontWeight: option.attribute.fontWeight,
       }"
     >
       {{ cptData }}
@@ -31,6 +33,14 @@ export default {
   catalogue: "element",
   props: {
     option: Object,
+  },
+  watch: {
+    option: {
+      deep: true,
+      handler() {
+        this.cptData = this.$getData(this.option);
+      },
+    },
   },
   data() {
     return {

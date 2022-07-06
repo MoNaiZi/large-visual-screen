@@ -111,7 +111,7 @@
                       >
                         <el-radio :label="1">静态数据</el-radio>
                         <el-radio :label="2">接口</el-radio>
-                        <el-radio :label="3">sql</el-radio>
+                        <!-- <el-radio :label="3">sql</el-radio> -->
                       </el-radio-group>
                     </el-form-item>
                     <el-form-item
@@ -164,7 +164,9 @@
                         v-model="currentitem.options.cptDataForm.sql"
                       />
                     </el-form-item>
-                    <el-form-item>
+                    <el-form-item
+                      v-show="currentitem.options.cptDataForm.dataSource === 2"
+                    >
                       <el-button
                         type="primary"
                         style="width: 100%"
@@ -196,9 +198,16 @@ export default {
     currentItem: {
       deep: true,
       handler: function (newVal) {
-        this.currentitem = this.currentItem;
+        this.currentitem = newVal;
+        let cptDataForm = newVal.options.cptDataForm || {};
+        console.log("cptDataForm", cptDataForm);
         if (JSON.stringify(newVal) != "{}") {
           this.configBarShow = true;
+          if (JSON.stringify(cptDataForm) != "{}") {
+            this.cptDataFormShow = true;
+          } else {
+            this.cptDataFormShow = false;
+          }
         } else {
           this.configBarShow = false;
         }
@@ -242,7 +251,11 @@ export default {
     changeDataSource(val) {
       //静态数据不显示轮询按钮
       if (val === 1) {
-        this.currentitem.option.cptDataForm.pollTime = 0;
+        let currentitem = this.currentitem || {};
+        let options = currentitem.options || {};
+        if (options.cptDataForm) {
+          options.cptDataForm.pollTime = 0;
+        }
       }
     },
     // 刷新数据，调用父组件(index)中refreshCptData方法

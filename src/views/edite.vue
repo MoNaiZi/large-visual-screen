@@ -265,6 +265,7 @@
     </el-dialog>
     <item-settings
       :currentItem="currentItem"
+      @refreshCptData="refreshCptData"
       ref="itemSettings"
     ></item-settings>
     <el-dialog v-model="isShowCover" @close="this.cover = ''">
@@ -462,6 +463,9 @@ export default {
     };
   },
   methods: {
+    refreshCptData() {
+      // let currentIndex = this.currentIndex;
+    },
     handleContextMenu(e, item) {
       e.stopPropagation();
       e.preventDefault();

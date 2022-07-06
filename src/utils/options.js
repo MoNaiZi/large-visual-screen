@@ -37,6 +37,13 @@ export default {
 					bgColor: '#409eff',
 					textColor: '#fff',
 					radius: 6,
+					fontSize: 19,
+					fontWeight: 'normal',
+					fontWeightList: [
+						'normal',
+						'bold',
+						'lighter',
+					]
 				}
 			},
 			'custom-text-option': {
@@ -137,25 +144,25 @@ export default {
 				},
 				cptDataForm: {
 					dataText: [{
-							value: 60,
-							name: '新用户'
-						},
-						{
-							value: 40,
-							name: '留存率'
-						},
-						{
-							value: 20,
-							name: '下单数'
-						},
-						{
-							value: 80,
-							name: '拉新数'
-						},
-						{
-							value: 100,
-							name: '浏览率'
-						}
+						value: 60,
+						name: '新用户'
+					},
+					{
+						value: 40,
+						name: '留存率'
+					},
+					{
+						value: 20,
+						name: '下单数'
+					},
+					{
+						value: 80,
+						name: '拉新数'
+					},
+					{
+						value: 100,
+						name: '浏览率'
+					}
 					]
 				}
 			},
