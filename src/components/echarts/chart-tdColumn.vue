@@ -24,8 +24,11 @@ export default {
     };
   },
   watch: {
-    "option.attribute": {
-      handler() {},
+    option: {
+      handler() {
+        this.init();
+        this.loadChart();
+      },
       deep: true, //深度监听
     },
     width() {
@@ -36,15 +39,19 @@ export default {
     },
   },
   created() {
-    this.cptData = this.$getData(this.option);
+    this.init();
   },
   mounted() {
     this.chart = markRaw(this.$echarts.init(document.getElementById(this.id)));
-    this.loadChart(this.option.attribute);
+    this.loadChart();
   },
   methods: {
-    loadChart(attribute) {
+    init() {
+      this.cptData = JSON.parse(this.$getData(this.option));
+    },
+    loadChart() {
       const that = this;
+      let attribute = that.option.attribute;
       let columnColor = attribute.barColor;
       if (attribute.gradualColor) {
         columnColor = new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [

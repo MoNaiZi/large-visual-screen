@@ -19,9 +19,10 @@ export default {
     option: Object,
   },
   watch: {
-    "option.attribute": {
-      handler(obj, newObj) {
-        this.loadChart(newObj);
+    option: {
+      handler(newObj) {
+        this.init();
+        this.loadChart(newObj.attribute);
       },
       deep: true, //深度监听
     },
@@ -41,13 +42,16 @@ export default {
     };
   },
   created() {
-    this.cptData = this.$getData(this.option);
+    this.init();
   },
   mounted() {
     this.chart = this.$echarts.init(document.getElementById(this.id), "dark");
     this.loadChart(this.option.attribute);
   },
   methods: {
+    init() {
+      this.cptData = this.$getData(this.option);
+    },
     loadChart(attribute) {
       const that = this;
       that.chartOption = {

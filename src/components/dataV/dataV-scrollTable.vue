@@ -31,19 +31,27 @@ export default {
   watch: {
     option: {
       handler() {
+        this.init();
         this.$updateComponentStatus(this, "scrollTable");
       },
       deep: true, //深度监听
     },
   },
   created() {
-    this.attribute.data = this.$getData(this.option);
+    this.init();
+  },
+  methods: {
+    init() {
+      let listText = this.$getData(this.option);
+      if (listText) {
+        this.attribute.data = JSON.parse(listText);
+      }
+    },
   },
   beforeUnmount() {
     this.$updateComponentStatus(this, "scrollTable");
     console.log("在卸载组件实例之前调用。在这个阶段，实例仍然是完全正常的。。");
   },
-  methods: {},
 };
 </script>
 

@@ -18,9 +18,10 @@ export default {
     height: [String, Number],
   },
   watch: {
-    "option.attribute": {
+    option: {
       deep: true,
       handler() {
+        this.init();
         this.generate();
       },
     },
@@ -39,13 +40,16 @@ export default {
     };
   },
   created() {
-    this.data = this.$getData(this.option);
+    this.init();
   },
   mounted() {
     this.chart = markRaw(this.$echarts.init(document.getElementById(this.id)));
     this.generate();
   },
   methods: {
+    init() {
+      this.data = this.$getData(this.option);
+    },
     generate() {
       let data = this.data;
       let attribute = this.option.attribute;

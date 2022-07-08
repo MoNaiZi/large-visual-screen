@@ -22,9 +22,10 @@ export default {
     option: Object,
   },
   watch: {
-    "option.attribute": {
+    option: {
       handler() {
         console.log("有变动");
+        this.init();
         this.refreshFlagKey = this.$createId();
       },
       deep: true, //深度监听
@@ -39,13 +40,22 @@ export default {
       refreshFlagKey: this.$createId(), //强制刷新视图
     };
   },
-  created() {},
+  created() {
+    this.init();
+  },
+  methods: {
+    init() {
+      let numberValue = this.$getData(this.option);
+      if (numberValue) {
+        this.attribute.value = Number(numberValue);
+      }
+    },
+  },
   beforeUnmount() {
     const percentPond = this.$refs.percentPond;
     clearTimeout(percentPond.animationHandler);
     console.log("在卸载组件实例之前调用。在这个阶段，实例仍然是完全正常的。。");
   },
-  methods: {},
 };
 </script>
 

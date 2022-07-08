@@ -137,7 +137,7 @@
                           cptDataForm.dataSource === 1 && dataType === 'string'
                         "
                         type="textarea"
-                        :rows="5"
+                        :autosize="true"
                         v-model="cptDataForm.dataText"
                       />
                       <div
@@ -173,11 +173,15 @@
                         v-model="cptDataForm.apiUrl"
                       />
                     </el-form-item>
+                    <el-form-item v-if="dataType === 'object'">
+                      <h3>暂不支持手动修改</h3>
+                    </el-form-item>
                     <el-form-item>
                       <el-button
                         type="primary"
                         style="width: 100%"
                         @click="refreshCptData"
+                        v-show="dataType != 'object'"
                         >刷新数据
                       </el-button>
                     </el-form-item>
@@ -205,7 +209,7 @@ export default {
     currentItem: {
       deep: true,
       handler: function (newVal) {
-        console.log("newVal", newVal);
+        // console.log("newVal", newVal);
         this.data = newVal;
         if (JSON.stringify(newVal) != "{}") {
           let cptDataForm = newVal.options.cptDataForm || {};

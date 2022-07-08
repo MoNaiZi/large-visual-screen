@@ -27,9 +27,10 @@ export default {
     };
   },
   watch: {
-    "option.attribute": {
+    option: {
       handler(obj, newObj) {
-        this.loadChart(newObj);
+        this.init();
+        this.loadChart(newObj.attribute);
       },
       deep: true, //深度监听
     },
@@ -41,13 +42,16 @@ export default {
     },
   },
   created() {
-    this.cptData = this.$getData(this.option);
+    this.init();
   },
   mounted() {
     this.chart = markRaw(this.$echarts.init(document.getElementById(this.id)));
     this.loadChart(this.option.attribute);
   },
   methods: {
+    init() {
+      this.cptData = this.$getData(this.option);
+    },
     loadChart(attribute) {
       const that = this;
       const planePath =

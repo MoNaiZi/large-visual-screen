@@ -28,20 +28,24 @@ export default {
   watch: {
     option: {
       handler() {
+        this.init();
         this.$updateComponentStatus(this, "scrollList");
       },
       deep: true, //深度监听
     },
   },
   created() {
-    this.attribute.data = this.$getData(this.option);
-    // this.attribute.valueFormatter =
+    this.init();
+  },
+  methods: {
+    init() {
+      this.attribute.data = this.$getData(this.option);
+    },
   },
   beforeUnmount() {
     this.$updateComponentStatus(this, "scrollList");
     console.log("在卸载组件实例之前调用。在这个阶段，实例仍然是完全正常的。。");
   },
-  methods: {},
 };
 </script>
 

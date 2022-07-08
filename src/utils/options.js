@@ -143,6 +143,8 @@ export default {
 					itemFontSize: 13
 				},
 				cptDataForm: {
+					dataSource: 1,
+					pollTime: 0,
 					dataText: [{
 						value: 60,
 						name: '新用户'
@@ -199,10 +201,10 @@ export default {
 					barPath: 'path://M0,10 L10,10 C5.5,10 5.5,5 5,0 C4.5,5 4.5,10 0,10 z',
 				},
 				cptDataForm: {
-					dataText: {
+					dataText: `{
 						"xData": "Mon,Tue,Wed,Thu,Fri,Sat,Sun",
 						"yData": "120,200,150,80,70,110,130"
-					},
+					}`,
 					dataSource: 1,
 					pollTime: 0
 				},
@@ -234,13 +236,13 @@ export default {
 					xFontRotate: 0
 				},
 				cptDataForm: {
-					dataText: {
+					dataText: `{
 						"xData": "Mon,Tue,Wed,Thu,Fri,Sat,Sun",
 						"yData": "320,302,120,100,540,123,345",
 						"yData2": "120,102,90,150,120,123,145",
 						"yData3": "320,302,120,100,540,123,345",
 						"yData4": "440,404,210,250,660,246,490"
-					},
+					}`,
 					dataSource: 1,
 					pollTime: 0
 				},
@@ -313,7 +315,7 @@ export default {
 					dataSource: 1,
 					pollTime: 0,
 					dataTypeText: 'array_array',
-					dataText: [
+					dataText: `[
 						["行1列1", "行1列2", "行1列3"],
 						["行2列1", "行2列2", "行2列3"],
 						["行3列1", "行3列2", "行3列3"],
@@ -324,7 +326,7 @@ export default {
 						["行8列1", "行8列2", "行8列3"],
 						["行9列1", "行9列2", "行9列3"],
 						["行10列1", "行10列2", "行10列3"]
-					]
+					]`
 				},
 				attribute: {
 					header: ['列1', '列2', '列3'], //表头数据
@@ -383,7 +385,7 @@ export default {
 				cptDataForm: {
 					dataSource: 1,
 					pollTime: 0,
-					dataText: ["55"],
+					dataText: '[55]',
 				},
 				attribute: {
 					shape: 'rect', //水位图形状rect/roundRect/round
@@ -398,10 +400,10 @@ export default {
 				cptDataForm: {
 					dataSource: 1,
 					pollTime: 0,
-					dataText: {
+					dataText: `{
 						"xData": "Mon,Tue,Wed,Thu,Fri,Sat,Sun",
 						"yData": "120,200,150,80,70,110,130"
-					},
+					}`,
 				},
 				attribute: {
 					title: '一天用电量分布',
