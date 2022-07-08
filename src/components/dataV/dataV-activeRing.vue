@@ -2,7 +2,7 @@
   <dv-active-ring-chart
     :key="refreshFlagKey"
     ref="ringChart"
-    :config="attribute"
+    :config="config"
     style="width: 100%; height: 100%"
     :style="{ '--top': pageType === 'preview' ? '0px' : '-45px' }"
   />
@@ -24,6 +24,7 @@ export default {
   watch: {
     option: {
       handler() {
+        this.init();
         this.$updateComponentStatus(this, "ringChart");
       },
       deep: true, //深度监听
@@ -39,13 +40,13 @@ export default {
   },
   data() {
     return {
-      attribute: this.option.attribute,
+      config: {},
       refreshFlagKey: this.$createId(),
     };
   },
   created() {
     console.log("this", this);
-    this.attribute.data = this.$getData(this.option);
+    this.init();
   },
   mounted() {},
   beforeUnmount() {
@@ -58,7 +59,12 @@ export default {
       "卸载组件实例后调用。调用此钩子时，组件实例的所有指令都被解除绑定，所有事件侦听器都被移除，所有子组件实例被卸载。"
     );
   },
-  methods: {},
+  methods: {
+    init() {
+      let data = this.$getData(this.option);
+      this.config = { data, ...this.option.attribute };
+    },
+  },
 };
 </script>
 

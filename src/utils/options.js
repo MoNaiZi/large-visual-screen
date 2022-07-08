@@ -117,12 +117,12 @@ export default {
 		options: {
 			'dataV-digitalFlop-option': {
 				cptDataForm: {
-					dataText: '29999,333',
+					dataText: `[[1111,222]]`,
 					dataSource: 1,
 					pollTime: 0
 				},
 				attribute: {
-					content: '{nt}个{nt}元',
+					content: '{nt}个{nt}点',
 					toFixedNum: 2,
 					textAlign: 'center',
 					rowGap: 30,
@@ -312,6 +312,7 @@ export default {
 				cptDataForm: {
 					dataSource: 1,
 					pollTime: 0,
+					dataTypeText: 'array_array',
 					dataText: [
 						["行1列1", "行1列2", "行1列3"],
 						["行2列1", "行2列2", "行2列3"],
@@ -449,7 +450,7 @@ export default {
 					lineWidth: 10,
 					radius: 80,
 					activeRadius: 60,
-					showOriginValue: false,
+					showOriginValue: true,
 					color: ['#91cc75', '#fac858', '#ee6666', '#73c0de', '#5470c6', '#ff8c71']
 				}
 			},

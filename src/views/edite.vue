@@ -426,7 +426,7 @@ export default {
     }
     const body = document.querySelector("body");
     window.addEventListener("keydown", (e) => {
-      console.log("e", e);
+      // console.log("e", e);
       let keyCode = e.keyCode;
       that.showMenu = false;
       if (keyCode === 32) {
@@ -443,13 +443,13 @@ export default {
     let isDoown = false;
     body.onmousedown = function () {
       isDoown = true;
-      console.log("按下鼠标", isDoown);
+      // console.log("按下鼠标", isDoown);
     };
     body.onmouseup = function () {
       isDoown = false;
     };
     const el_main = document.querySelector(".el-main");
-    console.log("el_main", el_main);
+    // console.log("el_main", el_main);
     body.onmousemove = (e) => {
       if (body.style.cursor === "grab" && isDoown) {
         let x = e.movementX;

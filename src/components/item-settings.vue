@@ -40,7 +40,7 @@
                     <el-input-number
                       :min="20"
                       :max="2000"
-                      v-model="currentitem.w"
+                      v-model="data.w"
                       size="small"
                       @change="changeConfig"
                     />
@@ -50,7 +50,7 @@
                     <el-input-number
                       :min="20"
                       :max="1500"
-                      v-model="currentitem.h"
+                      v-model="data.h"
                       size="small"
                       @change="changeConfig"
                     />
@@ -60,7 +60,7 @@
                     <el-input-number
                       :min="-500"
                       :max="2500"
-                      v-model="currentitem.x"
+                      v-model="data.x"
                       size="small"
                       @change="changeConfig"
                     />
@@ -69,7 +69,7 @@
                     Y 轴：
                     <el-input-number
                       :min="-500"
-                      v-model="currentitem.y"
+                      v-model="data.y"
                       size="small"
                       @change="changeConfig"
                     />
@@ -79,7 +79,7 @@
                     <el-input-number
                       :min="1"
                       :max="1800"
-                      v-model="currentitem.z"
+                      v-model="data.z"
                       size="small"
                       @change="changeConfig"
                     />
@@ -87,13 +87,10 @@
                 </div>
               </el-tab-pane>
               <el-tab-pane label="属性" name="custom">
-                <div
-                  class="customForm"
-                  v-if="currentitem && currentitem.options"
-                >
+                <div class="customForm" v-if="data && data.options">
                   <component
-                    :is="currentitem.name + '-option'"
-                    :attribute="currentitem.options.attribute"
+                    :is="data.name + '-option'"
+                    :attribute="data.options.attribute"
                     @change="changeComponent"
                   >
                   </component>
@@ -106,7 +103,7 @@
                   <el-form size="mini" label-position="top">
                     <el-form-item label="数据类型">
                       <el-radio-group
-                        v-model="currentitem.options.cptDataForm.dataSource"
+                        v-model="cptDataForm.dataSource"
                         @change="changeDataSource"
                       >
                         <el-radio :label="1">静态数据</el-radio>
@@ -116,7 +113,7 @@
                     </el-form-item>
                     <el-form-item
                       label="轮询"
-                      v-show="currentitem.options.cptDataForm.dataSource !== 1"
+                      v-show="cptDataForm.dataSource !== 1"
                     >
                       <el-switch
                         v-model="dataPollEnable"
@@ -126,47 +123,57 @@
                     </el-form-item>
                     <el-form-item label="轮询时间(s)" v-show="dataPollEnable">
                       <el-input-number
-                        v-model="currentitem.options.cptDataForm.pollTime"
+                        v-model="cptDataForm.pollTime"
                         :min="0"
                         :max="100"
                         label="描述文字"
                       />
                     </el-form-item>
                     <el-form-item
-                      :label="
-                        dataLabels[
-                          currentitem.options.cptDataForm.dataSource - 1
-                        ]
-                      "
+                      :label="dataLabels[cptDataForm.dataSource - 1]"
                     >
                       <el-input
                         v-show="
-                          currentitem.options.cptDataForm.dataSource === 1
+                          cptDataForm.dataSource === 1 && dataType === 'string'
                         "
                         type="textarea"
                         :rows="5"
-                        v-model="currentitem.options.cptDataForm.dataText"
+                        v-model="cptDataForm.dataText"
                       />
-                      <el-input
-                        v-show="
-                          currentitem.options.cptDataForm.dataSource === 2
+                      <div
+                        class="array"
+                        v-if="
+                          cptDataForm.dataSource === 1 && dataType === 'array'
                         "
+                      >
+                        <template
+                          v-for="(item, index) in cptDataForm.dataText"
+                          :key="index"
+                        >
+                          <el-form-item :label="item.name">
+                            <!-- <el-input
+                              style="width: 100px"
+                              v-model="item.value"
+                              @change="changeData"
+                            ></el-input> -->
+                            <el-input-number
+                              v-model="item.value"
+                              :min="0"
+                              controls-position="right"
+                              size="large"
+                            />
+                          </el-form-item>
+                        </template>
+                      </div>
+
+                      <el-input
+                        v-show="cptDataForm.dataSource === 2"
                         type="textarea"
                         :rows="5"
-                        v-model="currentitem.options.cptDataForm.apiUrl"
-                      />
-                      <el-input
-                        v-show="
-                          currentitem.options.cptDataForm.dataSource === 3
-                        "
-                        type="textarea"
-                        :rows="5"
-                        v-model="currentitem.options.cptDataForm.sql"
+                        v-model="cptDataForm.apiUrl"
                       />
                     </el-form-item>
-                    <el-form-item
-                      v-show="currentitem.options.cptDataForm.dataSource === 2"
-                    >
+                    <el-form-item>
                       <el-button
                         type="primary"
                         style="width: 100%"
@@ -198,15 +205,27 @@ export default {
     currentItem: {
       deep: true,
       handler: function (newVal) {
-        this.currentitem = newVal;
-        let cptDataForm = newVal.options.cptDataForm || {};
-        console.log("cptDataForm", cptDataForm);
+        console.log("newVal", newVal);
+        this.data = newVal;
         if (JSON.stringify(newVal) != "{}") {
+          let cptDataForm = newVal.options.cptDataForm || {};
           this.configBarShow = true;
           if (JSON.stringify(cptDataForm) != "{}") {
+            this.cptDataForm = JSON.parse(JSON.stringify(cptDataForm));
             this.cptDataFormShow = true;
+            let dataText = cptDataForm.dataText;
+            let dataType = "string";
+            if (Array.isArray(dataText)) {
+              dataType = "array";
+            } else {
+              if (typeof dataText === "object") {
+                dataType = "object";
+              }
+            }
+            this.dataType = dataType;
           } else {
             this.cptDataFormShow = false;
+            this.cptDataForm = {};
           }
         } else {
           this.configBarShow = false;
@@ -218,17 +237,17 @@ export default {
     dataPollEnable: {
       get() {
         return !!(
-          this.currentitem.options &&
-          this.currentitem.options.cptDataForm &&
-          this.currentitem.options.cptDataForm.pollTime &&
-          this.currentitem.options.cptDataForm.pollTime !== 0
+          this.data.options &&
+          this.data.options.cptDataForm &&
+          this.data.options.cptDataForm.pollTime &&
+          this.data.options.cptDataForm.pollTime !== 0
         );
       },
       set(newValue) {
         if (newValue) {
-          this.currentitem.options.cptDataForm.pollTime = 8;
+          this.data.options.cptDataForm.pollTime = 8;
         } else {
-          this.currentitem.options.cptDataForm.pollTime = 0;
+          this.data.options.cptDataForm.pollTime = 0;
           this.refreshCptData(); //清除定时器
         }
         return newValue;
@@ -237,22 +256,26 @@ export default {
   },
   data() {
     return {
+      dataType: "",
+      cptDataForm: {},
       cptDataFormShow: false,
       configTab: "custom",
       dataLabels: ["数据", "接口地址", "sql"],
       configBarShow: false,
-      currentitem: {},
+      dataString: "",
+      data: this.currentItem,
     };
   },
   methods: {
-    changeComponent() {
-      // this.currentitem.options.attribute = data
+    changeData(val) {
+      console.log("val", val);
     },
+    changeComponent() {},
     changeDataSource(val) {
       //静态数据不显示轮询按钮
       if (val === 1) {
-        let currentitem = this.currentitem || {};
-        let options = currentitem.options || {};
+        let data = this.data || {};
+        let options = data.options || {};
         if (options.cptDataForm) {
           options.cptDataForm.pollTime = 0;
         }
@@ -262,7 +285,7 @@ export default {
     // 在父组件中再调用选中图层中的refreshCptData方法
     // 图层中的refreshCptData方法再自行调后端接口渲染数据，文本框的内容和数据类型组装在option.cptDataForm中
     refreshCptData() {
-      this.$emit("refreshCptData");
+      this.data.options.cptDataForm = this.cptDataForm;
     },
     showConfigBar() {
       this.configBarShow = true;
@@ -291,7 +314,20 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" >
+.array {
+  .el-form-item {
+    display: flex !important;
+    align-items: center;
+    margin-left: 10px;
+    margin-bottom: 5px !important;
+
+    .el-form-item__label {
+      width: 60px;
+      margin-top: 10px;
+    }
+  }
+}
 .main {
   position: fixed !important;
   width: 260px;
