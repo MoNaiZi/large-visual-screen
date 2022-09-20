@@ -5,7 +5,7 @@ express
 ```
 ## Project setup
 ```
-npm install
+yarn install
 ```
 ## 运行
 ```

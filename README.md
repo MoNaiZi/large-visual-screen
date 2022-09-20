@@ -1,31 +1,30 @@
 # large-visual-screen
-## 使用技术：
+## 技术栈：
 ```
 前端： Vue3+echarts+three+element-ui
 后端： node.js+express+mongodb
 ```
-## Project setup
+## 前端，安装，运行，打包
 ```
 yarn install
-```
-
-### Compiles and hot-reloads for development
-```
 yarn serve
-```
-
-### Compiles and minifies for production
-```
 yarn build
 ```
-
-### Lints and fixes files
+## 后端
 ```
-yarn lint
+进入server目录
+yarn install  
+supervisor index 运行
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## 效果图
+<div style="display:flex">
+  <h4>管理页</h4>
+  <img style="width:500px;" src="https://s1.imagehub.cc/images/2022/09/20/16b5a7d055403bfb3e58ced3ae05b60d.png"/>
+  <h4>编辑页</h4>
+  <img style="width:500px;" src="https://s1.imagehub.cc/images/2022/09/20/9e686361271c26cc672f64f0cb927f56.png"/>
+   <h4>预览效果</h4>
+  <img style="width:500px;" src="https://s1.imagehub.cc/images/2022/09/20/22c76ead6353117a6f67a4d9b647e9d6.png"/>
+</div>
 
 ### 问题记录
 ```
