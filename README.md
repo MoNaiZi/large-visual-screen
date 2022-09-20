@@ -1,7 +1,8 @@
 # large-visual-screen
 ## 使用技术：
 ```
-Vue3+echarts+three+element-ui
+前端： Vue3+echarts+three+element-ui
+后端： node.js+express+mongodb
 ```
 ## Project setup
 ```
