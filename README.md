@@ -18,11 +18,11 @@ supervisor index 运行
 ```
 ## 效果图
 <div style="display:flex">
-  <h4>管理页</h4>
+  <h2>管理页</h2>
   <img style="width:800px;" src="https://s1.imagehub.cc/images/2022/09/20/16b5a7d055403bfb3e58ced3ae05b60d.png"/>
-  <h4>编辑页</h4>
+  <h2>编辑页</h2>
   <img style="width:800px;" src="https://s1.imagehub.cc/images/2022/09/20/9e686361271c26cc672f64f0cb927f56.png"/>
-   <h4>预览效果</h4>
+   <h2>预览效果</h2>
   <img style="width:800px;" src="https://s1.imagehub.cc/images/2022/09/20/22c76ead6353117a6f67a4d9b647e9d6.png"/>
 </div>
 
