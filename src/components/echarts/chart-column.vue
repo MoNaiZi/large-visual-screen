@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     init() {
-      this.cptData = JSON.parse(this.$getData(this.option));
+      this.cptData = this.$getData(this.option);
     },
     loadChart(attribute) {
       const that = this;
