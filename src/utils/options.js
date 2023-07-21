@@ -89,7 +89,6 @@ export default {
 					trigger: 'hover',
 					fit: 'cover',
 					imgUrls: [
-						require('@/assets/img.png'),
 						require('@/assets/logo.png')
 					],
 				}
